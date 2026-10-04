@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/kriziw/Euroclear-broadlink/compare/v0.2.0...v0.2.1) (2026-10-04)
+
+
+### Bug Fixes
+
+* let the user change the app language from within the app ([#5](https://github.com/kriziw/Euroclear-broadlink/issues/5)) ([cb4ab6a](https://github.com/kriziw/Euroclear-broadlink/commit/cb4ab6a8bcbc577280c78e0c11ce2d59fb46120c))
+
 ## [0.2.0](https://github.com/kriziw/Euroclear-broadlink/compare/v0.1.0...v0.2.0) (2026-10-04)
 
 
