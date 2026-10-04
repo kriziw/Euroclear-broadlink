@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -43,6 +44,10 @@ fun HomeScreen(
     onCompatibility: () -> Unit,
     onUpdates: () -> Unit,
 ) {
+    val wallpaperButtonColors = ButtonDefaults.outlinedButtonColors(
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.primary,
+    )
     AppBackground {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 4.dp)) {
             Image(painter = painterResource(R.drawable.app_logo), contentDescription = null, modifier = Modifier.size(56.dp))
@@ -80,10 +85,10 @@ fun HomeScreen(
             Hint(stringResource(R.string.home_add_existing_hint))
         }
 
-        OutlinedButton(onClick = onCompatibility, modifier = Modifier.fillMaxWidth()) {
+        OutlinedButton(onClick = onCompatibility, colors = wallpaperButtonColors, modifier = Modifier.fillMaxWidth()) {
             Text(stringResource(R.string.compatibility_title))
         }
-        OutlinedButton(onClick = onUpdates, modifier = Modifier.fillMaxWidth()) {
+        OutlinedButton(onClick = onUpdates, colors = wallpaperButtonColors, modifier = Modifier.fillMaxWidth()) {
             Text(stringResource(R.string.updates_title))
         }
         PrivacyFooter()
