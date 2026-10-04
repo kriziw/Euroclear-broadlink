@@ -50,6 +50,13 @@ for user confirmation. A cancelled installer can be reopened using Install updat
 Activity recreation retains state; process death requires rechecking/redownloading
 rather than trusting an old cached APK. No silent install is attempted.
 
+The provider declares `android.support.FILE_PROVIDER_PATHS` in the manifest. This
+is essential with AndroidX Core's lazy path initialization: `getUriForFile` resolves
+the manifest before a provider instance has initialized its path strategy, so a
+constructor-only XML resource is insufficient. The installer intent grants read
+access through both its URI flag and ClipData. A regression test checks the manifest
+metadata and its narrowly scoped updates cache path.
+
 ## Network and privacy boundaries
 
 Local controller sockets remain bound to their specific Wi-Fi network. Update HTTP

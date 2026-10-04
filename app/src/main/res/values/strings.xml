@@ -69,15 +69,14 @@
     <string name="setup_step4_title">Az eszköz megkeresése a hálózaton</string>
 
     <string name="setup_no_wifi">A telefon nem csatlakozik Wi-Fi hálózathoz.</string>
-    <string name="setup_connected_to">Csatlakozva ehhez: „%1$s”.</string>
-    <string name="setup_wrong_network">Csatlakozva ehhez: „%1$s”, nem pedig ehhez: %2$s.</string>
-    <string name="setup_network_has_internet">Ezen a Wi-Fi hálózaton működik az internet, tehát ez nem a(z) %1$s (a modul beállító hálózatán soha nincs internet).</string>
+    <string name="setup_wrong_network">Csatlakozva ehhez: „%1$s”. A név eltér a gyakori eszköz-Wi-Fi-nevektől. Ha ez az eszköz hálózata, az alábbi megerősítéssel továbbléphet.</string>
+    <string name="setup_network_has_internet">Az Android internetelérést jelez ezen a Wi-Fi-n. Ellenőrizze, hogy az eszköz hálózatához csatlakozott, majd ha megfelelő, erősítse meg alább.</string>
     <string name="setup_network_without_internet">Internet nélküli Wi-Fi hálózathoz csatlakozva.</string>
-    <string name="setup_manual_confirmation">Az Android Wi-Fi beállításaiban ellenőriztem, hogy a telefon a(z) %1$s hálózathoz csatlakozik.</string>
+    <string name="setup_manual_confirmation">Az Android Wi-Fi-beállításaiban ellenőriztem, és megerősítem, hogy a telefon az eszköz beállító Wi-Fi-jéhez csatlakozik.</string>
     <string name="setup_location_explanation">Az Android csak pontos helymeghatározási engedéllyel árulja el az alkalmazásoknak a Wi-Fi hálózat nevét. Az alkalmazás másra nem használja, és sosem olvassa ki a tartózkodási helyét. Ezt ki is hagyhatja, és alább kézzel is megerősítheti.</string>
     <string name="setup_location_off">Kapcsolja be a helymeghatározást, hogy az Android megmutathassa a Wi-Fi nevét, vagy erősítse meg alább.</string>
     <string name="setup_ssid_hidden">Az Android nem árulta el a hálózat nevét. Erősítse meg alább, ha ez a(z) %1$s.</string>
-    <string name="setup_join_instructions">1. Áramtalanítsa a vízlágyítót, majd helyezze újra áram alá.\n2. Amíg a kijelzőn a vezérlőfej típusa látható (például „F136”), tartsa lenyomva a Menü/Jóváhagy gombot, amíg sípoló hangot nem hall. A vezérlőfej ekkor megnyitja a(z) „%1$s” hálózatot.\n3. Koppintson a „Wi-Fi hálózatok megnyitása” gombra, és csatlakozzon a(z) „%1$s” hálózathoz. Ha az Android jelzi, hogy nincs internet, válassza a kapcsolat megtartását.\n4. Térjen vissza ebbe az alkalmazásba.</string>
+    <string name="setup_join_instructions">1. A kézikönyv alapján kapcsolja az eszközt Wi-Fi-beállító módba. Egyes Runxin-fejeknél kapcsolja vissza az áramot, és tartsa lenyomva a Menü/Jóváhagy gombot a sípolásig.\n2. Az Android Wi-Fi-beállításaiban csatlakozzon az eszköz által létrehozott hálózathoz. Példák: WiFi-BL3372, WiFi-BL…, BroadlinkProv és BroadLink_…; az eszköz más nevet is használhat.\n3. Ha az Android internetelérés hiányát jelzi, tartsa meg a kapcsolatot.\n4. Térjen vissza, és erősítse meg az eszköz hálózatához való csatlakozást. A Wi-Fi-név támpont, nem követelmény.</string>
     <string name="setup_detail_phone">Telefon: %1$s</string>
     <string name="setup_detail_gateway">Átjáró: %1$s</string>
     <string name="setup_detail_internet">Van internet</string>
@@ -100,7 +99,7 @@
     <string name="setup_password_non_ascii">A jelszó ékezetes vagy egyéb nem ASCII karaktert tartalmaz. A WPA jelszavak általában csak ASCII karakterekből állnak; előfordulhat, hogy a modul nem fogadja el.</string>
 
     <string name="setup_configure_explanation">A Wi-Fi nevét és jelszavát közvetlenül a modulnak küldi a(z) %1$s kapcsolaton keresztül. A BroadLink beállító protokoll nem titkosított, ezért az eszköz közelében, gyorsan végezze el.</string>
-    <string name="setup_reason_connect_first">Előbb csatlakozzon a(z) %1$s hálózathoz (1. lépés).</string>
+    <string name="setup_reason_connect_first">Erősítse meg fent, hogy a telefon az eszköz beállító Wi-Fi-jéhez csatlakozik.</string>
     <string name="setup_reason_fill_details">Adja meg az otthoni Wi-Fi adatait (2. lépés).</string>
     <string name="setup_sending">Beállítás küldése…</string>
     <string name="setup_sending_round">Beállítás küldése… (%1$d. kör / %2$d)</string>
@@ -323,7 +322,7 @@
     <string name="updates_check_failed">Nem sikerült elérni a GitHubot. Ellenőrizd az internetkapcsolatot, és próbáld újra később.</string>
     <string name="updates_download_failed">A letöltés vagy az APK ellenőrzése sikertelen. Próbáld újra a letöltést.</string>
     <string name="updates_incompatible">Ez a telepítés más aláírókulcsot használ, például Android Studio hibakeresési verzió. A kiadási APK nem frissítheti. A hivatalos aláírt kiadást külön telepítsd; e verzió eltávolítása törli a mentett eszközöket.</string>
-    <string name="updates_install_failed">Nem sikerült megnyitni a telepítőt. Ellenőrizd az ebből a forrásból történő telepítés engedélyét, és próbáld újra.</string>
+    <string name="updates_install_failed">Nem sikerült átadni az APK-t az Android telepítőjének. Az ellenőrzött letöltés továbbra is elérhető; próbáld újra a frissítés telepítését.</string>
     <string name="updates_available">Elérhető frissítés: %1$s</string>
     <string name="updates_download_size">Letöltési méret: %1$.1f MB</string>
     <string name="updates_release_notes">Kiadás megtekintése a GitHubon</string>
@@ -335,4 +334,7 @@
     <string name="updates_notice">Újabb stabil kiadás érhető el APK-val. Tekintsd meg a kiadás részleteit, és döntsd el, hogy letöltöd-e.</string>
     <string name="updates_view">Frissítés megtekintése</string>
     <string name="updates_later">E verzió értesítésének elvetése</string>
+    <string name="setup_recognised_network">A(z) „%1$s” eszközbeállító hálózatnak tűnik. Erősítse meg alább, hogy az eszközhöz tartozik.</string>
+    <string name="setup_connection_confirmed">Az eszköz Wi-Fi-kapcsolata megerősítve. Továbbléphet.</string>
+    <string name="setup_device_wifi">az eszköz beállító Wi-Fi-je</string>
 </resources>

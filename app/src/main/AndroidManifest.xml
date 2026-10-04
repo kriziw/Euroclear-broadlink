@@ -15,7 +15,7 @@
          UDP broadcast. Requested only on API 37+. -->
     <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
     <!-- Optional: Android only reveals the connected Wi-Fi name (SSID) to apps with
-         precise location. Used solely to confirm the phone is on WiFi-BL3372; the app
+         precise location. Used solely to show a device Wi-Fi name hint; the app
          never reads a location. COARSE must be declared alongside FINE on Android 12+. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -39,7 +39,11 @@
             android:name=".updates.UpdateFileProvider"
             android:authorities="${applicationId}.updates"
             android:exported="false"
-            android:grantUriPermissions="true" />
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/update_paths" />
+        </provider>
 
         <activity
             android:name=".MainActivity"

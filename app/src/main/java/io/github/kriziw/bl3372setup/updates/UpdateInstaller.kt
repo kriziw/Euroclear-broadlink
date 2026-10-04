@@ -1,15 +1,15 @@
 package io.github.kriziw.bl3372setup.updates
 
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.content.FileProvider
-import io.github.kriziw.bl3372setup.R
 import java.io.File
 import java.io.IOException
 import java.security.MessageDigest
 
-class UpdateFileProvider : FileProvider(R.xml.update_paths)
+class UpdateFileProvider : FileProvider()
 
 object UpdateInstaller {
     @Suppress("DEPRECATION")
@@ -39,7 +39,8 @@ object UpdateInstaller {
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.updates", file)
         context.startActivity(Intent(Intent.ACTION_VIEW).apply {
             setDataAndType(uri, "application/vnd.android.package-archive")
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            clipData = ClipData.newRawUri("APK", uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
         })
     }
 }

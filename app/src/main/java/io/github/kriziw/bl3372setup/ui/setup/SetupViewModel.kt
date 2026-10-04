@@ -48,18 +48,6 @@ data class CredentialsForm(
     override fun toString() = "CredentialsForm(ssid=<redacted>, password=<redacted>, security=$security)"
 }
 
-/** Whether the phone is verifiably on the module's provisioning access point. */
-enum class ApCheck {
-    NO_WIFI,
-    CONFIRMED_BY_NAME,
-    WRONG_NETWORK_NAME,
-    WRONG_NETWORK_HAS_INTERNET,
-    NEEDS_MANUAL_CONFIRMATION,
-    CONFIRMED_MANUALLY;
-
-    val isConfirmed: Boolean get() = this == CONFIRMED_BY_NAME || this == CONFIRMED_MANUALLY
-}
-
 sealed interface ApWatch {
     data object Watching : ApWatch
     data class Gone(val afterSeconds: Long) : ApWatch
@@ -73,6 +61,7 @@ sealed interface ProvisioningState {
         val outcome: BroadlinkProvisioner.Outcome,
         val targetSsid: String,
         val apWatch: ApWatch,
+        val setupSsid: String? = null,
     ) : ProvisioningState
 
     data class Failed(val error: NetworkError) : ProvisioningState
@@ -97,24 +86,17 @@ data class SetupUiState(
     val localNetworkGranted: Boolean = true,
     /** Set after the user declined the local-network permission; offers the app settings. */
     val localNetworkDenied: Boolean = false,
-    /** The network the user manually confirmed as WiFi-BL3372 (when the SSID is hidden). */
+    /** The active Wi-Fi connection the user confirmed belongs to the device. */
     val manuallyConfirmedNetwork: Network? = null,
     val form: CredentialsForm = CredentialsForm(),
     val provisioning: ProvisioningState = ProvisioningState.Idle,
     val discovery: DiscoveryState = DiscoveryState.Idle,
 ) {
     val apCheck: ApCheck
-        get() {
-            val link = link ?: return ApCheck.NO_WIFI
-            val ssid = link.ssid
-            return when {
-                ssid != null && isSetupApSsid(ssid) -> ApCheck.CONFIRMED_BY_NAME
-                ssid != null -> ApCheck.WRONG_NETWORK_NAME
-                link.hasValidatedInternet -> ApCheck.WRONG_NETWORK_HAS_INTERNET
-                manuallyConfirmedNetwork == link.network -> ApCheck.CONFIRMED_MANUALLY
-                else -> ApCheck.NEEDS_MANUAL_CONFIRMATION
-            }
-        }
+        get() = assessSetupNetwork(
+            hasWifi = link != null, ssid = link?.ssid, hasInternet = link?.hasValidatedInternet == true,
+            userConfirmed = link != null && manuallyConfirmedNetwork == link.network,
+        )
 
     val isSending: Boolean get() = provisioning is ProvisioningState.Sending
     val isSearching: Boolean get() = discovery is DiscoveryState.Searching
@@ -137,7 +119,18 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
     private var discoveryJob: Job? = null
 
     init {
-        viewModelScope.launch { monitor.link.collect { link -> _state.update { it.copy(link = link) } } }
+        viewModelScope.launch {
+            monitor.link.collect { link ->
+                _state.update {
+                    it.copy(
+                        link = link,
+                        manuallyConfirmedNetwork = it.manuallyConfirmedNetwork.takeIf { _ ->
+                            it.link?.network == link?.network
+                        },
+                    )
+                }
+            }
+        }
         refreshPermissions()
     }
 
@@ -196,7 +189,7 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
                     ApWatch.Watching
                 }
                 _state.update {
-                    it.copy(provisioning = ProvisioningState.Sent(outcome, form.ssid, apWatch))
+                    it.copy(provisioning = ProvisioningState.Sent(outcome, form.ssid, apWatch, setupSsid = link.ssid))
                 }
                 watchAccessPoint(link.network, sentAt, alreadyGone = apWatch is ApWatch.Gone)
             } catch (e: IOException) {

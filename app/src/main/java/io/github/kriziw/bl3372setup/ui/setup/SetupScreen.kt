@@ -74,8 +74,6 @@ import io.github.kriziw.bl3372setup.ui.common.StatusKind
 import io.github.kriziw.bl3372setup.ui.common.StatusLine
 import io.github.kriziw.bl3372setup.ui.common.networkErrorText
 
-private const val AP_NAME = "WiFi-BL3372"
-
 /** Callbacks from the setup screen. Kept as one class so previews can pass no-ops. */
 class SetupActions(
     val openWifiPicker: () -> Unit = {},
@@ -189,7 +187,10 @@ fun SetupScreen(
                 when (current) {
                     SetupStep.CONNECT -> ConnectCard(state, actions)
                     SetupStep.WIFI -> CredentialsCard(state, actions)
-                    SetupStep.CONFIGURE -> ConfigureCard(state, actions)
+                    SetupStep.CONFIGURE -> {
+                        if (!state.apCheck.isConfirmed) ConnectCard(state, actions)
+                        ConfigureCard(state, actions)
+                    }
                     SetupStep.FIND -> DiscoveryCard(state, savedMacs, actions)
                 }
             }
@@ -311,24 +312,17 @@ private fun ConnectCard(state: SetupUiState, actions: SetupActions) {
                 JoinInstructions()
                 OpenWifiButton(actions)
             }
-            ApCheck.CONFIRMED_BY_NAME -> {
-                StatusLine(StatusKind.SUCCESS, stringResource(R.string.setup_connected_to, link?.ssid.orEmpty()))
-                link?.let { NetworkDetails(it) }
-            }
-            ApCheck.WRONG_NETWORK_NAME -> {
-                StatusLine(StatusKind.ERROR, stringResource(R.string.setup_wrong_network, link?.ssid.orEmpty(), AP_NAME))
+            else -> {
+                when (state.apCheck) {
+                    ApCheck.RECOGNISED_NAME -> StatusLine(StatusKind.INFO, stringResource(R.string.setup_recognised_network, link?.ssid.orEmpty()))
+                    ApCheck.DIFFERENT_NAME -> StatusLine(StatusKind.INFO, stringResource(R.string.setup_wrong_network, link?.ssid.orEmpty()))
+                    ApCheck.HAS_INTERNET -> StatusLine(StatusKind.WARNING, stringResource(R.string.setup_network_has_internet))
+                    ApCheck.CONFIRMED_MANUALLY -> StatusLine(StatusKind.SUCCESS, stringResource(R.string.setup_connection_confirmed))
+                    else -> StatusLine(StatusKind.INFO, stringResource(R.string.setup_network_without_internet))
+                }
                 JoinInstructions()
-                OpenWifiButton(actions)
-            }
-            ApCheck.WRONG_NETWORK_HAS_INTERNET -> {
-                StatusLine(StatusKind.ERROR, stringResource(R.string.setup_network_has_internet, AP_NAME))
-                JoinInstructions()
-                OpenWifiButton(actions)
-            }
-            ApCheck.NEEDS_MANUAL_CONFIRMATION, ApCheck.CONFIRMED_MANUALLY -> {
-                StatusLine(StatusKind.INFO, stringResource(R.string.setup_network_without_internet))
                 link?.let { NetworkDetails(it) }
-                WifiNameHelp(state, actions)
+                if (link?.ssid == null) WifiNameHelp(state, actions)
                 val confirmed = state.apCheck == ApCheck.CONFIRMED_MANUALLY
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -338,7 +332,7 @@ private fun ConnectCard(state: SetupUiState, actions: SetupActions) {
                 ) {
                     Checkbox(checked = confirmed, onCheckedChange = null)
                     Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.setup_manual_confirmation, AP_NAME), style = MaterialTheme.typography.bodyMedium)
+                    Text(stringResource(R.string.setup_manual_confirmation), style = MaterialTheme.typography.bodyMedium)
                 }
                 TextButton(onClick = actions.openWifiPicker) { Text(stringResource(R.string.action_open_wifi)) }
             }
@@ -357,13 +351,13 @@ private fun WifiNameHelp(state: SetupUiState, actions: SetupActions) {
             Hint(stringResource(R.string.setup_location_off))
             OutlinedButton(onClick = actions.openLocationSettings) { Text(stringResource(R.string.action_location_settings)) }
         }
-        else -> Hint(stringResource(R.string.setup_ssid_hidden, AP_NAME))
+        else -> Hint(stringResource(R.string.setup_ssid_hidden, stringResource(R.string.setup_device_wifi)))
     }
 }
 
 @Composable
 private fun JoinInstructions() {
-    Hint(stringResource(R.string.setup_join_instructions, AP_NAME))
+    Hint(stringResource(R.string.setup_join_instructions))
 }
 
 @Composable
@@ -469,10 +463,10 @@ private fun CredentialsCard(state: SetupUiState, actions: SetupActions) {
 @Composable
 private fun ConfigureCard(state: SetupUiState, actions: SetupActions) {
     SectionCard(stringResource(R.string.setup_step3_title), number = 3) {
-        Hint(stringResource(R.string.setup_configure_explanation, AP_NAME))
+        Hint(stringResource(R.string.setup_configure_explanation, state.link?.ssid ?: stringResource(R.string.setup_device_wifi)))
         if (!state.canConfigure && !state.isSending) {
             val reason = when {
-                !state.apCheck.isConfirmed -> stringResource(R.string.setup_reason_connect_first, AP_NAME)
+                !state.apCheck.isConfirmed -> stringResource(R.string.setup_reason_connect_first)
                 state.form.isDeviceApName || state.form.problem != null -> stringResource(R.string.setup_reason_fill_details)
                 else -> null
             }
@@ -505,17 +499,18 @@ private fun ProvisioningResult(provisioning: ProvisioningState, actions: SetupAc
         )
         is ProvisioningState.Sent -> {
             HorizontalDivider()
+            val deviceWifi = provisioning.setupSsid ?: stringResource(R.string.setup_device_wifi)
             when (val outcome = provisioning.outcome) {
                 is Outcome.Acknowledged -> StatusLine(StatusKind.SUCCESS, stringResource(R.string.setup_acknowledged, outcome.from.hostAddress.orEmpty()))
                 is Outcome.NotAcknowledged -> StatusLine(StatusKind.INFO, stringResource(R.string.setup_not_acknowledged, outcome.roundsSent))
-                is Outcome.LinkLostAfterSend -> StatusLine(StatusKind.SUCCESS, stringResource(R.string.setup_link_lost_after_send, AP_NAME))
+                is Outcome.LinkLostAfterSend -> StatusLine(StatusKind.SUCCESS, stringResource(R.string.setup_link_lost_after_send, deviceWifi))
             }
             val target = provisioning.targetSsid
             when (val watch = provisioning.apWatch) {
-                ApWatch.Watching -> StatusLine(StatusKind.PROGRESS, stringResource(R.string.setup_watching_ap, AP_NAME, target))
-                is ApWatch.Gone -> StatusLine(StatusKind.SUCCESS, stringResource(R.string.setup_ap_gone, AP_NAME, watch.afterSeconds, target))
+                ApWatch.Watching -> StatusLine(StatusKind.PROGRESS, stringResource(R.string.setup_watching_ap, deviceWifi, target))
+                is ApWatch.Gone -> StatusLine(StatusKind.SUCCESS, stringResource(R.string.setup_ap_gone, deviceWifi, watch.afterSeconds, target))
                 ApWatch.StillConnected -> {
-                    StatusLine(StatusKind.WARNING, stringResource(R.string.setup_ap_still_up, AP_NAME))
+                    StatusLine(StatusKind.WARNING, stringResource(R.string.setup_ap_still_up, deviceWifi))
                     Hint(stringResource(R.string.setup_troubleshooting))
                 }
             }
