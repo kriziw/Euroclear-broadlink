@@ -163,13 +163,13 @@
     <string name="compatibility_profile_pending">Várakozás a vezérlő azonosítására</string>
     <string name="compatibility_profile_unavailable">Nincs támogatott kapcsolat</string>
     <string name="compatibility_profile_unknown">Kísérleti F79D tartalékprofil</string>
-    <string name="compatibility_profile_verified">Ez az azonosító a meglévő, valódi eszközön ellenőrzött helyi profilnak felel meg.</string>
+    <string name="compatibility_profile_verified">Támogatott helyi vezérlőprofil betöltve ehhez a vezérlőazonosítóhoz.</string>
     <string name="compatibility_profile_hint">A jelentett kód protokollazonosító; nem feltétlenül a szelepre nyomtatott terméknév.</string>
     <string name="compatibility_experimental_enabled">A kísérleti vezérlés engedélyezve. Az értékek és parancsok továbbra sincsenek ellenőrizve ezen a vezérlőn.</string>
     <string name="compatibility_lock_controls">Kísérleti vezérlés zárolása</string>
     <string name="compatibility_unsupported_module">A(z) %1$s modultípushoz nincs támogatott Runxin-kapcsolat. A vezérlőparancsok le vannak tiltva.</string>
     <string name="compatibility_detection_title">Automatikus profilválasztás</string>
-    <string name="compatibility_detection_text">Csatlakozás után az alkalmazás lekéri a vezérlő azonosítóját, és betölti a megfelelő helyi profilt. A 0x520F BL3372-modul és a 9-es vezérlőkód a Runxin F79D profilt választja. Más vezérlőkódok kísérleti tartalékprofilt használnak; a vezérlés külön engedélyezésig zárolva marad. Az ismeretlen BroadLink-modultípus nem támogatott.</string>
+    <string name="compatibility_detection_text">A WaterCare ellenőrzi a csatlakoztatott modul és vezérlő azonosítóját, majd betölti a támogatott helyi vezérlőprofilt. Ugyanaz a profil több, azonos vezérlőazonosítót használó vízlágyítóhoz is alkalmazható. A nem igazolt azonosítók kísérleti módot használnak, külön engedélyezésig zárolt vezérléssel. Más BroadLink-modultípusok nem támogatottak.</string>
     <string name="compatibility_wifi_title">F79 / F82 Wi-Fi-változatok</string>
     <string name="compatibility_wifi_text">A Runxin külön Wi-Fi-kézikönyvet ad ki az F79A, F79B, F82A és F82B LCD-változatokhoz. A Wi-Fi-funkció önmagában nem igazolja az alkalmazás helyi parancsaival való kompatibilitást. Ezekhez a terméknevekhez nem rendelünk automatikusan protokollkódot.</string>
     <string name="compatibility_runxin_manuals">Hivatalos Runxin-kézikönyvtár</string>
@@ -299,16 +299,19 @@
     <string name="language_hungarian" translatable="false">Magyar</string>
     <string name="language_english" translatable="false">English</string>
     <string name="cd_language">Nyelv módosítása</string>
-    <string name="catalogue_title">Vezérlőprofil-könyvtár</string>
-    <string name="catalogue_summary">%1$d helyi vezérlőprofil · %2$d dokumentációs bejegyzés. Érintsd meg a modellt a bizonyítékok és a forrás megtekintéséhez. A dokumentációs bejegyzések nem engedélyezik a vezérlést és nem azonosítják a csatlakoztatott vezérlőt.</string>
+    <string name="catalogue_title">Vezérlőkompatibilitás családonként</string>
+    <string name="catalogue_summary">Támogatott és nem igazolt vezérlőmodellek. A támogatás a WaterCare-ben megvalósított, dokumentált helyi parancsokon alapul. A kompatibilitást a csatlakoztatott vezérlő azonosítója határozza meg; a vízlágyító márkája önmagában nem.</string>
     <string name="catalogue_search">Modell vagy termékazonosító keresése</string>
     <string name="catalogue_empty">Nincs ilyen dokumentált modell. A csatlakoztatott vezérlő támogatott modul esetén továbbra is használhat kísérleti módot.</string>
-    <string name="catalogue_local">Helyi vezérlés</string>
-    <string name="catalogue_reference">Csak tájékoztató</string>
-    <string name="catalogue_local_detail">A 0x520F modul és a jelentett 9-es kód automatikusan betölti. A nyilvános ypsilon-local projekt valódi F79D eszközön ellenőrizte a helyi parancsokat; ez nem gyártói tanúsítás.</string>
-    <string name="catalogue_wifi_detail">Szerepel a hivatalos LCD Wi-Fi-kézikönyvtárban. A teljes kézikönyvet nem vizsgáltuk át. Az alkalmazásban nincs igazolt helyi parancskiosztás; a Wi-Fi önmagában nem igazolja a kompatibilitást.</string>
-    <string name="catalogue_manual_detail">Az átvizsgált gyártói F105/F136 kézikönyv összerendeli a régi modellnevet a feltüntetett termékazonosítóval. Regenerálást, keménységet, szivárgási határértékeket, sónyilvántartást és vakáció módot ír le. Egyes funkciókhoz Wi-Fi-panel kell. Ehhez a változathoz nincs igazolt helyi parancskiosztás.</string>
-    <string name="catalogue_directory_detail">Szerepel a hivatalos Runxin-kézikönyvtárban. Az egyedi kézikönyvet és a hálózati kapcsolatot nem vizsgáltuk át. Az alkalmazásban nincs helyi parancskiosztás ehhez a modellhez.</string>
+    <string name="catalogue_supported">Támogatott</string>
+    <string name="catalogue_unverified">Nem igazolt</string>
+    <string name="catalogue_variants">Modellek megtekintése</string>
+    <string name="catalogue_supported_hint">E vezérlők dokumentált helyi parancskiosztását a WaterCare megvalósítja. Az F79D profil a 0x520F típusú BL3372-modult és 9-es vezérlőkódot jelentő, kompatibilis vízlágyítókra alkalmazható.</string>
+    <string name="catalogue_unverified_hint">E modelleket gyártói dokumentáció azonosítja, de helyi parancskiosztásuk nincs igazolva a WaterCare-ben. Családonként böngészhetők. Támogatott modul esetén kísérleti vezérlés használható; az azonos családnév önmagában nem engedélyezi azt.</string>
+    <string name="catalogue_local_detail">A WaterCare megvalósítja a ypsilon-local által dokumentált F79D helyi állapotlekérdezést és vezérlést. A 0x520F modultípus és a 9-es vezérlőkód automatikusan betölti. A kiosztás a vezérlőazonosító alapján több kompatibilis vízlágyítóhoz is alkalmazható.</string>
+    <string name="catalogue_wifi_detail">A hivatalos könyvtár LCD Wi-Fi-kézikönyvet sorol fel ehhez a modellhez. A WaterCare-ben nincs dokumentált helyi parancskiosztás e változathoz. A Wi-Fi önmagában nem igazolja a helyi vezérlés kompatibilitását.</string>
+    <string name="catalogue_manual_detail">A gyártói F105/F136 kézikönyv összerendeli e modell nevét a feltüntetett termékazonosítóval, és regenerálást, keménységet, szivárgási határértékeket, sónyilvántartást és vakáció módot ír le. Egyes funkciókhoz Wi-Fi-panel kell. A helyi parancskiosztás nem igazolt a WaterCare-ben.</string>
+    <string name="catalogue_directory_detail">E modell szerepel a hivatalos Runxin-kézikönyvtárban. A helyi kapcsolat és a parancskiosztás nem igazolt a WaterCare-ben.</string>
     <string name="catalogue_source">Profil forrásának megnyitása</string>
     <string name="updates_title">Alkalmazásfrissítések</string>
     <string name="updates_installed">Telepített verzió: %1$s</string>

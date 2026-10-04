@@ -21,6 +21,8 @@ import androidx.compose.ui.res.stringResource
 import io.github.kriziw.bl3372setup.R
 import io.github.kriziw.bl3372setup.runxin.CatalogueEvidence
 import io.github.kriziw.bl3372setup.runxin.ControllerCatalogue
+import io.github.kriziw.bl3372setup.runxin.CompatibilityStatus
+import io.github.kriziw.bl3372setup.runxin.DocumentedController
 
 /** Offline guide; official documentation opens in the browser only on an explicit tap. */
 @Composable
@@ -65,16 +67,12 @@ fun CompatibilityGuide(onBack: () -> Unit) {
 
 @Composable
 private fun ControllerLibrary() {
-    val uriHandler = LocalUriHandler.current
     var query by rememberSaveable { mutableStateOf("") }
-    var expanded by rememberSaveable { mutableStateOf<String?>(null) }
-    val matches = ControllerCatalogue.search(query)
+    var expandedFamily by rememberSaveable { mutableStateOf<String?>(null) }
+    var expandedModel by rememberSaveable { mutableStateOf<String?>(null) }
+    val families = ControllerCatalogue.families(query)
     SectionCard(stringResource(R.string.catalogue_title)) {
-        Text(stringResource(
-            R.string.catalogue_summary,
-            ControllerCatalogue.entries.count { it.protocolProfileId != null },
-            ControllerCatalogue.entries.count { it.protocolProfileId == null },
-        ))
+        Text(stringResource(R.string.catalogue_summary))
         OutlinedTextField(
             value = query,
             onValueChange = { query = it },
@@ -82,32 +80,55 @@ private fun ControllerLibrary() {
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
-        if (matches.isEmpty()) Text(stringResource(R.string.catalogue_empty))
-        matches.forEach { entry ->
-            TextButton(
-                onClick = { expanded = if (expanded == entry.name) null else entry.name },
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(
-                    listOf(entry.name).plus(entry.aliases).joinToString(" / "),
-                    modifier = Modifier.weight(1f),
-                )
-                Text(stringResource(
-                    if (entry.protocolProfileId != null) R.string.catalogue_local else R.string.catalogue_reference,
-                ), style = MaterialTheme.typography.labelSmall)
-            }
-            if (expanded == entry.name) {
-                Text(stringResource(when (entry.evidence) {
-                    CatalogueEvidence.LOCAL_PROTOCOL -> R.string.catalogue_local_detail
-                    CatalogueEvidence.WIFI_DIRECTORY -> R.string.catalogue_wifi_detail
-                    CatalogueEvidence.INSPECTED_MANUAL -> R.string.catalogue_manual_detail
-                    CatalogueEvidence.DIRECTORY -> R.string.catalogue_directory_detail
-                }))
-                TextButton(onClick = { uriHandler.openUri(entry.sourceUrl) }) {
-                    Text(stringResource(R.string.catalogue_source))
+        if (families.isEmpty()) Text(stringResource(R.string.catalogue_empty))
+    }
+    CompatibilityStatus.entries.forEach { status ->
+        val matchingFamilies = families.mapNotNull { family ->
+            family.copy(variants = family.variants.filter { it.compatibility == status }).takeIf { it.variants.isNotEmpty() }
+        }
+        if (matchingFamilies.isNotEmpty()) {
+            val supported = status == CompatibilityStatus.SUPPORTED
+            SectionCard(stringResource(if (supported) R.string.catalogue_supported else R.string.catalogue_unverified)) {
+                Text(stringResource(if (supported) R.string.catalogue_supported_hint else R.string.catalogue_unverified_hint))
+                matchingFamilies.forEach { family ->
+                    if (!supported) {
+                        TextButton(
+                            onClick = { expandedFamily = if (expandedFamily == family.name) null else family.name },
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text(family.name, modifier = Modifier.weight(1f), style = MaterialTheme.typography.titleMedium)
+                            Text(stringResource(R.string.catalogue_variants), style = MaterialTheme.typography.labelSmall)
+                        }
+                    }
+                    if (supported || expandedFamily == family.name || query.isNotBlank()) {
+                        family.variants.forEach { entry ->
+                            CatalogueEntry(entry, expandedModel == entry.name) {
+                                expandedModel = if (expandedModel == entry.name) null else entry.name
+                            }
+                        }
+                    }
+                    HorizontalDivider()
                 }
             }
-            HorizontalDivider()
+        }
+    }
+}
+
+@Composable
+private fun CatalogueEntry(entry: DocumentedController, expanded: Boolean, onExpand: () -> Unit) {
+    val uriHandler = LocalUriHandler.current
+    TextButton(onClick = onExpand, modifier = Modifier.fillMaxWidth()) {
+        Text(listOf(entry.name).plus(entry.aliases).joinToString(" / "), modifier = Modifier.weight(1f))
+    }
+    if (expanded) {
+        Text(stringResource(when (entry.evidence) {
+            CatalogueEvidence.LOCAL_PROTOCOL -> R.string.catalogue_local_detail
+            CatalogueEvidence.WIFI_DIRECTORY -> R.string.catalogue_wifi_detail
+            CatalogueEvidence.INSPECTED_MANUAL -> R.string.catalogue_manual_detail
+            CatalogueEvidence.DIRECTORY -> R.string.catalogue_directory_detail
+        }))
+        TextButton(onClick = { uriHandler.openUri(entry.sourceUrl) }) {
+            Text(stringResource(R.string.catalogue_source))
         }
     }
 }

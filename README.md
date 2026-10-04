@@ -106,9 +106,11 @@ Open **Controller compatibility** from the home screen or device dashboard for t
 Runxin/BroadLink portfolio guide. Wi-Fi product names are not automatically treated as local
 protocol IDs. Source links open your browser and need Internet access; profile selection
 itself works locally. Evidence and limits: [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
-The offline profile library searches documented model names and inspected product aliases.
-Entries distinguish the working F79D local profile from reference-only models and show
-their source/evidence when expanded. Reference entries cannot enable controls.
+The offline compatibility guide searches model names and inspected product aliases,
+with separate Supported and Unverified lists. Unverified models are grouped by family;
+each entry shows its documentation when expanded. Supported profiles apply across
+compatible softener products reporting the same controller identity. Family membership
+and manufacturer listings alone cannot enable controls.
 
 ## App updates
 
