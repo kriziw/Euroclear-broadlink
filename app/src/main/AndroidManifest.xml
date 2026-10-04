@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Required by Android to open any socket, including local UDP. The app never
+         contacts an Internet host. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- NetworkCallback / LinkProperties: find the Wi-Fi network and bind to it. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Wi-Fi state and, on Android 10/11, WifiManager.getConnectionInfo(). -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- MulticastLock while listening for broadcast replies from the module. -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <!-- Android 17+ (targetSdk 37): runtime permission for any LAN traffic, including
+         UDP broadcast. Requested only on API 37+. -->
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
+    <!-- Optional: Android only reveals the connected Wi-Fi name (SSID) to apps with
+         precise location. Used solely to confirm the phone is on WiFi-BL3372; the app
+         never reads a location. COARSE must be declared alongside FINE on Android 12+. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-feature android:name="android.hardware.wifi" android:required="true" />
+
+    <application
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.BL3372Setup"
+        tools:targetApi="37">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
