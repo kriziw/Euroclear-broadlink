@@ -16,6 +16,14 @@ val releaseKeyPassword = signingValue("BL3372_KEY_PASSWORD")
 val hasReleaseSigning = listOf(releaseKeystorePath, releaseKeystorePassword, releaseKeyAlias, releaseKeyPassword)
     .all { it != null }
 
+// version.txt is the single source of the version; release-please bumps it in each release PR.
+val appVersionName: String = providers.fileContents(rootProject.layout.projectDirectory.file("version.txt"))
+    .asText.get().trim()
+
+/** 1.2.3 -> 1002003, so every release has a higher versionCode than the one before. */
+val appVersionCode: Int = appVersionName.split('.').map(String::toInt)
+    .let { (major, minor, patch) -> major * 1_000_000 + minor * 1_000 + patch }
+
 android {
     namespace = "io.github.kriziw.bl3372setup"
     compileSdk = 37
@@ -24,8 +32,8 @@ android {
         applicationId = "io.github.kriziw.bl3372setup"
         minSdk = 29
         targetSdk = 37
-        versionCode = 2
-        versionName = "0.2.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
     }
 
     if (hasReleaseSigning) {
