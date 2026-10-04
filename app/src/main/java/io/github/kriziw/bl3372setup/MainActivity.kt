@@ -8,7 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import io.github.kriziw.bl3372setup.ui.MainRoute
+import io.github.kriziw.bl3372setup.ui.AppRoot
 import io.github.kriziw.bl3372setup.ui.theme.BL3372Theme
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             BL3372Theme {
-                MainRoute()
+                AppRoot()
             }
         }
     }

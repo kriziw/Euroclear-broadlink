@@ -1,4 +1,4 @@
-package io.github.kriziw.bl3372setup.ui
+package io.github.kriziw.bl3372setup.ui.setup
 
 import io.github.kriziw.bl3372setup.broadlink.SecurityMode
 import io.github.kriziw.bl3372setup.network.isSetupApSsid

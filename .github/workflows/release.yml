@@ -1,0 +1,106 @@
+name: Release APK
+
+# Push a tag such as v0.2.0 (it must match versionName in app/build.gradle.kts) to build a
+# signed APK and attach it to a GitHub release. "Run workflow" builds a signed APK as a workflow
+# artifact without creating a release.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  # SHA-256 of the release signing certificate. The build fails if the secrets hold another key,
+  # because Android refuses to update an installed app signed with a different certificate.
+  EXPECTED_CERT_SHA256: d49dc49229e6e7b900439aee820169ffd8ba13b0704a409fabed849777790a0b
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      KEYSTORE_BASE64: ${{ secrets.BL3372_KEYSTORE_BASE64 }}
+      BL3372_KEYSTORE_PASSWORD: ${{ secrets.BL3372_KEYSTORE_PASSWORD }}
+      BL3372_KEY_ALIAS: ${{ secrets.BL3372_KEY_ALIAS }}
+      BL3372_KEY_PASSWORD: ${{ secrets.BL3372_KEY_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Require signing secrets
+        run: |
+          for name in KEYSTORE_BASE64 BL3372_KEYSTORE_PASSWORD BL3372_KEY_ALIAS BL3372_KEY_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Repository secret for $name is missing (see README, 'Signed releases from GitHub Actions')."
+              exit 1
+            fi
+          done
+
+      - name: Read version
+        id: version
+        run: |
+          version=$(sed -n 's/^ *versionName = "\(.*\)"$/\1/p' app/build.gradle.kts)
+          echo "name=$version" >> "$GITHUB_OUTPUT"
+          if [ "$GITHUB_REF_TYPE" = "tag" ] && [ "$GITHUB_REF_NAME" != "v$version" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match versionName $version in app/build.gradle.kts."
+            exit 1
+          fi
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Install Android platform 37
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-37.0" "build-tools;36.0.0" > /dev/null
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Decode keystore
+        run: |
+          keystore="$RUNNER_TEMP/release.jks"
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$keystore"
+          chmod 600 "$keystore"
+          echo "BL3372_KEYSTORE_PATH=$keystore" >> "$GITHUB_ENV"
+
+      - name: Test and build signed release
+        run: ./gradlew testDebugUnitTest assembleRelease --no-daemon
+
+      - name: Verify signature and package
+        id: apk
+        run: |
+          apk=app/build/outputs/apk/release/app-release.apk
+          apksigner="$ANDROID_HOME/build-tools/36.0.0/apksigner"
+          "$apksigner" verify --print-certs "$apk" | tee "$RUNNER_TEMP/certs.txt"
+          if ! grep -qi "certificate SHA-256 digest: $EXPECTED_CERT_SHA256" "$RUNNER_TEMP/certs.txt"; then
+            echo "::error::APK is not signed with the expected release certificate."
+            exit 1
+          fi
+          out="bl3372-wifi-setup-${{ steps.version.outputs.name }}.apk"
+          cp "$apk" "$out"
+          sha256sum "$out" > "$out.sha256"
+          echo "file=$out" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: signed-apk-${{ steps.version.outputs.name }}
+          path: |
+            ${{ steps.apk.outputs.file }}
+            ${{ steps.apk.outputs.file }}.sha256
+          if-no-files-found: error
+
+      - name: Attach to GitHub release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: BL3372 Wi-Fi Setup ${{ steps.version.outputs.name }}
+          generate_release_notes: true
+          files: |
+            ${{ steps.apk.outputs.file }}
+            ${{ steps.apk.outputs.file }}.sha256
+
+      - name: Remove keystore
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.jks"

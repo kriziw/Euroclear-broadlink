@@ -1,4 +1,4 @@
-package io.github.kriziw.bl3372setup.ui
+package io.github.kriziw.bl3372setup.ui.setup
 
 import android.app.Application
 import android.net.Network
@@ -6,6 +6,7 @@ import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.kriziw.bl3372setup.Permissions
+import io.github.kriziw.bl3372setup.app
 import io.github.kriziw.bl3372setup.broadlink.BroadlinkDiscovery
 import io.github.kriziw.bl3372setup.broadlink.BroadlinkPackets
 import io.github.kriziw.bl3372setup.broadlink.BroadlinkProvisioner
@@ -14,10 +15,11 @@ import io.github.kriziw.bl3372setup.broadlink.DiscoveredDevice
 import io.github.kriziw.bl3372setup.broadlink.Ipv4
 import io.github.kriziw.bl3372setup.broadlink.SecurityMode
 import io.github.kriziw.bl3372setup.network.NetworkBoundSockets
+import io.github.kriziw.bl3372setup.network.NetworkError
 import io.github.kriziw.bl3372setup.network.WifiLink
-import io.github.kriziw.bl3372setup.network.WifiNetworkMonitor
 import io.github.kriziw.bl3372setup.network.isSetupApSsid
 import io.github.kriziw.bl3372setup.network.withMulticastLock
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,8 +27,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.IOException
+import java.net.Inet4Address
+import java.net.InetSocketAddress
 
 /**
  * The target network's credentials. Held only in memory (never in saved state, never persisted);
@@ -55,13 +60,6 @@ enum class ApCheck {
     val isConfirmed: Boolean get() = this == CONFIRMED_BY_NAME || this == CONFIRMED_MANUALLY
 }
 
-sealed interface NetworkError {
-    /** EPERM/EACCES: Android 17 local-network permission missing, or a VPN blocking LAN access. */
-    data object LocalNetworkBlocked : NetworkError
-    data object NotConnected : NetworkError
-    data class Other(val detail: String) : NetworkError
-}
-
 sealed interface ApWatch {
     data object Watching : ApWatch
     data class Gone(val afterSeconds: Long) : ApWatch
@@ -80,14 +78,19 @@ sealed interface ProvisioningState {
     data class Failed(val error: NetworkError) : ProvisioningState
 }
 
+/** How step 4 looks for devices: broadcast on this network, or unicast across VLANs. */
+enum class SearchMode { BROADCAST, ADDRESS, SUBNET }
+
 sealed interface DiscoveryState {
     data object Idle : DiscoveryState
-    data class Searching(val found: List<DiscoveredDevice>, val seconds: Int) : DiscoveryState
-    data class Done(val found: List<DiscoveredDevice>) : DiscoveryState
+    data class Searching(val mode: SearchMode, val found: List<DiscoveredDevice>, val seconds: Int) : DiscoveryState
+    data class Done(val mode: SearchMode, val found: List<DiscoveredDevice>) : DiscoveryState
     data class Failed(val error: NetworkError) : DiscoveryState
+    data object InvalidAddress : DiscoveryState
+    data object InvalidSubnet : DiscoveryState
 }
 
-data class UiState(
+data class SetupUiState(
     val link: WifiLink? = null,
     val preciseLocationGranted: Boolean = false,
     val locationEnabled: Boolean = true,
@@ -124,17 +127,16 @@ data class UiState(
         get() = link != null && !link.isSetupAp && apCheck != ApCheck.CONFIRMED_MANUALLY && !isSearching
 }
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private val monitor = WifiNetworkMonitor(application)
-    private val _state = MutableStateFlow(UiState())
-    val state: StateFlow<UiState> = _state.asStateFlow()
+class SetupViewModel(application: Application) : AndroidViewModel(application) {
+    private val monitor = application.app.wifiMonitor
+    private val _state = MutableStateFlow(SetupUiState())
+    val state: StateFlow<SetupUiState> = _state.asStateFlow()
 
     private var provisionJob: Job? = null
     private var watchJob: Job? = null
     private var discoveryJob: Job? = null
 
     init {
-        monitor.start()
         viewModelScope.launch { monitor.link.collect { link -> _state.update { it.copy(link = link) } } }
         refreshPermissions()
     }
@@ -198,7 +200,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 watchAccessPoint(link.network, sentAt, alreadyGone = apWatch is ApWatch.Gone)
             } catch (e: IOException) {
-                _state.update { it.copy(provisioning = ProvisioningState.Failed(classify(e))) }
+                _state.update { it.copy(provisioning = ProvisioningState.Failed(NetworkError.of(e))) }
             } finally {
                 packet.fill(0)
             }
@@ -227,52 +229,85 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             val s = _state.value
             if (homeLink != null && s.localNetworkGranted && s.discovery !is DiscoveryState.Searching) {
-                discover(durationMillis = AUTO_DISCOVERY_MILLIS)
+                searchThisNetwork(durationMillis = AUTO_DISCOVERY_MILLIS)
             }
         }
     }
 
-    fun discover(durationMillis: Long = MANUAL_DISCOVERY_MILLIS) {
+    /** Broadcast discovery on the current network, as python-broadlink does. */
+    fun searchThisNetwork(durationMillis: Long = MANUAL_DISCOVERY_MILLIS) {
+        val link = _state.value.link ?: return
+        runDiscovery(SearchMode.BROADCAST, Ipv4.destinations(link.subnetBroadcast), durationMillis, 1_000)
+    }
+
+    /**
+     * Unicast hello to one address or hostname. This crosses VLANs and routers, which broadcasts
+     * cannot, as long as the firewall allows UDP port 80 to the device.
+     */
+    fun connectToAddress(text: String) {
+        val link = _state.value.link ?: return
+        if (!_state.value.canDiscover) return
+        discoveryJob?.cancel()
+        discoveryJob = viewModelScope.launch {
+            val address = Ipv4.parse(text) ?: resolve(link, text.trim())
+            if (address == null) {
+                _state.update { it.copy(discovery = DiscoveryState.InvalidAddress) }
+                return@launch
+            }
+            runDiscovery(SearchMode.ADDRESS, listOf(InetSocketAddress(address, BroadlinkPackets.PORT)), 3_000, 1_000)
+        }
+    }
+
+    /** Unicast hello to every host of a subnet (at most a /22), e.g. an IoT VLAN. */
+    fun scanSubnet(text: String) {
+        val subnet = Ipv4.parseSubnet(text)
+        if (subnet == null) {
+            _state.update { it.copy(discovery = DiscoveryState.InvalidSubnet) }
+            return
+        }
+        val destinations = subnet.hosts().map { InetSocketAddress(it, BroadlinkPackets.PORT) }
+        runDiscovery(SearchMode.SUBNET, destinations, 8_000, 4_000)
+    }
+
+    private fun runDiscovery(mode: SearchMode, destinations: List<InetSocketAddress>, durationMillis: Long, intervalMillis: Long) {
         val link = _state.value.link ?: return
         if (!_state.value.canDiscover) return
 
         discoveryJob?.cancel()
         discoveryJob = viewModelScope.launch {
-            val totalSeconds = (durationMillis / 1000).toInt()
-            _state.update { it.copy(discovery = DiscoveryState.Searching(emptyList(), totalSeconds)) }
-            val discovery = BroadlinkDiscovery(NetworkBoundSockets(link.network), durationMillis = durationMillis)
+            _state.update { it.copy(discovery = DiscoveryState.Searching(mode, emptyList(), (durationMillis / 1000).toInt())) }
+            val discovery = BroadlinkDiscovery(
+                NetworkBoundSockets(link.network),
+                durationMillis = durationMillis,
+                resendIntervalMillis = intervalMillis,
+            )
             try {
                 val devices = getApplication<Application>().withMulticastLock {
-                    discovery.discover(Ipv4.destinations(link.subnetBroadcast), link.address) { device ->
+                    discovery.discover(destinations, link.address) { device ->
                         _state.update { s ->
                             val d = s.discovery
                             if (d is DiscoveryState.Searching) s.copy(discovery = d.copy(found = d.found + device)) else s
                         }
                     }
                 }
-                _state.update { it.copy(discovery = DiscoveryState.Done(devices)) }
+                _state.update { it.copy(discovery = DiscoveryState.Done(mode, devices)) }
             } catch (e: IOException) {
-                _state.update { it.copy(discovery = DiscoveryState.Failed(classify(e))) }
+                _state.update { it.copy(discovery = DiscoveryState.Failed(NetworkError.of(e))) }
             }
         }
     }
 
-    override fun onCleared() {
-        monitor.stop()
+    /** Resolves a hostname through the Wi-Fi network (not mobile data), IPv4 only. */
+    private suspend fun resolve(link: WifiLink, host: String): Inet4Address? = withContext(Dispatchers.IO) {
+        if (host.isEmpty()) return@withContext null
+        try {
+            link.network.getAllByName(host).filterIsInstance<Inet4Address>().firstOrNull()
+        } catch (_: IOException) {
+            null
+        }
     }
 
     private fun secondsSince(elapsedRealtime: Long) = (SystemClock.elapsedRealtime() - elapsedRealtime) / 1000
-
-    private fun classify(e: IOException): NetworkError {
-        val text = generateSequence<Throwable>(e) { it.cause }.mapNotNull { it.message }.joinToString(" ")
-        return when {
-            listOf("EPERM", "EACCES", "Operation not permitted", "Permission denied").any { it in text } ->
-                NetworkError.LocalNetworkBlocked
-            listOf("ENONET", "ENETUNREACH", "not on the network", "unreachable").any { it in text } ->
-                NetworkError.NotConnected
-            else -> NetworkError.Other("${e.javaClass.simpleName}: ${e.message.orEmpty()}")
-        }
-    }
 
     private companion object {
         const val MAX_ROUNDS = 3

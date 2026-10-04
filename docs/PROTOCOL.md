@@ -7,6 +7,9 @@ the BL3372 module in a Runxin / Euro-Clear water-treatment controller.
 Every number below was checked against code. Where sources disagree, or where
 something couldn't be verified, this document says so.
 
+Reading and controlling the softener after setup (encrypted session, Runxin frames, F79D
+fields, VLANs) is covered in [DEVICE_PROTOCOL.md](DEVICE_PROTOCOL.md).
+
 ---
 
 ## 1. Primary reference: `python-broadlink`

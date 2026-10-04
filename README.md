@@ -2,134 +2,148 @@
 
 <img src="images/Background_with_icon_embedded.png" alt="" width="180" align="right">
 
-A small Android app with one job: give the **BroadLink BL3372** Wi-Fi module in a
-Runxin / Euro-Clear water-treatment controller the name and password of your home
-Wi-Fi. It does this **locally**: phone → module's setup access point → done.
+An Android app for water softeners with a Runxin controller and a **BroadLink BL3372** Wi-Fi
+module, such as the Euro-Clear Midnight series. It does two things, entirely locally:
 
-* no Runxin or BroadLink cloud, no account, no login, no Internet
-* nothing is stored, logged or sent anywhere except to the module
-* no analytics, telemetry, ads or third-party SDKs
+1. **Wi-Fi setup**: gives the module your home Wi-Fi name and password, step by step.
+2. **Device dashboard**: shows status, water use, salt, alarms and settings, and lets you
+   change the safe settings or start a regeneration.
 
-It implements the same packet that the open-source
-[python-broadlink](https://github.com/mjg59/python-broadlink) `broadlink.setup()` sends,
-natively in Kotlin. See [docs/PROTOCOL.md](docs/PROTOCOL.md) for how the protocol was
-derived and which sources it was checked against.
+It needs no Runxin or BroadLink cloud, no account and no Internet. Nothing is sent anywhere
+except to the softener. There are no analytics, telemetry, ads or third-party SDKs.
 
-> Not affiliated with Runxin, Euro-Clear or BroadLink. This app only provisions Wi-Fi.
-> It does not control the softener and does not register it with any cloud.
+The app is in **Hungarian** by default and in **English** when the phone is set to English.
+On Android 13+ you can pick either under *Settings → Apps → BL3372 → Language*.
+
+> Not affiliated with Runxin, Euro-Clear or BroadLink. Protocol details and sources:
+> [docs/PROTOCOL.md](docs/PROTOCOL.md) (Wi-Fi setup) and
+> [docs/DEVICE_PROTOCOL.md](docs/DEVICE_PROTOCOL.md) (dashboard and controls).
 
 ## Download
 
 Get `bl3372-wifi-setup-<version>.apk` from
-[Releases](https://github.com/kriziw/Euroclear-broadlink/releases) and open it on the
-phone. Allow *Install unknown apps* for your browser or file manager when asked.
-Android 10 or newer is required.
+[Releases](https://github.com/kriziw/Euroclear-broadlink/releases) and open it on the phone.
+Allow *Install unknown apps* for your browser or file manager when asked. Android 10 or newer
+is required.
 
-Each release lists the APK's SHA-256. Every release is signed with the same certificate:
+Each release lists the APK's SHA-256. All releases are signed with the same certificate:
 
 ```
 SHA-256: d4:9d:c4:92:29:e6:e7:b9:00:43:9a:ee:82:01:69:ff:d8:ba:13:b0:70:4a:40:9f:ab:ed:84:97:77:79:0a:0b
 ```
 
-If an APK is signed with a different certificate, Android refuses to install it over an
-existing copy.
+## Setting up a new softener
 
-## Using it
+The wizard has four screens. *Next* only unlocks once the current step is done.
 
-1. Put the water-treatment controller into **Wi-Fi setup mode**. It then broadcasts a
-   network called **`WiFi-BL3372`**.
-2. Open the app and tap **Open Wi-Fi networks**. Join `WiFi-BL3372`. If Android
-   says the network has no Internet access, choose to **stay connected**.
-3. Come back to the app. Step 1 confirms the connection:
-   * If you allowed the optional *Check Wi-Fi name*, the app reads the network name
-     directly.
-   * Otherwise, tick the box confirming you're on `WiFi-BL3372`. Android only reveals
-     Wi-Fi names to apps with Location permission, and the app doesn't otherwise need
-     that permission.
-4. Enter your home Wi-Fi **name** and **password**, and leave security on **WPA2**
-   unless you know otherwise. It must be a **2.4 GHz** network.
-5. Tap **Configure Device**.
-   * The app sends the settings and listens for the module's acknowledgement.
-   * It then watches the `WiFi-BL3372` network. When the module accepts the settings
-     it reboots, the network disappears, and the app tells you so.
-6. Your phone normally reconnects to your home Wi-Fi by itself. The app then searches
-   for the module with BroadLink's local discovery and shows
-   **"Device found at 192.168.x.x"**. You can also tap **Search for device** at any time.
+1. **Connect to the device.**
+   * Unplug the softener and plug it back in.
+   * While the controller shows its model (for example *F136*), hold **Menu/OK** until it
+     beeps. It now broadcasts **`WiFi-BL3372`**.
+   * Tap **Open Wi-Fi networks**, join it, and choose to stay connected if Android warns
+     about no Internet.
+   * The app confirms the network by name if you allow the optional Wi-Fi-name check.
+     Android only reveals Wi-Fi names to apps with Location permission. Otherwise you
+     confirm it with a tick box.
+2. **Your home Wi-Fi.** Enter the name and password of a **2.4 GHz** network. Security
+   WPA2 is right for almost every router.
+3. **Configure.**
+   * Tap **Configure Device**.
+   * The app sends the settings, then watches `WiFi-BL3372`. When the module accepts them it
+     reboots, the network disappears, and the app moves on by itself.
+4. **Find the device.** Once your phone is back on your Wi-Fi, the app searches for the
+   module. Tap **Save and open** to add it to the dashboard.
 
-On Android 17 the app also asks for **Nearby devices → local network access**. Android
-blocks all LAN traffic without it, including traffic to the module's setup network.
+On Android 17 the app also asks for **Nearby devices → local network access**. Android blocks
+all local-network traffic without it.
 
-## How it works (short version)
+## Adding a softener that is already on your network
 
-| | |
+On the home screen, tap **Add a device already on my network**, then search the current
+network. If the softener is on another VLAN or subnet, use *Device on another VLAN or
+subnet?* (see below).
+
+## The dashboard
+
+With one saved softener the app opens straight on it. With several it shows a list, and
+*Add a device* is always there.
+
+| Section | Contents |
 |---|---|
-| Packet | 136 bytes: command `0x14`, SSID at `0x44`, password at `0x64` (32 bytes each), lengths at `0x84`/`0x85`, security at `0x86`, checksum `0xBEAF + Σbytes` (little-endian) at `0x20` |
-| Transport | UDP to port **80**, sent to `255.255.255.255`, the subnet broadcast and the AP's gateway (the module) |
-| Retries | up to 3 rounds, 2 s apart, stopping when the module acknowledges (`0x15` reply) or its network disappears |
-| Routing | the socket is bound to the Wi-Fi `Network` with `Network.bindSocket()`, so the packet can't leave over mobile data, which Android prefers because the AP has no Internet |
-| Discovery | python-broadlink's 48-byte hello broadcast on UDP 80. Runxin BL3372 modules report device type `0x520F` |
+| Status | valve phase with time left (in service, backwash, brine and slow rinse, …), current flow, vacation state, controller clock, alarms and reminders |
+| Water | remaining capacity, used today, controller weekly average, capacity per cycle, regeneration mode |
+| Salt and maintenance | salt added ✎, low brine, add-salt reminder, resin reminder threshold, filter media interval |
+| Settings | raw water hardness ✎, regeneration time ✎, clock *sync with phone*, SafeHOME continuous-flow limit ✎ and maximum flow ✎, **Regenerate now** |
+| Regeneration programme | backwash, brine, refill and rinse times and other programme values (read-only) |
+| Diagnostics | raw controller fields |
 
-Full details, sources and the list of unverified assumptions:
-[docs/PROTOCOL.md](docs/PROTOCOL.md).
+**How changes are made safely**
+* Every change is sent **once**, then the controller is **read back**. You only see "saved"
+  when the controller itself reports the new value.
+* *Regenerate now* asks for confirmation first, is only offered while the softener is in
+  service, and is confirmed once the valve actually starts moving.
+* Only settings that were verified on real hardware can be changed. Vacation mode is shown
+  but not switchable from the app, because the controller ignores that command. Switch it on
+  the controller instead: hold ▼ for 6 s while in service.
+
+**Controller models.** Controls unlock automatically only for the combination verified on
+hardware: Runxin F79D (model 9) behind a BL3372.
+* For any other model the dashboard shows the values with a warning, and the controls stay
+  locked.
+* You can unlock them per device after confirming that the values match the controller's
+  display.
+* The Midnight's ECOPRO+ head has not been confirmed yet. If yours is locked, compare a few
+  values (hardness, regeneration time) with the controller before unlocking.
+
+## Networks with several VLANs
+
+* **Broadcasts don't cross VLANs or routers.** The automatic search only covers the phone's
+  own network.
+* **Everything after discovery is unicast and routes normally.** For a softener on, for
+  example, an IoT VLAN:
+  1. In *Find the device*, open **Device on another VLAN or subnet?**.
+  2. Enter its **IP address or hostname** and tap *Connect*, or enter its **subnet** (e.g.
+     `192.168.20.0/24`, at most /22) and tap *Scan*.
+  3. Allow **UDP port 80 from the phone's VLAN to the softener** in your firewall. Replies
+     go back to the phone's source port; a stateful firewall allows them automatically.
+* **If a saved softener's address changes**, the app sweeps the /24 around its last address
+  and recognises it by MAC. You can also set the address under *⋮ → Change address*. A DHCP
+  reservation for the softener avoids this.
+
+Wi-Fi setup itself is unaffected by VLANs: it talks to the module's own access point.
 
 ## Limits you might hit
 
-* **Password longer than 32 characters**: the BroadLink setup packet has room for 32
-  bytes, and the official BroadLink app has the same limit. Use a shorter password or a
-  guest network.
+* **Password longer than 32 characters**: the BroadLink setup packet has room for 32 bytes,
+  and the official app has the same limit. Use a shorter password or a guest network.
 * **5 GHz-only or WPA3-only networks**: the BL3372 is a 2.4 GHz WPA/WPA2 device.
-* **No acknowledgement**: some firmware never sends one, and python-broadlink doesn't
-  wait for one either. The disappearing `WiFi-BL3372` network is the better signal.
-* **Setup network stays up after 90 s**: check the name and password (case-sensitive),
-  try *WPA/WPA2*, and try a letters-and-digits password. Some BroadLink firmware
-  rejected special characters. Put the controller back into setup mode and send again.
-* **"Android blocked local network access"**: allow *Nearby devices* for the app
-  (Android 17+) and switch off any VPN while provisioning.
-* **Phone keeps leaving `WiFi-BL3372`**: some phones abandon networks without
-  Internet. Temporarily disable *Switch to mobile data* / *Adaptive Wi-Fi* /
-  *Intelligent Wi-Fi*, or switch off mobile data during setup.
-* **The setup packet is unencrypted.** This is how BroadLink's AP-mode setup works.
-  The password crosses the module's (usually open) setup network once, so provision
-  close to the device and don't leave the controller in setup mode.
+* **Setup network still up after 90 s**:
+  * Check the name and password; both are case-sensitive.
+  * Try *WPA/WPA2*, and try a password with only letters and digits.
+  * Put the controller back into setup mode and send again.
+* **"Android blocked local network access"**: allow *Nearby devices* for the app (Android
+  17+) and switch off any VPN.
+* **"The module refused the local login"**: this can happen after pairing with the vendor
+  cloud app. Setting up the Wi-Fi again with this app usually resets it.
+* **The Wi-Fi setup packet is unencrypted.** That is how BroadLink's setup works, so do the
+  setup close to the device.
 
 ## Building
 
-Requirements: **JDK 17 or newer** (Android Studio's bundled JBR works), the
-**Android SDK with platform 37**, and Internet access for the first Gradle run. AGP
-downloads a missing platform automatically if the SDK licences are accepted.
-
-### Android Studio
-
-Open the folder with *File → Open*, wait for the Gradle sync, then use
-*Build → Generate App Bundles or APKs → Generate APKs*. Or press *Run* with a phone
-connected.
-
-### Command line
+Requirements: **JDK 17+** (Android Studio's bundled JBR works), the **Android SDK with
+platform 37**, and Internet access for the first Gradle run.
 
 ```bash
 ./gradlew testDebugUnitTest assembleDebug
 ```
 
-On Windows, run `gradlew.bat` instead. If `JAVA_HOME` isn't set, point it at Android
-Studio's JDK first (for example `C:\Program Files\Android\Android Studio\jbr`). The
-SDK location comes from `ANDROID_HOME` or a `local.properties` file containing
-`sdk.dir=...`.
+On Windows, run `gradlew.bat`. The installable APK is `app/build/outputs/apk/debug/app-debug.apk`.
+You can also open the folder in Android Studio and press *Run*.
 
-The installable APK is written to:
+### Signed release build (local)
 
-```
-app/build/outputs/apk/debug/app-debug.apk
-```
-
-Install it with `adb install app/build/outputs/apk/debug/app-debug.apk`, or copy it to
-the phone and open it there (allow *Install unknown apps* for your file manager).
-
-### Signed release build
-
-`./gradlew testDebugUnitTest assembleRelease` produces a minified (~2.3 MB)
-`app/build/outputs/apk/release/app-release.apk`. To sign it, set these four values as
-environment variables or Gradle properties, for example in `~/.gradle/gradle.properties`
-(never in the repository):
+`./gradlew assembleRelease` builds a minified APK, about 2.5 MB. To sign it, set four values as
+environment variables or in `~/.gradle/gradle.properties`. Never put them in the repository.
 
 ```properties
 BL3372_KEYSTORE_PATH=C:/path/to/release.jks
@@ -138,67 +152,89 @@ BL3372_KEY_ALIAS=...
 BL3372_KEY_PASSWORD=...
 ```
 
-Without them the release APK is left unsigned (`app-release-unsigned.apk`). Check a
-signed APK with `apksigner verify --print-certs app-release.apk`.
+Without them, the release APK is left unsigned.
+
+### Signed releases from GitHub Actions
+
+* **`.github/workflows/ci.yml`** runs the unit tests, lint and a debug build on every pull
+  request and on every push to `main`.
+* **`.github/workflows/release.yml`** runs when you push a tag `vX.Y.Z` that matches
+  `versionName`. It:
+  1. builds and signs the release APK;
+  2. checks that the signing certificate matches the fingerprint above;
+  3. publishes the APK and its SHA-256 on a GitHub release.
+
+  *Actions → Release APK → Run workflow* builds a signed APK as a downloadable artifact,
+  without making a release.
+
+It needs four repository secrets under *Settings → Secrets and variables → Actions*:
+
+| Secret | Value |
+|---|---|
+| `BL3372_KEYSTORE_BASE64` | the release keystore (`.jks`) file, base64-encoded |
+| `BL3372_KEYSTORE_PASSWORD` | the keystore password |
+| `BL3372_KEY_ALIAS` | the key alias |
+| `BL3372_KEY_PASSWORD` | the key password (for a PKCS12 keystore, the same as the keystore password) |
 
 ## Project layout
 
 ```
 app/src/main/java/io/github/kriziw/bl3372setup/
-├── MainActivity.kt                 edge-to-edge Compose host; no autofill, no recents thumbnail
-├── Permissions.kt                  runtime-permission checks and system-settings intents
-├── broadlink/                      pure Kotlin, no Android dependencies (unit-tested)
-│   ├── BroadlinkPackets.kt         packet building/parsing: setup, hello, ack, checksum
-│   ├── BroadlinkProvisioner.kt     UDP send + retries + acknowledgement wait
-│   ├── BroadlinkDiscovery.kt       hello broadcast + response collection
-│   └── Udp.kt                      socket factory interface, broadcast address maths
-├── network/                        Android networking
-│   ├── WifiNetworkMonitor.kt       NetworkCallback: current Wi-Fi, SSID, IP, gateway
-│   └── NetworkBinding.kt           Network.bindSocket() socket factory, MulticastLock
-└── ui/
-    ├── MainViewModel.kt            state machine for steps 1-4
-    ├── MainScreen.kt               Compose UI
-    └── theme/Theme.kt
-docs/PROTOCOL.md                    protocol research and sources
-tools/golden_vectors.py             regenerates test vectors from python-broadlink's own code
+├── MainActivity.kt, Bl3372App.kt   Compose host; app-wide Wi-Fi monitor and device store
+├── Permissions.kt                  runtime permissions and system-settings intents
+├── broadlink/                      pure Kotlin, unit-tested
+│   ├── BroadlinkPackets.kt         AP setup, hello, ack, checksum
+│   ├── BroadlinkProvisioner.kt     setup packet transmission
+│   ├── BroadlinkDiscovery.kt       broadcast and unicast (cross-VLAN) discovery
+│   ├── BroadlinkCommand.kt         encrypted auth/command packets (AES-128-CBC)
+│   ├── BroadlinkSession.kt         authenticated session over UDP
+│   └── Udp.kt                      socket factory, IPv4/subnet helpers
+├── runxin/                         pure Kotlin, unit-tested
+│   ├── RunxinFrames.kt             5A 5C / DF FD frame codec
+│   ├── F79d.kt                     field decoding and verified settings
+│   └── SoftenerClient.kt           BL3372 envelope, retry policy, write-and-verify
+├── network/                        Wi-Fi tracking, Network.bindSocket(), error mapping
+├── devices/DeviceStore.kt          saved devices (MAC, name, address; no credentials)
+└── ui/                             AppRoot (navigation), home/, setup/ (wizard), device/, common/
+app/src/main/res/values/            Hungarian strings (default)
+app/src/main/res/values-en/         English strings
+docs/                               protocol notes and sources
+tools/                              golden-vector generators that run the reference implementations
 ```
 
 ## Tests
 
 `./gradlew testDebugUnitTest` runs JVM tests that need no hardware:
 
-* **`BroadlinkPacketsTest`**:
-  * the setup and hello packets match, byte for byte, the output of
-    python-broadlink's own `setup()`/`scan()` (vectors from `tools/golden_vectors.py`);
-  * it also checks length, every field offset, the security codes, the SSID/password
-    encoding, the checksum, the 32-byte limits, ack recognition and response parsing.
-* **`BroadlinkProvisionerTest` / `BroadlinkDiscoveryTest`**: the real UDP code against a
-  fake BL3372 on a loopback socket. Covers ack handling, bounded retries, multiple
-  destinations, the link disappearing mid-send, and discovery de-duplication.
-* **`Ipv4Test`, `CredentialsFormTest`**: broadcast address maths, destination list,
-  credential redaction in `toString()`.
+* **Golden vectors.** These are checked byte for byte against the reference code:
+  * setup, hello, encrypted auth and command packets, generated by python-broadlink's own code;
+  * Runxin query/write frames and decoding, generated by ypsilon-local's own code.
+* **A simulated BL3372 + F79D on loopback UDP.** It drives the whole path: authentication,
+  reads, verified writes, lost acknowledgements, ignored writes, forced regeneration,
+  transient `-5` errors and key expiry.
+* **UDP behaviour.** Setup retries, unicast subnet sweeps that stop early, IPv4/subnet
+  parsing, and credential redaction.
 
 ## Privacy and security
 
-* Credentials live only in memory, in the ViewModel. They aren't saved, aren't put in
-  saved-instance state, and are redacted from `toString()`. The packet buffer is zeroed
-  after sending.
-* The window is excluded from autofill ("save password?") and from the recent-apps
-  thumbnail (Android 13+).
-* `allowBackup="false"` and data-extraction rules exclude everything.
-* There's no logging of any kind, and no network access other than UDP to the local
-  network.
-* `INTERNET` is declared only because Android requires it for any socket.
+* Wi-Fi credentials stay in memory only. They are never stored, never put in saved state,
+  and redacted from `toString()`. The packet buffer is zeroed after sending.
+* Saved devices hold only MAC, name and IP address.
+* Autofill is excluded, and so is the recent-apps thumbnail (Android 13+). Backups are
+  disabled.
+* There is no logging and no network access other than UDP to the local network.
 
 ## License
 
-GPL-3.0. See [LICENSE](LICENSE).
+GPL-3.0. See [LICENSE](LICENSE). Parts of the controller protocol code are ported from
+[ypsilon-local](https://github.com/Danirv/ypsilon-local) (Apache-2.0). Third-party details are
+in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Credits
 
 Protocol knowledge comes from [python-broadlink](https://github.com/mjg59/python-broadlink)
-(MIT), cross-checked against [rbroadlink](https://github.com/nicholascioli/rbroadlink),
-[waringer/broadlink](https://github.com/waringer/broadlink),
-[broadlink-smartbulb](https://github.com/pinei/broadlink-smartbulb) and
-[ypsilon-local](https://github.com/Danirv/ypsilon-local). No code was copied. Icons in
-`res/drawable/ic_*.xml` are Material icons (Apache 2.0).
+(MIT) and [ypsilon-local](https://github.com/Danirv/ypsilon-local) (Apache-2.0). It was
+cross-checked against [rbroadlink](https://github.com/nicholascioli/rbroadlink),
+[waringer/broadlink](https://github.com/waringer/broadlink) and
+[broadlink-smartbulb](https://github.com/pinei/broadlink-smartbulb). The Euro-Clear Midnight
+manual provided the setup-mode procedure and the Hungarian terminology.
