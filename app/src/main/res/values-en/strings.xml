@@ -263,4 +263,10 @@
     <string name="write_not_confirmed">%1$s was sent, but the controller did not confirm the change. It may not accept this setting.</string>
     <string name="write_ambiguous">No reply while sending %1$s, and the change was not confirmed. Check the value before trying again.</string>
     <string name="write_failed">Could not send %1$s. %2$s</string>
+
+    <!-- Language -->
+    <string name="language_title">Language</string>
+    <string name="language_system">Phone language</string>
+    <string name="language_system_hint">Hungarian, unless the phone is set to English</string>
+    <string name="cd_language">Change language</string>
 </resources>

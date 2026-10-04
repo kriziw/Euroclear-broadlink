@@ -70,6 +70,13 @@ android {
         compose = true
     }
 
+    // The app switches language itself, so app bundles must keep every language.
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
     packaging.resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
 }
 

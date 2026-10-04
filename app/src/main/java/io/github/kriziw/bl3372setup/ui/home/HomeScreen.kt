@@ -29,6 +29,7 @@ import io.github.kriziw.bl3372setup.broadlink.BroadlinkPackets
 import io.github.kriziw.bl3372setup.devices.SavedDevice
 import io.github.kriziw.bl3372setup.ui.common.AppBackground
 import io.github.kriziw.bl3372setup.ui.common.Hint
+import io.github.kriziw.bl3372setup.ui.common.LanguageButton
 import io.github.kriziw.bl3372setup.ui.common.PrivacyFooter
 import io.github.kriziw.bl3372setup.ui.common.SectionCard
 
@@ -44,7 +45,7 @@ fun HomeScreen(
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 4.dp)) {
             Image(painter = painterResource(R.drawable.app_logo), contentDescription = null, modifier = Modifier.size(56.dp))
             Spacer(Modifier.width(12.dp))
-            Column {
+            Column(Modifier.weight(1f)) {
                 Text(
                     stringResource(R.string.app_name),
                     style = MaterialTheme.typography.titleLarge,
@@ -53,6 +54,7 @@ fun HomeScreen(
                 )
                 Text(stringResource(R.string.home_subtitle), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
+            LanguageButton()
         }
 
         if (devices.isEmpty()) {

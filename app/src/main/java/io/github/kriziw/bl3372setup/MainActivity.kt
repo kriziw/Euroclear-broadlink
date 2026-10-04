@@ -1,5 +1,6 @@
 package io.github.kriziw.bl3372setup
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +13,10 @@ import io.github.kriziw.bl3372setup.ui.AppRoot
 import io.github.kriziw.bl3372setup.ui.theme.BL3372Theme
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLanguage.wrap(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(
