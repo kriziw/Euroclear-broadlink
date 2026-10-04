@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/kriziw/Euroclear-broadlink/compare/v0.3.0...v0.4.0) (2026-10-04)
+
+
+### Features
+
+* add verified APK updates and rename the app WaterCare ([#9](https://github.com/kriziw/Euroclear-broadlink/issues/9)) ([02fa0ad](https://github.com/kriziw/Euroclear-broadlink/commit/02fa0ad07365340bc3f409661bd3f22ed552e162))
+
 ## [0.3.0](https://github.com/kriziw/Euroclear-broadlink/compare/v0.2.1...v0.3.0) (2026-10-04)
 
 
