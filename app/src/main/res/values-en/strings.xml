@@ -2,7 +2,7 @@
 <!-- English. Used when the phone (or this app, Android 13+) is set to English;
      every other language falls back to Hungarian in values/strings.xml. -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">BL3372 Wi-Fi Setup</string>
+    <string name="app_name">WaterCare</string>
 
     <!-- Common actions -->
     <string name="action_allow_local_network">Allow local network access</string>
@@ -37,7 +37,7 @@
     <string name="cd_more">More options</string>
     <string name="cd_show_password">Show password</string>
 
-    <string name="footer_privacy">Everything stays on this phone: no account, no cloud, no Internet, no Wi-Fi password stored.</string>
+    <string name="footer_privacy">Controller data stays on this phone. No account or Wi-Fi password storage. Update checks contact GitHub; you can turn automatic checks off.</string>
     <string name="local_network_explanation">Android 17 needs the “Nearby devices” permission before an app can talk to devices on the local network, including the softener and its setup network.</string>
     <string name="local_network_declined">The permission was declined. Allow it under App info → Permissions → Nearby devices.</string>
 
@@ -307,4 +307,26 @@
     <string name="catalogue_manual_detail">The inspected F105/F136 manufacturer manual links this old model name to the listed product alias. It describes regeneration, hardness, leakage limits, salt bookkeeping and vacation mode. Some functions require a Wi-Fi board. No local command mapping is established for this variant.</string>
     <string name="catalogue_directory_detail">Named in the official Runxin manual directory. Its individual manual and network interface have not been audited. No local command mapping is available in this app.</string>
     <string name="catalogue_source">Open profile source</string>
+    <string name="updates_title">App updates</string>
+    <string name="updates_installed">Installed version: %1$s</string>
+    <string name="updates_privacy">Checks contact GitHub for public release information. Downloads contact GitHub and its asset servers. No controller details or Wi-Fi credentials are sent. Controller setup and operation work without Internet.</string>
+    <string name="updates_automatic">Check for updates on launch</string>
+    <string name="updates_check">Check for updates</string>
+    <string name="updates_checking">Checking…</string>
+    <string name="updates_current">No newer stable release with a verifiable APK is available.</string>
+    <string name="updates_check_failed">Could not check GitHub. Check your Internet connection and try again later.</string>
+    <string name="updates_download_failed">The download or APK verification failed. Try downloading again.</string>
+    <string name="updates_incompatible">This installation uses a different signing key, such as an Android Studio debug build. A release APK cannot update it. Install the official signed release separately; uninstalling this build removes its saved devices.</string>
+    <string name="updates_install_failed">Could not open the installer. Check the permission to install apps from this source and try again.</string>
+    <string name="updates_available">Update available: %1$s</string>
+    <string name="updates_download_size">Download size: %1$.1f MB</string>
+    <string name="updates_release_notes">View release on GitHub</string>
+    <string name="updates_progress">Downloading: %1$d%%</string>
+    <string name="updates_cancel">Cancel download</string>
+    <string name="updates_install_hint">The APK has been verified. Android may ask you to allow installation from this app. You will confirm the update in Android’s installer.</string>
+    <string name="updates_install">Install update</string>
+    <string name="updates_download">Download update</string>
+    <string name="updates_notice">A newer stable release with an APK is available. View the release details and choose whether to download it.</string>
+    <string name="updates_view">View update</string>
+    <string name="updates_later">Dismiss this version</string>
 </resources>

@@ -3,7 +3,7 @@
      the phone (or, on Android 13+, this app) is set to English. Terms follow the Euro-Clear
      Midnight manual. -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="hu">
-    <string name="app_name">BL3372 Wi-Fi beállító</string>
+    <string name="app_name">WaterCare</string>
 
     <!-- Common actions -->
     <string name="action_allow_local_network">Helyi hálózat engedélyezése</string>
@@ -38,7 +38,7 @@
     <string name="cd_more">További lehetőségek</string>
     <string name="cd_show_password">Jelszó megjelenítése</string>
 
-    <string name="footer_privacy">Minden ezen a telefonon marad: nincs fiók, nincs felhő, nincs internet, a Wi-Fi jelszót nem tároljuk.</string>
+    <string name="footer_privacy">A vezérlő adatai ezen a telefonon maradnak. Nincs fiók, a Wi-Fi-jelszót nem tároljuk. A frissítéskeresés a GitHubhoz kapcsolódik; az automatikus keresés kikapcsolható.</string>
     <string name="local_network_explanation">Az Android 17 a „Közeli eszközök” engedélyt kéri, mielőtt egy alkalmazás a helyi hálózaton lévő eszközökkel – így a vízlágyítóval és a beállító hálózatával – kommunikálhat.</string>
     <string name="local_network_declined">Az engedélyt elutasította. Az Alkalmazásinfó → Engedélyek → Közeli eszközök menüben engedélyezheti.</string>
 
@@ -310,4 +310,26 @@
     <string name="catalogue_manual_detail">Az átvizsgált gyártói F105/F136 kézikönyv összerendeli a régi modellnevet a feltüntetett termékazonosítóval. Regenerálást, keménységet, szivárgási határértékeket, sónyilvántartást és vakáció módot ír le. Egyes funkciókhoz Wi-Fi-panel kell. Ehhez a változathoz nincs igazolt helyi parancskiosztás.</string>
     <string name="catalogue_directory_detail">Szerepel a hivatalos Runxin-kézikönyvtárban. Az egyedi kézikönyvet és a hálózati kapcsolatot nem vizsgáltuk át. Az alkalmazásban nincs helyi parancskiosztás ehhez a modellhez.</string>
     <string name="catalogue_source">Profil forrásának megnyitása</string>
+    <string name="updates_title">Alkalmazásfrissítések</string>
+    <string name="updates_installed">Telepített verzió: %1$s</string>
+    <string name="updates_privacy">A keresés nyilvános kiadási adatokat kér a GitHubtól. A letöltés a GitHubhoz és annak fájlszervereihez kapcsolódik. Nem küldünk vezérlőadatokat vagy Wi-Fi-jelszót. A vezérlő beállítása és működtetése internet nélkül is használható.</string>
+    <string name="updates_automatic">Frissítéskeresés indításkor</string>
+    <string name="updates_check">Frissítések keresése</string>
+    <string name="updates_checking">Keresés…</string>
+    <string name="updates_current">Nincs újabb stabil kiadás ellenőrizhető APK-val.</string>
+    <string name="updates_check_failed">Nem sikerült elérni a GitHubot. Ellenőrizd az internetkapcsolatot, és próbáld újra később.</string>
+    <string name="updates_download_failed">A letöltés vagy az APK ellenőrzése sikertelen. Próbáld újra a letöltést.</string>
+    <string name="updates_incompatible">Ez a telepítés más aláírókulcsot használ, például Android Studio hibakeresési verzió. A kiadási APK nem frissítheti. A hivatalos aláírt kiadást külön telepítsd; e verzió eltávolítása törli a mentett eszközöket.</string>
+    <string name="updates_install_failed">Nem sikerült megnyitni a telepítőt. Ellenőrizd az ebből a forrásból történő telepítés engedélyét, és próbáld újra.</string>
+    <string name="updates_available">Elérhető frissítés: %1$s</string>
+    <string name="updates_download_size">Letöltési méret: %1$.1f MB</string>
+    <string name="updates_release_notes">Kiadás megtekintése a GitHubon</string>
+    <string name="updates_progress">Letöltés: %1$d%%</string>
+    <string name="updates_cancel">Letöltés megszakítása</string>
+    <string name="updates_install_hint">Az APK ellenőrzése sikeres. Az Android kérheti az ebből az alkalmazásból történő telepítés engedélyezését. A frissítést az Android telepítőjében erősíted meg.</string>
+    <string name="updates_install">Frissítés telepítése</string>
+    <string name="updates_download">Frissítés letöltése</string>
+    <string name="updates_notice">Újabb stabil kiadás érhető el APK-val. Tekintsd meg a kiadás részleteit, és döntsd el, hogy letöltöd-e.</string>
+    <string name="updates_view">Frissítés megtekintése</string>
+    <string name="updates_later">E verzió értesítésének elvetése</string>
 </resources>

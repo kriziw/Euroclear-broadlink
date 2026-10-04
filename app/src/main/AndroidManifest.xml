@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Required by Android to open any socket, including local UDP. The app never
-         contacts an Internet host. -->
+    <!-- Local UDP plus GitHub release checks and user-initiated APK downloads. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- NetworkCallback / LinkProperties: find the Wi-Fi network and bind to it. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Wi-Fi state and, on Android 10/11, WifiManager.getConnectionInfo(). -->
@@ -34,6 +34,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BL3372Setup"
         tools:targetApi="37">
+
+        <provider
+            android:name=".updates.UpdateFileProvider"
+            android:authorities="${applicationId}.updates"
+            android:exported="false"
+            android:grantUriPermissions="true" />
 
         <activity
             android:name=".MainActivity"

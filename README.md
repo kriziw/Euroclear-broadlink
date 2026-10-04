@@ -1,16 +1,18 @@
-# BL3372 Wi-Fi Setup
+# WaterCare
 
 <img src="images/Background_with_icon_embedded.png" alt="" width="180" align="right">
 
 An Android app for water softeners with a Runxin controller and a **BroadLink BL3372** Wi-Fi
-module, such as the Euro-Clear Midnight series. It does two things, entirely locally:
+module, such as the Euro-Clear Midnight series. Its controller functions work locally:
 
 1. **Wi-Fi setup**: gives the module your home Wi-Fi name and password, step by step.
 2. **Device dashboard**: shows status, water use, salt, alarms and settings, and lets you
    change the safe settings or start a regeneration.
 
-It needs no Runxin or BroadLink cloud, no account and no Internet. Nothing is sent anywhere
-except to the softener. There are no analytics, telemetry, ads or third-party SDKs.
+Controller setup and operation need no Runxin or BroadLink cloud, account or Internet.
+App update checks contact GitHub for public releases; APKs are downloaded only when you
+choose to update. Automatic checks can be disabled. No controller information or Wi-Fi
+credentials are sent to GitHub. There are no analytics, telemetry, ads or vendor SDKs.
 
 The app is in **Hungarian** by default and in **English** when the phone is set to English.
 On Android 13+ you can pick either under *Settings → Apps → BL3372 → Language*.
@@ -107,6 +109,29 @@ itself works locally. Evidence and limits: [docs/COMPATIBILITY.md](docs/COMPATIB
 The offline profile library searches documented model names and inspected product aliases.
 Entries distinguish the working F79D local profile from reference-only models and show
 their source/evidence when expanded. Reference entries cannot enable controls.
+
+## App updates
+
+On launch the app checks this repository's public releases and shows a dismissible
+notice for a newer stable version with an uploaded, verifiable APK. Dismissing a
+version suppresses that version's automatic notice; **App updates** on the home
+screen still lets you check and download manually. Turn off **Check for updates
+on launch** there to prevent automatic GitHub requests. Checks fail quietly at launch
+when offline and do not stop local controller operation. Manual failures are shown
+on the update screen.
+
+The app downloads a chosen APK into private cache, verifies its SHA-256 against the
+GitHub asset digest or the release's `.sha256` file, and checks the package name,
+version and pinned release signing certificate. It then asks Android to install
+the update. You may need to allow **Install unknown apps** for WaterCare, and Android
+still requires your confirmation. No silent installation or background APK download
+is performed. Progress, cancellation, retry and release notes are available in the app.
+
+Signed repository releases can update earlier releases signed with the same key.
+Android Studio debug builds use another key and cannot be updated by a release APK;
+the app explains this instead of handing an incompatible APK to the installer.
+Installation on a physical device is still required to verify the complete Android
+permission/installer flow. Implementation and validation: [docs/APP_UPDATES.md](docs/APP_UPDATES.md).
 
 ## Networks with several VLANs
 
@@ -241,6 +266,8 @@ tools/                              golden-vector generators that run the refere
   transient `-5` errors and key expiry.
 * **UDP behaviour.** Setup retries, unicast subnet sweeps that stop early, IPv4/subnet
   parsing, and credential redaction.
+* **App updates.** Stable version selection, asset identity, checksums, download
+  corruption, HTTP/redirect failures, cancellation and partial-file cleanup.
 
 ## Privacy and security
 
@@ -250,7 +277,9 @@ tools/                              golden-vector generators that run the refere
   including the controller code it applies to. They never hold credentials or session keys.
 * Autofill is excluded, and so is the recent-apps thumbnail (Android 13+). Backups are
   disabled.
-* There is no logging and no network access other than UDP to the local network.
+* Controller commands use local UDP. Update checks use HTTPS to GitHub, and
+  user-initiated downloads use GitHub release storage. Update preferences and verified
+  APKs stay in app-private preferences/cache. There is no telemetry or credential logging.
 
 ## License
 
