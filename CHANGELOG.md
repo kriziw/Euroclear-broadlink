@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/kriziw/Euroclear-broadlink/compare/v0.4.0...v0.4.1) (2026-10-04)
+
+
+### Bug Fixes
+
+* present controller families as supported or unverified ([#11](https://github.com/kriziw/Euroclear-broadlink/issues/11)) ([fcd6964](https://github.com/kriziw/Euroclear-broadlink/commit/fcd6964ac1a25b147a1c1d02108919bad81f65f6))
+
 ## [0.4.0](https://github.com/kriziw/Euroclear-broadlink/compare/v0.3.0...v0.4.0) (2026-10-04)
 
 
