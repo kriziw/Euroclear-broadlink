@@ -3,6 +3,19 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+// Release signing is optional: supply all four values as environment variables or Gradle
+// properties (e.g. in ~/.gradle/gradle.properties). Without them the release APK is unsigned.
+fun signingValue(name: String): String? =
+    (providers.environmentVariable(name).orNull ?: providers.gradleProperty(name).orNull)
+        ?.takeIf { it.isNotBlank() }
+
+val releaseKeystorePath = signingValue("BL3372_KEYSTORE_PATH")
+val releaseKeystorePassword = signingValue("BL3372_KEYSTORE_PASSWORD")
+val releaseKeyAlias = signingValue("BL3372_KEY_ALIAS")
+val releaseKeyPassword = signingValue("BL3372_KEY_PASSWORD")
+val hasReleaseSigning = listOf(releaseKeystorePath, releaseKeystorePassword, releaseKeyAlias, releaseKeyPassword)
+    .all { it != null }
+
 android {
     namespace = "io.github.kriziw.bl3372setup"
     compileSdk = 37
@@ -12,11 +25,25 @@ android {
         minSdk = 29
         targetSdk = 37
         versionCode = 1
-        versionName = "1.0.0"
+        versionName = "0.1.0"
+    }
+
+    if (hasReleaseSigning) {
+        signingConfigs {
+            create("release") {
+                storeFile = file(releaseKeystorePath!!)
+                storePassword = releaseKeystorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
     }
 
     buildTypes {
         release {
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
