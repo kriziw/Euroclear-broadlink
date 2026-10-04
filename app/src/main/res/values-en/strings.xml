@@ -2,7 +2,7 @@
 <!-- English. Used when the phone (or this app, Android 13+) is set to English;
      every other language falls back to Hungarian in values/strings.xml. -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">BL3372 Wi-Fi Setup</string>
+    <string name="app_name">WaterCare</string>
 
     <!-- Common actions -->
     <string name="action_allow_local_network">Allow local network access</string>

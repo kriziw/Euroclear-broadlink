@@ -1,4 +1,4 @@
-# BL3372 Wi-Fi Setup
+# WaterCare
 
 <img src="images/Background_with_icon_embedded.png" alt="" width="180" align="right">
 
@@ -123,7 +123,7 @@ on the update screen.
 The app downloads a chosen APK into private cache, verifies its SHA-256 against the
 GitHub asset digest or the release's `.sha256` file, and checks the package name,
 version and pinned release signing certificate. It then asks Android to install
-the update. You may need to allow **Install unknown apps** for BL3372, and Android
+the update. You may need to allow **Install unknown apps** for WaterCare, and Android
 still requires your confirmation. No silent installation or background APK download
 is performed. Progress, cancellation, retry and release notes are available in the app.
 

@@ -3,7 +3,7 @@
      the phone (or, on Android 13+, this app) is set to English. Terms follow the Euro-Clear
      Midnight manual. -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="hu">
-    <string name="app_name">BL3372 Wi-Fi beállító</string>
+    <string name="app_name">WaterCare</string>
 
     <!-- Common actions -->
     <string name="action_allow_local_network">Helyi hálózat engedélyezése</string>
