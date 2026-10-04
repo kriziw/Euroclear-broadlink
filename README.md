@@ -15,8 +15,24 @@ It implements the same packet that the open-source
 natively in Kotlin. See [docs/PROTOCOL.md](docs/PROTOCOL.md) for how the protocol was
 derived and which sources it was checked against.
 
-> Not affiliated with Runxin, Euro-Clear or BroadLink. Version 1 only provisions Wi-Fi.
+> Not affiliated with Runxin, Euro-Clear or BroadLink. This app only provisions Wi-Fi.
 > It does not control the softener and does not register it with any cloud.
+
+## Download
+
+Get `bl3372-wifi-setup-<version>.apk` from
+[Releases](https://github.com/kriziw/Euroclear-broadlink/releases) and open it on the
+phone. Allow *Install unknown apps* for your browser or file manager when asked.
+Android 10 or newer is required.
+
+Each release lists the APK's SHA-256. Every release is signed with the same certificate:
+
+```
+SHA-256: d4:9d:c4:92:29:e6:e7:b9:00:43:9a:ee:82:01:69:ff:d8:ba:13:b0:70:4a:40:9f:ab:ed:84:97:77:79:0a:0b
+```
+
+If an APK is signed with a different certificate, Android refuses to install it over an
+existing copy.
 
 ## Using it
 
@@ -108,8 +124,22 @@ app/build/outputs/apk/debug/app-debug.apk
 Install it with `adb install app/build/outputs/apk/debug/app-debug.apk`, or copy it to
 the phone and open it there (allow *Install unknown apps* for your file manager).
 
-A minified release build is `./gradlew assembleRelease`. It's unsigned until you add
-your own signing config or sign it with `apksigner`.
+### Signed release build
+
+`./gradlew testDebugUnitTest assembleRelease` produces a minified (~2.3 MB)
+`app/build/outputs/apk/release/app-release.apk`. To sign it, set these four values as
+environment variables or Gradle properties, for example in `~/.gradle/gradle.properties`
+(never in the repository):
+
+```properties
+BL3372_KEYSTORE_PATH=C:/path/to/release.jks
+BL3372_KEYSTORE_PASSWORD=...
+BL3372_KEY_ALIAS=...
+BL3372_KEY_PASSWORD=...
+```
+
+Without them the release APK is left unsigned (`app-release-unsigned.apk`). Check a
+signed APK with `apksigner verify --print-certs app-release.apk`.
 
 ## Project layout
 
@@ -159,6 +189,10 @@ tools/golden_vectors.py             regenerates test vectors from python-broadli
 * There's no logging of any kind, and no network access other than UDP to the local
   network.
 * `INTERNET` is declared only because Android requires it for any socket.
+
+## License
+
+GPL-3.0. See [LICENSE](LICENSE).
 
 ## Credits
 
