@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/kriziw/Euroclear-broadlink/compare/v0.2.1...v0.3.0) (2026-10-04)
+
+
+### Features
+
+* identify Runxin controllers and add a documented profile library ([#7](https://github.com/kriziw/Euroclear-broadlink/issues/7)) ([d7eac5a](https://github.com/kriziw/Euroclear-broadlink/commit/d7eac5aaa152e61b1268d9468740078394d1b946))
+
 ## [0.2.1](https://github.com/kriziw/Euroclear-broadlink/compare/v0.2.0...v0.2.1) (2026-10-04)
 
 
