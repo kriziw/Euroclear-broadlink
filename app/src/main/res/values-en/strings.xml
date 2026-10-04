@@ -334,4 +334,7 @@
     <string name="setup_recognised_network">“%1$s” looks like a device setup network. Confirm below that it belongs to your device.</string>
     <string name="setup_connection_confirmed">Device Wi-Fi connection confirmed. You can continue.</string>
     <string name="setup_device_wifi">the device’s setup Wi-Fi</string>
+    <string name="setup_show_other_devices">Show other Broadlink devices (%1$d)</string>
+    <string name="setup_other_devices_hint">Thermostats and devices whose type is not recognised as a water-treatment module are hidden by default. This toggle shows them without another scan.</string>
+    <string name="setup_no_water_devices">No recognised water-treatment device answered. Other Broadlink devices are available using the toggle below.</string>
 </resources>
