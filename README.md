@@ -57,6 +57,9 @@ The wizard has four screens. *Next* only unlocks once the current step is done.
      reboots, the network disappears, and the app moves on by itself.
 4. **Find the device.** Once your phone is back on your Wi-Fi, the app searches for the
    module. Tap **Save and open** to add it to the dashboard.
+   Other Broadlink devices, such as thermostats, are hidden by default. Use **Show other
+   Broadlink devices** to reveal them without rescanning. Unidentified module types also
+   appear there; the filter uses the reported device type rather than its name.
 
 On Android 17 the app also asks for **Nearby devices → local network access**. Android blocks
 all local-network traffic without it.

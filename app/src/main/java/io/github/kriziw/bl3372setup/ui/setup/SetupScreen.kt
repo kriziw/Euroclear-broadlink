@@ -32,6 +32,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -527,6 +528,7 @@ private fun ProvisioningResult(provisioning: ProvisioningState, actions: SetupAc
 @Composable
 private fun DiscoveryCard(state: SetupUiState, savedMacs: Set<String>, actions: SetupActions) {
     var showOtherNetwork by rememberSaveable { mutableStateOf(false) }
+    var showOtherDevices by rememberSaveable { mutableStateOf(false) }
     var address by rememberSaveable { mutableStateOf("") }
     var subnet by rememberSaveable(state.link?.address) { mutableStateOf(defaultSubnet(state.link)) }
 
@@ -592,7 +594,7 @@ private fun DiscoveryCard(state: SetupUiState, savedMacs: Set<String>, actions: 
             DiscoveryState.Idle -> Unit
             is DiscoveryState.Searching -> {
                 StatusLine(StatusKind.PROGRESS, stringResource(R.string.setup_searching_seconds, discovery.seconds))
-                discovery.found.forEach { DeviceRow(it, it.mac in savedMacs, actions.openDevice) }
+                DiscoveryResults(discovery.found, savedMacs, actions, showOtherDevices, { showOtherDevices = it })
             }
             is DiscoveryState.Done -> {
                 if (discovery.found.isEmpty()) {
@@ -601,7 +603,10 @@ private fun DiscoveryCard(state: SetupUiState, savedMacs: Set<String>, actions: 
                         stringResource(if (discovery.mode == SearchMode.BROADCAST) R.string.setup_nothing_found_broadcast else R.string.setup_nothing_found_unicast),
                     )
                 } else {
-                    discovery.found.forEach { DeviceRow(it, it.mac in savedMacs, actions.openDevice) }
+                    if (DiscoveryDeviceGroups(discovery.found).waterTreatment.isEmpty()) {
+                        StatusLine(StatusKind.INFO, stringResource(R.string.setup_no_water_devices))
+                    }
+                    DiscoveryResults(discovery.found, savedMacs, actions, showOtherDevices, { showOtherDevices = it })
                 }
             }
             is DiscoveryState.Failed -> StatusLine(StatusKind.ERROR, stringResource(R.string.setup_search_failed) + " " + networkErrorText(discovery.error))
@@ -609,6 +614,31 @@ private fun DiscoveryCard(state: SetupUiState, savedMacs: Set<String>, actions: 
             DiscoveryState.InvalidSubnet -> StatusLine(StatusKind.ERROR, stringResource(R.string.setup_invalid_subnet, Ipv4.MIN_SCAN_PREFIX))
         }
     }
+}
+
+@Composable
+private fun DiscoveryResults(
+    found: List<DiscoveredDevice>,
+    savedMacs: Set<String>,
+    actions: SetupActions,
+    showOther: Boolean,
+    onShowOther: (Boolean) -> Unit,
+) {
+    val groups = DiscoveryDeviceGroups(found)
+    if (groups.other.isNotEmpty()) {
+        Row(
+            modifier = Modifier.fillMaxWidth().toggleable(
+                value = showOther, role = Role.Switch, onValueChange = onShowOther,
+            ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(stringResource(R.string.setup_show_other_devices, groups.other.size), modifier = Modifier.weight(1f))
+            Spacer(Modifier.width(8.dp))
+            Switch(checked = showOther, onCheckedChange = null)
+        }
+        Hint(stringResource(R.string.setup_other_devices_hint))
+    }
+    groups.visible(showOther).forEach { DeviceRow(it, it.mac in savedMacs, actions.openDevice) }
 }
 
 private fun defaultSubnet(link: WifiLink?): String =

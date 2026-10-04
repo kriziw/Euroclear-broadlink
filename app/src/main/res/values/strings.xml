@@ -337,4 +337,7 @@
     <string name="setup_recognised_network">A(z) „%1$s” eszközbeállító hálózatnak tűnik. Erősítse meg alább, hogy az eszközhöz tartozik.</string>
     <string name="setup_connection_confirmed">Az eszköz Wi-Fi-kapcsolata megerősítve. Továbbléphet.</string>
     <string name="setup_device_wifi">az eszköz beállító Wi-Fi-je</string>
+    <string name="setup_show_other_devices">Más Broadlink-eszközök megjelenítése (%1$d)</string>
+    <string name="setup_other_devices_hint">A termosztátok és a vízkezelő modulként nem felismert eszközök alapértelmezés szerint rejtve maradnak. A kapcsoló új keresés nélkül megjeleníti őket.</string>
+    <string name="setup_no_water_devices">Nem válaszolt felismert vízkezelő eszköz. A többi Broadlink-eszköz az alábbi kapcsolóval megjeleníthető.</string>
 </resources>
