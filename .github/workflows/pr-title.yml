@@ -1,0 +1,26 @@
+name: PR Title
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-title:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Release Please-compatible PR title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+          pattern='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([^)]+\))?(!)?: .+$'
+          echo "Validating PR title: ${PR_TITLE}"
+          if [[ "${PR_TITLE}" =~ ${pattern} ]]; then
+            exit 0
+          fi
+          echo "::error title=Invalid PR title::Use a conventional PR title such as 'feat: show salt level' or 'fix(setup): retry on timeout', and squash-merge so release-please can read it on main."
+          exit 1
