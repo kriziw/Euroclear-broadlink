@@ -43,6 +43,22 @@ class BroadlinkDiscoveryTest {
     }
 
     @Test
+    fun `a paced unicast sweep finds the target and stops early`() = runBlocking {
+        val reply = FakeBroadlinkDevice.helloResponse(0x520F, hex("563412d7d11c"), "")
+        FakeBroadlinkDevice { listOf(reply) }.use { device ->
+            // 60 silent destinations (other ports on loopback) plus the device, in batches of 16.
+            val silent = (1..60).map { java.net.InetSocketAddress(InetAddress.getLoopbackAddress(), 9) }
+            val started = System.nanoTime()
+            val found = BroadlinkDiscovery(loopbackSockets, fixedClock, durationMillis = 5_000, resendIntervalMillis = 2_000, batchSize = 16)
+                .discover(silent + device.address, null, stopWhen = { it.mac == "1C:D1:D7:12:34:56" })
+            assertEquals(1, found.size)
+            assertTrue("stopped early", (System.nanoTime() - started) / 1_000_000 < 4_000)
+            assertEquals("1C:D1:D7:12:34:56", found.single().mac)
+            assertEquals(listOf(0x1C, 0xD1, 0xD7, 0x12, 0x34, 0x56), found.single().macBytes.map { it.toInt() and 0xFF })
+        }
+    }
+
+    @Test
     fun `returns nothing when no device answers`() = runBlocking {
         FakeBroadlinkDevice().use { device ->
             val devices = BroadlinkDiscovery(loopbackSockets, fixedClock, durationMillis = 300, resendIntervalMillis = 100)

@@ -1,4 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">BL3372 Wi-Fi Setup</string>
+<!-- Default language: Hungarian. English lives in values-en/strings.xml and is used only when
+     the phone (or, on Android 13+, this app) is set to English. Terms follow the Euro-Clear
+     Midnight manual. -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="hu">
+    <string name="app_name">BL3372 Wi-Fi beállító</string>
+
+    <!-- Common actions -->
+    <string name="action_allow_local_network">Helyi hálózat engedélyezése</string>
+    <string name="action_back">Vissza</string>
+    <string name="action_cancel">Mégse</string>
+    <string name="action_check_wifi_name">Wi-Fi név ellenőrzése</string>
+    <string name="action_configure">Eszköz beállítása</string>
+    <string name="action_connect">Csatlakozás</string>
+    <string name="action_done">Kész</string>
+    <string name="action_hide">Elrejtés</string>
+    <string name="action_location_settings">Helymeghatározás beállításai</string>
+    <string name="action_next">Tovább</string>
+    <string name="action_open">Megnyitás</string>
+    <string name="action_open_app_settings">Alkalmazásbeállítások</string>
+    <string name="action_open_wifi">Wi-Fi hálózatok megnyitása</string>
+    <string name="action_regenerate">Regenerálás</string>
+    <string name="action_regenerate_now">Regenerálás indítása most</string>
+    <string name="action_remove">Eltávolítás</string>
+    <string name="action_retry">Újra</string>
+    <string name="action_save">Mentés</string>
+    <string name="action_save_and_open">Mentés és megnyitás</string>
+    <string name="action_scan">Keresés</string>
+    <string name="action_search_network">Keresés ezen a hálózaton</string>
+    <string name="action_send_again">Küldés újra</string>
+    <string name="action_show">Megjelenítés</string>
+    <string name="action_sync_clock">Szinkronizálás a telefonnal</string>
+    <string name="action_unlock_controls">Vezérlés feloldása</string>
+
+    <string name="cd_back">Vissza</string>
+    <string name="cd_edit">%1$s szerkesztése</string>
+    <string name="cd_hide_password">Jelszó elrejtése</string>
+    <string name="cd_more">További lehetőségek</string>
+    <string name="cd_show_password">Jelszó megjelenítése</string>
+
+    <string name="footer_privacy">Minden ezen a telefonon marad: nincs fiók, nincs felhő, nincs internet, a Wi-Fi jelszót nem tároljuk.</string>
+    <string name="local_network_explanation">Az Android 17 a „Közeli eszközök” engedélyt kéri, mielőtt egy alkalmazás a helyi hálózaton lévő eszközökkel – így a vízlágyítóval és a beállító hálózatával – kommunikálhat.</string>
+    <string name="local_network_declined">Az engedélyt elutasította. Az Alkalmazásinfó → Engedélyek → Közeli eszközök menüben engedélyezheti.</string>
+
+    <!-- Errors -->
+    <string name="error_auth_rejected">A modul elutasította a helyi bejelentkezést. Ez akkor fordulhat elő, ha korábban a gyártói felhős alkalmazással párosították; a Wi-Fi újbóli beállítása ezzel az alkalmazással általában visszaállítja.</string>
+    <string name="error_local_network_blocked">Az Android letiltotta a helyi hálózati hozzáférést. Engedélyezze a „Közeli eszközök” jogosultságot, és kapcsolja ki az esetleges VPN-t.</string>
+    <string name="error_not_connected">A Wi-Fi kapcsolat nem érhető el.</string>
+    <string name="error_timeout">Az eszköz nem válaszolt.</string>
+
+    <!-- Home -->
+    <string name="home_subtitle">Vízlágyítók helyi vezérlése</string>
+    <string name="home_empty_title">Még nincs eszköz</string>
+    <string name="home_empty_text">Állítsa be egy új vízlágyító Wi-Fi kapcsolatát, vagy adjon hozzá egy olyat, amely már a hálózatán van.</string>
+    <string name="home_add_title">Eszköz hozzáadása</string>
+    <string name="home_set_up_new">Új eszköz beállítása</string>
+    <string name="home_set_up_new_hint">Lépésről lépésre átadja a vezérlőfejnek a Wi-Fi hálózat nevét és jelszavát.</string>
+    <string name="home_add_existing">Már a hálózaton lévő eszköz hozzáadása</string>
+    <string name="home_add_existing_hint">Megkeresi kereséssel, IP-cím alapján, vagy egy másik alhálózat/VLAN átfésülésével.</string>
+
+    <!-- Setup wizard -->
+    <string name="setup_title">BL3372 Wi-Fi beállító</string>
+    <string name="setup_subtitle">Helyi Wi-Fi beállítás BroadLink BL3372 modulokhoz</string>
+    <string name="setup_step_of">%1$d. lépés / %2$d</string>
+    <string name="setup_skip_to_find">Már a Wi-Fi hálózaton van?</string>
+    <string name="setup_step1_title">Csatlakozás az eszközhöz</string>
+    <string name="setup_step2_title">Az otthoni Wi-Fi hálózat</string>
+    <string name="setup_step3_title">Az eszköz beállítása</string>
+    <string name="setup_step4_title">Az eszköz megkeresése a hálózaton</string>
+
+    <string name="setup_no_wifi">A telefon nem csatlakozik Wi-Fi hálózathoz.</string>
+    <string name="setup_connected_to">Csatlakozva ehhez: „%1$s”.</string>
+    <string name="setup_wrong_network">Csatlakozva ehhez: „%1$s”, nem pedig ehhez: %2$s.</string>
+    <string name="setup_network_has_internet">Ezen a Wi-Fi hálózaton működik az internet, tehát ez nem a(z) %1$s (a modul beállító hálózatán soha nincs internet).</string>
+    <string name="setup_network_without_internet">Internet nélküli Wi-Fi hálózathoz csatlakozva.</string>
+    <string name="setup_manual_confirmation">Az Android Wi-Fi beállításaiban ellenőriztem, hogy a telefon a(z) %1$s hálózathoz csatlakozik.</string>
+    <string name="setup_location_explanation">Az Android csak pontos helymeghatározási engedéllyel árulja el az alkalmazásoknak a Wi-Fi hálózat nevét. Az alkalmazás másra nem használja, és sosem olvassa ki a tartózkodási helyét. Ezt ki is hagyhatja, és alább kézzel is megerősítheti.</string>
+    <string name="setup_location_off">Kapcsolja be a helymeghatározást, hogy az Android megmutathassa a Wi-Fi nevét, vagy erősítse meg alább.</string>
+    <string name="setup_ssid_hidden">Az Android nem árulta el a hálózat nevét. Erősítse meg alább, ha ez a(z) %1$s.</string>
+    <string name="setup_join_instructions">1. Áramtalanítsa a vízlágyítót, majd helyezze újra áram alá.\n2. Amíg a kijelzőn a vezérlőfej típusa látható (például „F136”), tartsa lenyomva a Menü/Jóváhagy gombot, amíg sípoló hangot nem hall. A vezérlőfej ekkor megnyitja a(z) „%1$s” hálózatot.\n3. Koppintson a „Wi-Fi hálózatok megnyitása” gombra, és csatlakozzon a(z) „%1$s” hálózathoz. Ha az Android jelzi, hogy nincs internet, válassza a kapcsolat megtartását.\n4. Térjen vissza ebbe az alkalmazásba.</string>
+    <string name="setup_detail_phone">Telefon: %1$s</string>
+    <string name="setup_detail_gateway">Átjáró: %1$s</string>
+    <string name="setup_detail_internet">Van internet</string>
+    <string name="setup_detail_no_internet">Nincs internet</string>
+
+    <string name="setup_ssid_label">Wi-Fi név (SSID)</string>
+    <string name="setup_password_label">Jelszó</string>
+    <string name="setup_password_unused">Jelszó (nyílt hálózatnál nem kell)</string>
+    <string name="setup_bytes_counter" tools:ignore="PluralsCandidate">%1$d / %2$d bájt · kis- és nagybetű számít</string>
+    <string name="setup_too_long" tools:ignore="PluralsCandidate">Túl hosszú: %1$d bájt (legfeljebb %2$d).</string>
+    <string name="setup_ssid_is_device_ap">Ez a modul saját beállító hálózata. Az otthoni Wi-Fi nevét adja meg.</string>
+    <string name="setup_password_too_long" tools:ignore="PluralsCandidate">Túl hosszú: %1$d bájt. A BroadLink beállító csomag legfeljebb %2$d bájtot visz át (a hivatalos alkalmazásnak is ez a korlátja).</string>
+    <string name="setup_password_too_short" tools:ignore="PluralsCandidate">A WPA jelszó legalább %1$d karakter.</string>
+    <string name="setup_security_label">Titkosítás</string>
+    <string name="setup_security_open">Nyílt</string>
+    <string name="setup_security_hint">A WPA2 szinte minden routerhez megfelel. Ha a modul nem csatlakozik, próbálja a WPA/WPA2 beállítást.</string>
+    <string name="setup_band_hint">A BL3372 csak 2,4 GHz-es Wi-Fi-t támogat. A router 2,4 GHz-es hálózatának nevét adja meg; a csak 5 GHz-es és a csak WPA3-as hálózatok nem működnek.</string>
+    <string name="setup_ssid_spaces">A név szóközzel kezdődik vagy végződik. Ellenőrizze, hogy ez szándékos-e.</string>
+    <string name="setup_ssid_non_ascii">A név ékezetes vagy egyéb nem ASCII karaktert tartalmaz; UTF-8 kódolással kerül elküldésre.</string>
+    <string name="setup_password_non_ascii">A jelszó ékezetes vagy egyéb nem ASCII karaktert tartalmaz. A WPA jelszavak általában csak ASCII karakterekből állnak; előfordulhat, hogy a modul nem fogadja el.</string>
+
+    <string name="setup_configure_explanation">A Wi-Fi nevét és jelszavát közvetlenül a modulnak küldi a(z) %1$s kapcsolaton keresztül. A BroadLink beállító protokoll nem titkosított, ezért az eszköz közelében, gyorsan végezze el.</string>
+    <string name="setup_reason_connect_first">Előbb csatlakozzon a(z) %1$s hálózathoz (1. lépés).</string>
+    <string name="setup_reason_fill_details">Adja meg az otthoni Wi-Fi adatait (2. lépés).</string>
+    <string name="setup_sending">Beállítás küldése…</string>
+    <string name="setup_sending_round">Beállítás küldése… (%1$d. kör / %2$d)</string>
+    <string name="setup_sending_failed">A küldés nem sikerült.</string>
+    <string name="setup_acknowledged">A modul nyugtázta a beállításokat (válasz innen: %1$s).</string>
+    <string name="setup_not_acknowledged">Beállítások elküldve (%1$d×). Nyugtázás nem érkezett, de sok modul nem is küld ilyet, így ez önmagában nem jelent hibát.</string>
+    <string name="setup_link_lost_after_send">Beállítások elküldve, és közvetlenül utána megszakadt a(z) %1$s kapcsolat.</string>
+    <string name="setup_watching_ap">A(z) %1$s figyelése… Ha a modul elfogadja a beállításokat, újraindul, a beállító hálózata eltűnik, és csatlakozik ide: „%2$s”.</string>
+    <string name="setup_ap_gone">A(z) %1$s %2$d másodperccel a küldés után eltűnt. A modul valószínűleg újraindult, és most csatlakozik ide: „%3$s”. Csatlakoztassa a telefont is erre a hálózatra a megkereséséhez.</string>
+    <string name="setup_ap_still_up">A telefon 90 másodperc után is a(z) %1$s hálózathoz csatlakozik. Lehet, hogy a modul nem fogadta el a beállításokat.</string>
+    <string name="setup_troubleshooting">• Ellenőrizze a Wi-Fi nevét és jelszavát (a kis- és nagybetű számít).\n• Győződjön meg róla, hogy a router 2,4 GHz-en is sugároz, és nem csak WPA3-at használ.\n• Próbálja a WPA/WPA2 titkosítási beállítást.\n• Egyes BroadLink firmware-ek nem kezelik a jelszóban lévő speciális karaktereket; egy csak betűket és számokat tartalmazó jelszavú vendéghálózat segíthet.\n• Tegye vissza a vezérlőfejet Wi-Fi beállító módba, csatlakozzon újra, és küldje el ismét.</string>
+
+    <string name="setup_discovery_explanation">Miután a modul csatlakozott a Wi-Fi hálózathoz, csatlakoztassa a telefont is a hálózatára. Az alkalmazás a BroadLink helyi keresésével találja meg a modult.</string>
+    <string name="setup_connect_home_wifi">Csatlakoztassa a telefont az otthoni Wi-Fi hálózathoz.</string>
+    <string name="setup_still_on_ap">A telefon még a beállító hálózaton van. Előbb váltson az otthoni Wi-Fi hálózatra.</string>
+    <string name="setup_searching_on">Keresés itt: „%1$s”</string>
+    <string name="setup_current_network">a jelenlegi Wi-Fi hálózat</string>
+    <string name="setup_other_vlan_toggle">Az eszköz másik VLAN-on vagy alhálózaton van?</string>
+    <string name="setup_vlan_explanation">A keresés nem jut át VLAN-ok vagy routerek között. Ha a vízlágyító másik hálózaton van (például egy IoT VLAN-on), adja meg az IP-címét, vagy fésülje át az alhálózatát. A tűzfalnak engedélyeznie kell az UDP 80-as portot a telefontól az eszköz felé.</string>
+    <string name="setup_address_label">IP-cím vagy hosztnév</string>
+    <string name="setup_subnet_label">Alhálózat (pl. 192.168.20.0/24)</string>
+    <string name="setup_searching_seconds">Keresés… (legfeljebb %1$d mp)</string>
+    <string name="setup_nothing_found_broadcast">Egyetlen BroadLink eszköz sem válaszolt. A modulnak egy-két percbe is telhet a csatlakozás; keressen újra. Ha másik VLAN-on van, használja a fenti lehetőséget.</string>
+    <string name="setup_nothing_found_unicast">Ezen a címen nem válaszolt BroadLink eszköz. Ellenőrizze a címet, és hogy a tűzfal engedélyezi-e felé az UDP 80-as portot.</string>
+    <string name="setup_search_failed">A keresés nem sikerült.</string>
+    <string name="setup_invalid_address">Adjon meg egy IPv4-címet (pl. 192.168.20.15) vagy egy ezen a hálózaton feloldható hosztnevet.</string>
+    <string name="setup_invalid_subnet">Adjon meg egy alhálózatot, például 192.168.20.0/24 (legfeljebb /%1$d).</string>
+    <string name="setup_device_found_at">Eszköz található itt: %1$s</string>
+    <string name="setup_device_locked">Zároltnak jelzi magát (a gyártói alkalmazás letiltotta a helyi vezérlést).</string>
+
+    <!-- Device -->
+    <string name="device_default_name">Vízlágyító</string>
+    <string name="device_type_runxin">Runxin vezérlőfej BroadLink BL3372 modullal (típus: %1$s)</string>
+    <string name="device_type_other">BroadLink eszköz (típus: %1$s)</string>
+    <string name="device_connection_title">Kapcsolat</string>
+    <string name="device_connecting">Csatlakozás…</string>
+    <string name="device_locating">Az eszköz keresése…</string>
+    <string name="device_locating_subnet">Az eszköz keresése az alhálózatán…</string>
+    <string name="device_live">Élő · frissítve: %1$s</string>
+    <string name="device_no_wifi">A telefon nem csatlakozik Wi-Fi hálózathoz.</string>
+    <string name="device_not_found">Az eszköz nem válaszol (utolsó cím: %1$s).</string>
+    <string name="device_not_found_hint">Ellenőrizze, hogy a vízlágyító áram alatt van és csatlakozik a Wi-Fi hálózathoz. Ha másik VLAN-on van, ellenőrizze, hogy az UDP 80-as port engedélyezett-e, vagy adja meg az új címét.</string>
+    <string name="device_writing">Küldés a vezérlőfejnek…</string>
+    <string name="device_rename">Átnevezés</string>
+    <string name="device_name_label">Név</string>
+    <string name="device_change_address">Cím módosítása</string>
+    <string name="device_address_label">IPv4-cím</string>
+    <string name="device_address_hint">Akkor hasznos, ha a vízlágyító másik VLAN-on van, és megváltozott a címe. Ha a routerben fix címet foglal neki, ez elkerülhető.</string>
+    <string name="device_remove_title">Eszköz eltávolítása</string>
+    <string name="device_remove_text">Elfelejti ezt az eszközt ezen a telefonon? Magán a vízlágyítón semmi sem változik.</string>
+
+    <string name="device_unverified_title">Nem ellenőrzött vezérlőfej-típus</string>
+    <string name="device_unverified_text">Ez a vezérlőfej a(z) %1$s típuskódot jelenti. Az értékek a Runxin F79D mezőtérképe alapján kerülnek értelmezésre, amelyet csak a(z) %2$d típuskódra ellenőriztek, így hibásak lehetnek. A vezérlés zárolva marad, amíg meg nem erősíti, hogy az alábbi értékek megegyeznek a vezérlőfej kijelzőjével.</string>
+    <string name="device_unverified_confirm">Az alábbi értékek (például a keménység és a regenerálás ideje) megegyeznek a vezérlőfej kijelzőjén látottakkal.</string>
+
+    <string name="device_status_title">Állapot</string>
+    <string name="device_phase_remaining">%1$s · még %2$s</string>
+    <string name="device_flow_now">Pillanatnyi átfolyás</string>
+    <string name="device_closed_reason">Szelep elzárva: %1$s</string>
+    <string name="device_vacation">Vakáció üzemmód</string>
+    <string name="device_vacation_hint">A vakáció üzemmódot a vezérlőfejen lehet kapcsolni: vízszolgáltatás állapotban tartsa lenyomva a „Le” (▼) gombot 6 másodpercig; a kikapcsolás ugyanígy történik.</string>
+    <string name="device_controller_clock">A vezérlőfej órája</string>
+    <string name="device_no_alerts">Nincs riasztás vagy emlékeztető.</string>
+
+    <string name="device_water_title">Víz</string>
+    <string name="device_remaining_capacity">Hátralévő kapacitás</string>
+    <string name="device_today">Mai fogyasztás</string>
+    <string name="device_weekly_average">Heti átlag (vezérlőfej)</string>
+    <string name="device_capacity_per_cycle">Kapacitás ciklusonként</string>
+    <string name="device_regeneration_mode">Regenerálás</string>
+    <string name="device_regeneration_by_volume">Mennyiség alapján (vízóra)</string>
+    <string name="device_regeneration_by_days">%1$s naponta</string>
+    <string name="device_days_remaining">Napok a regenerálásig</string>
+
+    <string name="device_salt_title">Só és karbantartás</string>
+    <string name="device_regeneration_reminder">Gyanta emlékeztető (regenerálás után)</string>
+    <string name="device_filter_days">Szűrőanyag csereidő</string>
+
+    <string name="device_settings_title">Beállítások</string>
+    <string name="device_controls_locked">Ennél a vezérlőfejnél a vezérlés zárolva van.</string>
+    <string name="device_safehome_title">SafeHOME szivárgásvédelem</string>
+    <string name="device_programme_title">Regenerálási program</string>
+    <string name="device_raw_title">Diagnosztika</string>
+    <string name="device_raw_hint">A vezérlőfej nyers mezői, hibakereséshez.</string>
+
+    <string name="setting_hardness">Nyersvíz keménység</string>
+    <string name="setting_hardness_hint">A Midnight gépkönyv szerint a mért német keménységi fok (nk°) tízszeresét kell megadni, pl. 15 nk° → 150 mg/l.</string>
+    <string name="setting_salt_added">Hozzáadott só</string>
+    <string name="setting_salt_added_hint">A vezérlőfej só-nyilvántartása, nem mért sószint. Adja meg, mennyi sót töltött be.</string>
+    <string name="setting_regeneration_time">Regenerálás ideje</string>
+    <string name="setting_regeneration_time_hint">Olyan időpontot válasszon, amikor senki sem használ vizet; a gépkönyv 22:00–0:00 közötti időt javasol.</string>
+    <string name="setting_continuous_flow">Folyamatos vízszolgáltatási idő</string>
+    <string name="setting_flow_shutoff">Maximális vízátfolyás</string>
+    <string name="setting_safehome_hint">A SafeHOME elzárja a víz útját, ha a víz ezeknél a határoknál tovább vagy gyorsabban folyik (csőtörés gyanúja). 0 = kikapcsolva.</string>
+
+    <string name="regenerate_confirm_title">Elindítja most a regenerálást?</string>
+    <string name="regenerate_confirm_text">A vízlágyító azonnal regenerálni kezd. Az első fázisban nem szolgáltat vizet, utána csak kemény vizet ad, és sót, valamint vizet fogyaszt. Egy teljes ciklus néhány órát vesz igénybe.</string>
+    <string name="regenerate_hint">Csak vízszolgáltatás állapotban indítható. Az alkalmazás ellenőrzi, hogy a szelep valóban elindult-e.</string>
+
+    <string name="station_in_service">Vízszolgáltatás</string>
+    <string name="station_backwash">Visszamosatás</string>
+    <string name="station_brine_draw">Sólé és lassú mosatás</string>
+    <string name="station_brine_refill">Sólé újratöltés</string>
+    <string name="station_fast_rinse">Gyors mosatás</string>
+    <string name="station_closed">Szelep elzárva</string>
+    <string name="station_salt_dissolving">Só beoldódása</string>
+    <string name="station_pause_1">Első szünet</string>
+    <string name="station_pause_2">Második szünet</string>
+
+    <string name="close_reason_manual">kézi elzárás</string>
+    <string name="close_reason_leak">szivárgás észlelve</string>
+    <string name="close_reason_continuous_flow">túl hosszú folyamatos vízvétel</string>
+    <string name="close_reason_flow_exceeded">a maximális átfolyás túllépve</string>
+
+    <string name="vacation_off">Kikapcsolva</string>
+    <string name="vacation_preparing">Előkészítés</string>
+    <string name="vacation_active">Aktív</string>
+
+    <string name="alert_low_brine">Alacsony sólé-koncentráció</string>
+    <string name="alert_salt_reminder">Sót kell utántölteni</string>
+    <string name="alert_resin">Gyantacsere esedékes</string>
+    <string name="alert_filter">Szűrőanyag-csere esedékes</string>
+    <string name="fault_clock">Óra chip hiba</string>
+    <string name="fault_multiple_position">Szelephelyzet hiba (több jel)</string>
+    <string name="fault_no_position">Szelephelyzet hiba (nincs jel)</string>
+    <string name="fault_memory">Memóriahiba</string>
+
+    <string name="programme_backwash">Visszamosatás</string>
+    <string name="programme_brine_slow_rinse">Sólé és lassú mosatás</string>
+    <string name="programme_brine_refill">Sólé újratöltés</string>
+    <string name="programme_fast_rinse">Gyors mosatás</string>
+    <string name="programme_rinsing_frequency">Mosatási gyakoriság</string>
+    <string name="programme_backwash_interval">Visszamosatási intervallum</string>
+    <string name="programme_max_interval">Leghosszabb regenerálási intervallum</string>
+    <string name="programme_resin_volume">Gyanta térfogata</string>
+    <string name="programme_output_mode">Kimeneti relé mód</string>
+    <string name="programme_brine_draw">Sólé felszívás</string>
+    <string name="programme_brine_draw_forward">Egyenáramú</string>
+    <string name="programme_brine_draw_reverse">Ellenáramú</string>
+    <string name="programme_work_pattern">Üzemmód (kód)</string>
+    <string name="programme_units">Mértékegység</string>
+    <string name="programme_time_format">Időformátum</string>
+
+    <string name="unit_minutes">perc</string>
+    <plurals name="value_days">
+        <item quantity="one">%1$d nap</item>
+        <item quantity="other">%1$d nap</item>
+    </plurals>
+    <string name="value_minutes">%1$d perc</string>
+    <string name="value_hardness">%1$d mg/l (≈ %2$s nk°)</string>
+    <string name="value_off">Kikapcsolva</string>
+    <string name="value_yes">Igen</string>
+    <string name="value_no">Nem</string>
+    <string name="value_unknown_code">Ismeretlen (%1$s)</string>
+
+    <string name="dialog_range">Megengedett: %1$d–%2$d %3$s</string>
+    <string name="dialog_range_decimal">Megengedett: %1$.2f–%2$.2f %3$s</string>
+
+    <string name="write_confirmed">%1$s elmentve, a vezérlőfej megerősítette.</string>
+    <string name="write_regeneration_started">A regenerálás elindult, a vezérlőfej jelzi, hogy a szelep mozog.</string>
+    <string name="write_not_confirmed">%1$s elküldve, de a vezérlőfej nem erősítette meg a változást. Lehet, hogy nem fogadja el ezt a beállítást.</string>
+    <string name="write_ambiguous">%1$s küldésekor nem érkezett válasz, és a változás nem erősödött meg. Ellenőrizze az értéket, mielőtt újra próbálja.</string>
+    <string name="write_failed">%1$s küldése nem sikerült. %2$s</string>
 </resources>

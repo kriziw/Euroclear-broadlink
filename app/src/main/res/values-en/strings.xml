@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- English. Used when the phone (or this app, Android 13+) is set to English;
+     every other language falls back to Hungarian in values/strings.xml. -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">BL3372 Wi-Fi Setup</string>
+
+    <!-- Common actions -->
+    <string name="action_allow_local_network">Allow local network access</string>
+    <string name="action_back">Back</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_check_wifi_name">Check Wi-Fi name</string>
+    <string name="action_configure">Configure Device</string>
+    <string name="action_connect">Connect</string>
+    <string name="action_done">Done</string>
+    <string name="action_hide">Hide</string>
+    <string name="action_location_settings">Location settings</string>
+    <string name="action_next">Next</string>
+    <string name="action_open">Open</string>
+    <string name="action_open_app_settings">Open app settings</string>
+    <string name="action_open_wifi">Open Wi-Fi networks</string>
+    <string name="action_regenerate">Regenerate</string>
+    <string name="action_regenerate_now">Regenerate now</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_save">Save</string>
+    <string name="action_save_and_open">Save and open</string>
+    <string name="action_scan">Scan</string>
+    <string name="action_search_network">Search this network</string>
+    <string name="action_send_again">Send again</string>
+    <string name="action_show">Show</string>
+    <string name="action_sync_clock">Sync with phone</string>
+    <string name="action_unlock_controls">Unlock controls</string>
+
+    <string name="cd_back">Back</string>
+    <string name="cd_edit">Edit %1$s</string>
+    <string name="cd_hide_password">Hide password</string>
+    <string name="cd_more">More options</string>
+    <string name="cd_show_password">Show password</string>
+
+    <string name="footer_privacy">Everything stays on this phone: no account, no cloud, no Internet, no Wi-Fi password stored.</string>
+    <string name="local_network_explanation">Android 17 needs the “Nearby devices” permission before an app can talk to devices on the local network, including the softener and its setup network.</string>
+    <string name="local_network_declined">The permission was declined. Allow it under App info → Permissions → Nearby devices.</string>
+
+    <!-- Errors -->
+    <string name="error_auth_rejected">The module refused the local login. This can happen after it was paired with the vendor cloud app; setting up its Wi-Fi again with this app usually resets it.</string>
+    <string name="error_local_network_blocked">Android blocked local network access. Allow “Nearby devices” for this app and turn off any VPN.</string>
+    <string name="error_not_connected">The Wi-Fi connection is not available.</string>
+    <string name="error_timeout">The device did not answer.</string>
+
+    <!-- Home -->
+    <string name="home_subtitle">Your water softeners, controlled locally</string>
+    <string name="home_empty_title">No device yet</string>
+    <string name="home_empty_text">Set up a new softener’s Wi-Fi, or add one that is already on your network.</string>
+    <string name="home_add_title">Add a device</string>
+    <string name="home_set_up_new">Set up a new device</string>
+    <string name="home_set_up_new_hint">Gives the controller your Wi-Fi name and password, step by step.</string>
+    <string name="home_add_existing">Add a device already on my network</string>
+    <string name="home_add_existing_hint">Finds it by search, by IP address, or by scanning another subnet/VLAN.</string>
+
+    <!-- Setup wizard -->
+    <string name="setup_title">BL3372 Wi-Fi Setup</string>
+    <string name="setup_subtitle">Local Wi-Fi setup for BroadLink BL3372 modules</string>
+    <string name="setup_step_of">Step %1$d of %2$d</string>
+    <string name="setup_skip_to_find">Already on Wi-Fi?</string>
+    <string name="setup_step1_title">Connect to the device</string>
+    <string name="setup_step2_title">Your home Wi-Fi</string>
+    <string name="setup_step3_title">Configure the device</string>
+    <string name="setup_step4_title">Find the device on your network</string>
+
+    <string name="setup_no_wifi">This phone is not connected to a Wi-Fi network.</string>
+    <string name="setup_connected_to">Connected to “%1$s”.</string>
+    <string name="setup_wrong_network">Connected to “%1$s”, not to %2$s.</string>
+    <string name="setup_network_has_internet">This Wi-Fi network has working Internet access, so it is not %1$s (the module’s setup network never does).</string>
+    <string name="setup_network_without_internet">Connected to a Wi-Fi network without Internet access.</string>
+    <string name="setup_manual_confirmation">I checked in Android’s Wi-Fi settings that this phone is connected to %1$s.</string>
+    <string name="setup_location_explanation">Android only tells apps the Wi-Fi name if they have precise Location permission. This app uses it for nothing else and never reads your location. You can also skip this and confirm below.</string>
+    <string name="setup_location_off">Turn on Location so Android can show this app the Wi-Fi name, or confirm below.</string>
+    <string name="setup_ssid_hidden">Android did not reveal the network name. Confirm below if it is %1$s.</string>
+    <string name="setup_join_instructions">1. Unplug the softener, then plug it back in.\n2. While the controller shows its model (for example “F136”), hold the Menu/OK button until it beeps. The controller now opens the “%1$s” network.\n3. Tap “Open Wi-Fi networks” and join “%1$s”. If Android says the network has no Internet access, choose to stay connected.\n4. Come back to this app.</string>
+    <string name="setup_detail_phone">Phone %1$s</string>
+    <string name="setup_detail_gateway">Gateway %1$s</string>
+    <string name="setup_detail_internet">Internet available</string>
+    <string name="setup_detail_no_internet">No Internet</string>
+
+    <string name="setup_ssid_label">Wi-Fi name (SSID)</string>
+    <string name="setup_password_label">Password</string>
+    <string name="setup_password_unused">Password (not used for open networks)</string>
+    <string name="setup_bytes_counter" tools:ignore="PluralsCandidate">%1$d / %2$d bytes · case-sensitive</string>
+    <string name="setup_too_long" tools:ignore="PluralsCandidate">Too long: %1$d bytes (max %2$d).</string>
+    <string name="setup_ssid_is_device_ap">That is the module’s own setup network. Enter your home Wi-Fi name.</string>
+    <string name="setup_password_too_long" tools:ignore="PluralsCandidate">Too long: %1$d bytes. The BroadLink setup packet carries at most %2$d (the official app has the same limit).</string>
+    <string name="setup_password_too_short" tools:ignore="PluralsCandidate">WPA passwords have at least %1$d characters.</string>
+    <string name="setup_security_label">Security</string>
+    <string name="setup_security_open">Open</string>
+    <string name="setup_security_hint">WPA2 suits almost every router. If the module does not join, try WPA/WPA2.</string>
+    <string name="setup_band_hint">The BL3372 only supports 2.4 GHz Wi-Fi. Use your router’s 2.4 GHz network name; 5 GHz-only and WPA3-only networks will not work.</string>
+    <string name="setup_ssid_spaces">The name starts or ends with a space. Check that this is intended.</string>
+    <string name="setup_ssid_non_ascii">The name contains non-ASCII characters; it is sent as UTF-8.</string>
+    <string name="setup_password_non_ascii">The password contains non-ASCII characters. WPA passwords are normally plain ASCII; the module may reject it.</string>
+
+    <string name="setup_configure_explanation">Sends the Wi-Fi name and password straight to the module over the %1$s connection. The BroadLink setup protocol is not encrypted, so do this close to the device and finish promptly.</string>
+    <string name="setup_reason_connect_first">Connect to %1$s first (step 1).</string>
+    <string name="setup_reason_fill_details">Fill in your home Wi-Fi details (step 2).</string>
+    <string name="setup_sending">Sending configuration…</string>
+    <string name="setup_sending_round">Sending configuration… (round %1$d of %2$d)</string>
+    <string name="setup_sending_failed">Sending failed.</string>
+    <string name="setup_acknowledged">The module acknowledged the settings (reply from %1$s).</string>
+    <string name="setup_not_acknowledged">Settings sent %1$d×. No acknowledgement came back, which many modules never send, so this alone does not mean failure.</string>
+    <string name="setup_link_lost_after_send">Settings sent, and the %1$s connection dropped right after.</string>
+    <string name="setup_watching_ap">Watching %1$s… Once the module accepts the settings it reboots, its setup network disappears and it joins “%2$s”.</string>
+    <string name="setup_ap_gone">%1$s disappeared %2$d s after sending. The module has most likely rebooted and is now joining “%3$s”. Reconnect this phone to that network to find it.</string>
+    <string name="setup_ap_still_up">This phone is still connected to %1$s after 90 s. The module may not have accepted the settings.</string>
+    <string name="setup_troubleshooting">• Check the Wi-Fi name and password (both are case-sensitive).\n• Make sure the router offers 2.4 GHz and is not WPA3-only.\n• Try the security setting WPA/WPA2.\n• Some BroadLink firmware fails with special characters in the password; a guest network with a letters-and-digits password can help.\n• Put the controller back into Wi-Fi setup mode, reconnect and send again.</string>
+
+    <string name="setup_discovery_explanation">After the module has joined your Wi-Fi, connect this phone to your network. The app finds the module with BroadLink’s local discovery.</string>
+    <string name="setup_connect_home_wifi">Connect this phone to your home Wi-Fi.</string>
+    <string name="setup_still_on_ap">This phone is still on the setup network. Switch to your home Wi-Fi first.</string>
+    <string name="setup_searching_on">Searching on “%1$s”</string>
+    <string name="setup_current_network">the current Wi-Fi network</string>
+    <string name="setup_other_vlan_toggle">Device on another VLAN or subnet?</string>
+    <string name="setup_vlan_explanation">Searches do not cross VLANs or routers. If the softener is on another network (for example an IoT VLAN), enter its IP address, or scan its subnet. Your firewall must allow UDP port 80 from this phone to the device.</string>
+    <string name="setup_address_label">IP address or hostname</string>
+    <string name="setup_subnet_label">Subnet (e.g. 192.168.20.0/24)</string>
+    <string name="setup_searching_seconds">Searching… (up to %1$d s)</string>
+    <string name="setup_nothing_found_broadcast">No BroadLink device answered. The module can take a minute or two to join; search again. If it is on another VLAN, use the option above.</string>
+    <string name="setup_nothing_found_unicast">No BroadLink device answered at that address. Check the address and that your firewall allows UDP port 80 to it.</string>
+    <string name="setup_search_failed">Search failed.</string>
+    <string name="setup_invalid_address">Enter an IPv4 address (e.g. 192.168.20.15) or a hostname that resolves on this network.</string>
+    <string name="setup_invalid_subnet">Enter a subnet like 192.168.20.0/24 (at most /%1$d).</string>
+    <string name="setup_device_found_at">Device found at %1$s</string>
+    <string name="setup_device_locked">Reports itself as locked (local control disabled by the vendor app).</string>
+
+    <!-- Device -->
+    <string name="device_default_name">Water softener</string>
+    <string name="device_type_runxin">Runxin controller with BroadLink BL3372 (type %1$s)</string>
+    <string name="device_type_other">BroadLink device (type %1$s)</string>
+    <string name="device_connection_title">Connection</string>
+    <string name="device_connecting">Connecting…</string>
+    <string name="device_locating">Looking for the device…</string>
+    <string name="device_locating_subnet">Looking for the device on its subnet…</string>
+    <string name="device_live">Live · updated %1$s</string>
+    <string name="device_no_wifi">This phone is not on Wi-Fi.</string>
+    <string name="device_not_found">No answer from the device (last address %1$s).</string>
+    <string name="device_not_found_hint">Check that the softener is powered and on Wi-Fi. If it is on another VLAN, make sure UDP port 80 is allowed, or enter its new address.</string>
+    <string name="device_writing">Sending to the controller…</string>
+    <string name="device_rename">Rename</string>
+    <string name="device_name_label">Name</string>
+    <string name="device_change_address">Change address</string>
+    <string name="device_address_label">IPv4 address</string>
+    <string name="device_address_hint">Useful when the softener is on another VLAN and its address changed. Reserving a fixed address for it in your router avoids this.</string>
+    <string name="device_remove_title">Remove device</string>
+    <string name="device_remove_text">Forget this device on this phone? The softener itself is not changed.</string>
+
+    <string name="device_unverified_title">Unverified controller model</string>
+    <string name="device_unverified_text">This controller reports model %1$s. Values are decoded with the Runxin F79D field map, which has been verified only for model %2$d, so they may be wrong. Controls stay locked until you confirm the values below match the controller’s display.</string>
+    <string name="device_unverified_confirm">The values below (for example hardness and regeneration time) match my controller’s display.</string>
+
+    <string name="device_status_title">Status</string>
+    <string name="device_phase_remaining">%1$s · %2$s left</string>
+    <string name="device_flow_now">Current flow</string>
+    <string name="device_closed_reason">Valve closed: %1$s</string>
+    <string name="device_vacation">Vacation mode</string>
+    <string name="device_vacation_hint">Vacation mode is switched on the controller: while in service, hold ▼ (Down) for 6 seconds; do the same to end it.</string>
+    <string name="device_controller_clock">Controller clock</string>
+    <string name="device_no_alerts">No alarms or reminders.</string>
+
+    <string name="device_water_title">Water</string>
+    <string name="device_remaining_capacity">Remaining capacity</string>
+    <string name="device_today">Used today</string>
+    <string name="device_weekly_average">Controller weekly average</string>
+    <string name="device_capacity_per_cycle">Capacity per cycle</string>
+    <string name="device_regeneration_mode">Regeneration</string>
+    <string name="device_regeneration_by_volume">By volume (meter)</string>
+    <string name="device_regeneration_by_days">Every %1$s days</string>
+    <string name="device_days_remaining">Days until regeneration</string>
+
+    <string name="device_salt_title">Salt and maintenance</string>
+    <string name="device_regeneration_reminder">Resin reminder after (regenerations)</string>
+    <string name="device_filter_days">Filter media interval</string>
+
+    <string name="device_settings_title">Settings</string>
+    <string name="device_controls_locked">Controls are locked for this controller.</string>
+    <string name="device_safehome_title">SafeHOME leak protection</string>
+    <string name="device_programme_title">Regeneration programme</string>
+    <string name="device_raw_title">Diagnostics</string>
+    <string name="device_raw_hint">Raw controller fields, for troubleshooting.</string>
+
+    <string name="setting_hardness">Raw water hardness</string>
+    <string name="setting_hardness_hint">Per the Midnight manual, enter the measured German hardness (°dH / nk°) × 10, e.g. 15 nk° → 150 mg/l.</string>
+    <string name="setting_salt_added">Salt added</string>
+    <string name="setting_salt_added_hint">The controller’s salt bookkeeping, not a measured salt level. Enter how much salt you added.</string>
+    <string name="setting_regeneration_time">Regeneration time</string>
+    <string name="setting_regeneration_time_hint">Pick a time when nobody uses water; the manual suggests 22:00–0:00.</string>
+    <string name="setting_continuous_flow">Continuous flow limit</string>
+    <string name="setting_flow_shutoff">Maximum flow</string>
+    <string name="setting_safehome_hint">SafeHOME closes the valve when water flows longer, or faster, than these limits (suspected pipe burst). 0 = off.</string>
+
+    <string name="regenerate_confirm_title">Start regeneration now?</string>
+    <string name="regenerate_confirm_text">The softener regenerates immediately. It delivers no water during the first phase and only hard water afterwards, and uses salt and water. A full cycle takes a few hours.</string>
+    <string name="regenerate_hint">Only available while the softener is in service. The app confirms that the valve has started moving.</string>
+
+    <string name="station_in_service">In service</string>
+    <string name="station_backwash">Backwash</string>
+    <string name="station_brine_draw">Brine and slow rinse</string>
+    <string name="station_brine_refill">Brine refill</string>
+    <string name="station_fast_rinse">Fast rinse</string>
+    <string name="station_closed">Valve closed</string>
+    <string name="station_salt_dissolving">Salt dissolving</string>
+    <string name="station_pause_1">Pause 1</string>
+    <string name="station_pause_2">Pause 2</string>
+
+    <string name="close_reason_manual">closed manually</string>
+    <string name="close_reason_leak">leak detected</string>
+    <string name="close_reason_continuous_flow">continuous flow too long</string>
+    <string name="close_reason_flow_exceeded">maximum flow exceeded</string>
+
+    <string name="vacation_off">Off</string>
+    <string name="vacation_preparing">Preparing</string>
+    <string name="vacation_active">Active</string>
+
+    <string name="alert_low_brine">Low brine concentration</string>
+    <string name="alert_salt_reminder">Add salt</string>
+    <string name="alert_resin">Resin replacement due</string>
+    <string name="alert_filter">Filter media replacement due</string>
+    <string name="fault_clock">Clock chip fault</string>
+    <string name="fault_multiple_position">Valve position fault (multiple signals)</string>
+    <string name="fault_no_position">Valve position fault (no signal)</string>
+    <string name="fault_memory">Memory fault</string>
+
+    <string name="programme_backwash">Backwash</string>
+    <string name="programme_brine_slow_rinse">Brine and slow rinse</string>
+    <string name="programme_brine_refill">Brine refill</string>
+    <string name="programme_fast_rinse">Fast rinse</string>
+    <string name="programme_rinsing_frequency">Rinsing frequency</string>
+    <string name="programme_backwash_interval">Backwash interval</string>
+    <string name="programme_max_interval">Maximum regeneration interval</string>
+    <string name="programme_resin_volume">Resin volume</string>
+    <string name="programme_output_mode">Output relay mode</string>
+    <string name="programme_brine_draw">Brine draw</string>
+    <string name="programme_brine_draw_forward">Forward</string>
+    <string name="programme_brine_draw_reverse">Reverse</string>
+    <string name="programme_work_pattern">Work pattern (code)</string>
+    <string name="programme_units">Units</string>
+    <string name="programme_time_format">Time format</string>
+
+    <string name="unit_minutes">min</string>
+    <plurals name="value_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="value_minutes">%1$d min</string>
+    <string name="value_hardness">%1$d mg/l (≈ %2$s nk°)</string>
+    <string name="value_off">Off</string>
+    <string name="value_yes">Yes</string>
+    <string name="value_no">No</string>
+    <string name="value_unknown_code">Unknown (%1$s)</string>
+
+    <string name="dialog_range">Allowed: %1$d–%2$d %3$s</string>
+    <string name="dialog_range_decimal">Allowed: %1$.2f–%2$.2f %3$s</string>
+
+    <string name="write_confirmed">%1$s saved and confirmed by the controller.</string>
+    <string name="write_regeneration_started">Regeneration started. The controller confirmed the valve is moving.</string>
+    <string name="write_not_confirmed">%1$s was sent, but the controller did not confirm the change. It may not accept this setting.</string>
+    <string name="write_ambiguous">No reply while sending %1$s, and the change was not confirmed. Check the value before trying again.</string>
+    <string name="write_failed">Could not send %1$s. %2$s</string>
+</resources>
