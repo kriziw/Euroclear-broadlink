@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/kriziw/Euroclear-broadlink/compare/v0.4.1...v0.4.2) (2026-10-04)
+
+
+### Bug Fixes
+
+* repair APK installation and device Wi-Fi setup ([#13](https://github.com/kriziw/Euroclear-broadlink/issues/13)) ([14e1d93](https://github.com/kriziw/Euroclear-broadlink/commit/14e1d93d656fbfe04c25417cb068293259b5a1db))
+
 ## [0.4.1](https://github.com/kriziw/Euroclear-broadlink/compare/v0.4.0...v0.4.1) (2026-10-04)
 
 
