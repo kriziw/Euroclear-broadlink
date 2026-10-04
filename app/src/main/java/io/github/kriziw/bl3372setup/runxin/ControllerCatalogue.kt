@@ -2,6 +2,8 @@ package io.github.kriziw.bl3372setup.runxin
 
 /** Product documentation is deliberately separate from executable wire profiles. */
 enum class CatalogueEvidence { LOCAL_PROTOCOL, WIFI_DIRECTORY, INSPECTED_MANUAL, DIRECTORY }
+enum class CompatibilityStatus { SUPPORTED, UNVERIFIED }
+data class ControllerFamily(val name: String, val variants: List<DocumentedController>)
 
 data class DocumentedController(
     val name: String,
@@ -10,6 +12,17 @@ data class DocumentedController(
     val sourceUrl: String,
     val protocolProfileId: String? = null,
 ) {
+    val familyName: String
+        get() = when (val prefix = Regex("^F[0-9]+").find(name)?.value ?: name) {
+            "F79", "F82" -> "F79 / F82"
+            "F105", "F136" -> "F105 / F136"
+            else -> prefix
+        }
+
+    val compatibility: CompatibilityStatus
+        get() = if (ControllerProfiles.registered.any { it.id == protocolProfileId })
+            CompatibilityStatus.SUPPORTED else CompatibilityStatus.UNVERIFIED
+
     fun matches(query: String): Boolean = query.trim().let { term ->
         name.contains(term, ignoreCase = true) || aliases.any { it.contains(term, ignoreCase = true) }
     }
@@ -61,4 +74,10 @@ object ControllerCatalogue {
     }
 
     fun search(query: String): List<DocumentedController> = entries.filter { it.matches(query) }
+
+    /** Grouping is for browsing products; it never supplies controller identities or commands. */
+    fun families(query: String = ""): List<ControllerFamily> = entries.groupBy { it.familyName }.mapNotNull { (name, variants) ->
+        val matches = if (name.equals(query.trim(), ignoreCase = true)) variants else variants.filter { it.matches(query) }
+        if (matches.isEmpty()) null else ControllerFamily(name, matches)
+    }
 }

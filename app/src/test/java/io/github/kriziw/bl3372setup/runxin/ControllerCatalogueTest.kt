@@ -25,4 +25,26 @@ class ControllerCatalogueTest {
         assertTrue(ControllerCatalogue.search("not-a-model").isEmpty())
         assertEquals(4, ControllerCatalogue.search("LCD Wi-Fi").size)
     }
+
+    @Test
+    fun `family browsing preserves all variants and searches manufacturer aliases`() {
+        assertEquals(ControllerCatalogue.entries.toSet(), ControllerCatalogue.families().flatMap { it.variants }.toSet())
+        val aliasMatches = ControllerCatalogue.families("86602ed").single()
+        assertEquals("F105 / F136", aliasMatches.name)
+        assertEquals(listOf("F105AHW"), aliasMatches.variants.map { it.name })
+        val f82 = ControllerCatalogue.families("F82").flatMap { it.variants }
+        assertTrue(f82.isNotEmpty())
+        assertTrue(f82.all { it.name.startsWith("F82") && it.compatibility == CompatibilityStatus.UNVERIFIED })
+        assertTrue(ControllerCatalogue.families("unknown-family").isEmpty())
+    }
+
+    @Test
+    fun `family membership and documentation do not promote an unimplemented controller to supported`() {
+        val family = ControllerCatalogue.families().single { it.name == "F79 / F82" }
+        assertEquals(listOf("F79D"), family.variants.filter { it.compatibility == CompatibilityStatus.SUPPORTED }.map { it.name })
+        assertEquals(CompatibilityStatus.UNVERIFIED, family.variants.single { it.name == "F82A LCD Wi-Fi" }.compatibility)
+        assertTrue(ControllerCatalogue.families("F105").flatMap { it.variants }.all { it.compatibility == CompatibilityStatus.UNVERIFIED })
+        val implemented = family.variants.single { it.name == "F79D" }
+        assertEquals(CompatibilityStatus.UNVERIFIED, implemented.copy(protocolProfileId = "missing-profile").compatibility)
+    }
 }

@@ -100,8 +100,14 @@ the inspected manual's shared settings summary, with the Wi-Fi-board caveat.
 These reference entries have **no protocol profile link, field IDs, guessed model
 code or write commands** and cannot participate in automatic profile resolution.
 They help identify a printed model and locate its documentation, but cannot make
-an unfamiliar connected controller trusted. The screen separates local controls
-from reference-only entries and supports case-insensitive model/alias searches.
+an unfamiliar connected controller trusted. The screen has **Supported** and
+**Unverified** lists, with unverified variants grouped by controller family and
+case-insensitive model/alias searches. Supported means a registered command mapping
+is implemented in WaterCare; it is not a count of physically tested softener units.
+The same profile applies to compatible products reporting its module/controller
+identity. A family can contain both supported and unverified variants, and family
+grouping never promotes the latter. Documentation sources are inside each entry.
+The UI does not use tested/pending-validation tiers or request user testing/feedback.
 
 The broader public protocol review found no additional executable Runxin profile.
 [ypsilon-local's profile contribution guide](https://github.com/Danirv/ypsilon-local/blob/main/docs/adding-a-device-profile.md)
