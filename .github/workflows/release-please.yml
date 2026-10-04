@@ -1,0 +1,38 @@
+name: release-please
+
+# On every push to main, release-please keeps a release PR up to date (version.txt and
+# CHANGELOG.md from conventional commits). Merging that PR creates the tag and GitHub release,
+# then the signed APK is built and attached to it.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v5
+        with:
+          # Optional personal access token, so the release PR also triggers CI; falls back to
+          # the workflow token (needs "Allow GitHub Actions to create and approve pull requests").
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN || github.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  apk:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    permissions:
+      contents: write
+    uses: ./.github/workflows/release.yml
+    with:
+      tag_name: ${{ needs.release-please.outputs.tag_name }}
+    secrets: inherit

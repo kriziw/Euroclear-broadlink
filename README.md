@@ -142,7 +142,7 @@ You can also open the folder in Android Studio and press *Run*.
 
 ### Signed release build (local)
 
-`./gradlew assembleRelease` builds a minified APK, about 2.5 MB. To sign it, set four values as
+`./gradlew assembleRelease` builds a minified APK, about 2.8 MB. To sign it, set four values as
 environment variables or in `~/.gradle/gradle.properties`. Never put them in the repository.
 
 ```properties
@@ -154,20 +154,26 @@ BL3372_KEY_PASSWORD=...
 
 Without them, the release APK is left unsigned.
 
-### Signed releases from GitHub Actions
+### Releases (release-please)
 
-* **`.github/workflows/ci.yml`** runs the unit tests, lint and a debug build on every pull
-  request and on every push to `main`.
-* **`.github/workflows/release.yml`** runs when you push a tag `vX.Y.Z` that matches
-  `versionName`. It:
-  1. builds and signs the release APK;
-  2. checks that the signing certificate matches the fingerprint above;
-  3. publishes the APK and its SHA-256 on a GitHub release.
+Releases are automated with [release-please](https://github.com/googleapis/release-please):
 
-  *Actions → Release APK → Run workflow* builds a signed APK as a downloadable artifact,
-  without making a release.
+1. Merge pull requests into `main` with **conventional titles**: `feat: …` for features,
+   `fix: …` for bug fixes, or `chore:`, `docs:`, `ci:` and so on. Use **Squash and merge**.
+   The *PR Title* check enforces the format.
+2. On every push to `main`, release-please opens or updates a **release PR**. That PR bumps
+   `version.txt` (which sets the app's `versionName`) and adds the new entries to
+   `CHANGELOG.md`.
+   * Before 1.0, `feat` bumps the minor version and `fix` bumps the patch.
+   * `versionCode` is derived from the version (`1.2.3` → `1002003`), so it always increases.
+3. **Merge the release PR.** release-please then creates the `vX.Y.Z` tag and the GitHub
+   release. The same workflow builds and signs the APK, checks the certificate fingerprint,
+   and attaches `bl3372-wifi-setup-X.Y.Z.apk` and its SHA-256 to the release.
 
-It needs four repository secrets under *Settings → Secrets and variables → Actions*:
+*Actions → Release APK → Run workflow* builds a signed APK from any branch as a downloadable
+artifact, without making a release.
+
+Signing uses four repository secrets under *Settings → Secrets and variables → Actions*:
 
 | Secret | Value |
 |---|---|
@@ -175,6 +181,14 @@ It needs four repository secrets under *Settings → Secrets and variables → A
 | `BL3372_KEYSTORE_PASSWORD` | the keystore password |
 | `BL3372_KEY_ALIAS` | the key alias |
 | `BL3372_KEY_PASSWORD` | the key password (for a PKCS12 keystore, the same as the keystore password) |
+
+release-please also needs permission to open its PR. Use one of these:
+
+* Enable *Settings → Actions → General → Workflow permissions → **Allow GitHub Actions to
+  create and approve pull requests***.
+* Add a `RELEASE_PLEASE_TOKEN` secret holding a fine-grained personal access token for this
+  repository, with *Contents* and *Pull requests* read/write. With a token, CI also runs on
+  the release PR.
 
 ## Project layout
 
