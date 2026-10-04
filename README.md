@@ -39,19 +39,21 @@ SHA-256: d4:9d:c4:92:29:e6:e7:b9:00:43:9a:ee:82:01:69:ff:d8:ba:13:b0:70:4a:40:9f
 The wizard has four screens. *Next* only unlocks once the current step is done.
 
 1. **Connect to the device.**
-   * Unplug the softener and plug it back in.
-   * While the controller shows its model (for example *F136*), hold **Menu/OK** until it
-     beeps. It now broadcasts **`WiFi-BL3372`**.
+   * Enter Wi-Fi setup mode using the device manual. On some Runxin heads, reconnect
+     power and hold **Menu/OK** until it beeps.
+   * Join the Wi-Fi network created by the device. Names may include **`WiFi-BL3372`**,
+     `WiFi-BL…`, `BroadlinkProv` or `BroadLink_…`, but other names are accepted.
    * Tap **Open Wi-Fi networks**, join it, and choose to stay connected if Android warns
      about no Internet.
-   * The app confirms the network by name if you allow the optional Wi-Fi-name check.
-     Android only reveals Wi-Fi names to apps with Location permission. Otherwise you
-     confirm it with a tick box.
+   * Confirm with the checkbox that you joined the device's Wi-Fi. The optional name
+     check provides a hint; a different/hidden name or reported Internet access does
+     not override your confirmation. Changing Wi-Fi connections clears confirmation.
 2. **Your home Wi-Fi.** Enter the name and password of a **2.4 GHz** network. Security
    WPA2 is right for almost every router.
 3. **Configure.**
    * Tap **Configure Device**.
-   * The app sends the settings, then watches `WiFi-BL3372`. When the module accepts them it
+   * If the connection changed, confirm the device's Wi-Fi directly on this screen.
+   * The app sends the settings, then watches the confirmed connection. When the module accepts them it
      reboots, the network disappears, and the app moves on by itself.
 4. **Find the device.** Once your phone is back on your Wi-Fi, the app searches for the
    module. Tap **Save and open** to add it to the dashboard.

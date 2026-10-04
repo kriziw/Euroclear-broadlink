@@ -11,7 +11,8 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -36,7 +37,13 @@ import io.github.kriziw.bl3372setup.R
 @Composable
 fun LanguageButton() {
     var open by rememberSaveable { mutableStateOf(false) }
-    IconButton(onClick = { open = true }) {
+    FilledIconButton(
+        onClick = { open = true },
+        colors = IconButtonDefaults.filledIconButtonColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.primary,
+        ),
+    ) {
         Icon(painterResource(R.drawable.ic_language), contentDescription = stringResource(R.string.cd_language))
     }
     if (open) LanguageDialog(onDismiss = { open = false })
