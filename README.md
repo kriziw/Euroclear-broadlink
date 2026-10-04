@@ -86,14 +86,27 @@ With one saved softener the app opens straight on it. With several it shows a li
   but not switchable from the app, because the controller ignores that command. Switch it on
   the controller instead: hold ▼ for 6 s while in service.
 
-**Controller models.** Controls unlock automatically only for the combination verified on
-hardware: Runxin F79D (model 9) behind a BL3372.
+**Controller models.** After connection the app reads the controller identity and loads a
+matching bundled profile. Controls unlock automatically only for the combination verified
+on hardware: Runxin F79D (model 9) behind a BL3372 (type `0x520F`). The detected module type,
+controller code and loaded profile are shown on the dashboard.
 * For any other model the dashboard shows the values with a warning, and the controls stay
   locked.
-* You can unlock them per device after confirming that the values match the controller's
-  display.
+* You can unlock experimental controls after confirming that the values match the controller's
+  display. The experimental warning remains visible, and you can lock them again. The opt-in
+  belongs to that exact controller code; a changed or missing code cannot reuse it. Existing
+  unlocks from earlier versions require confirmation again.
 * The Midnight's ECOPRO+ head has not been confirmed yet. If yours is locked, compare a few
   values (hardness, regeneration time) with the controller before unlocking.
+* Other BroadLink module types remain unsupported and receive no Runxin commands.
+
+Open **Controller compatibility** from the home screen or device dashboard for the official
+Runxin/BroadLink portfolio guide. Wi-Fi product names are not automatically treated as local
+protocol IDs. Source links open your browser and need Internet access; profile selection
+itself works locally. Evidence and limits: [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
+The offline profile library searches documented model names and inspected product aliases.
+Entries distinguish the working F79D local profile from reference-only models and show
+their source/evidence when expanded. Reference entries cannot enable controls.
 
 ## Networks with several VLANs
 
@@ -233,7 +246,8 @@ tools/                              golden-vector generators that run the refere
 
 * Wi-Fi credentials stay in memory only. They are never stored, never put in saved state,
   and redacted from `toString()`. The packet buffer is zeroed after sending.
-* Saved devices hold only MAC, name and IP address.
+* Saved devices hold identity/addressing information and any experimental-control opt-in,
+  including the controller code it applies to. They never hold credentials or session keys.
 * Autofill is excluded, and so is the recent-apps thumbnail (Android 13+). Backups are
   disabled.
 * There is no logging and no network access other than UDP to the local network.

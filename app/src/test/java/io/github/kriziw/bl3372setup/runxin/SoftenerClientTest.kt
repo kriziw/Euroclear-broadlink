@@ -6,6 +6,7 @@ import io.github.kriziw.bl3372setup.broadlink.loopbackSockets
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertNull
 import org.junit.Test
 import java.time.LocalTime
 
@@ -25,12 +26,40 @@ class SoftenerClientTest {
     @Test
     fun `authenticates and reads the decoded state`() = runBlocking {
         FakeController(baseline).use { device ->
-            val state = client(device).readState()
+            val c = client(device)
+            val state = c.readState()
+            assertEquals(listOf(1), device.queriedFields.first())
+            assertEquals(ControllerProfiles.F79D, c.profile)
+            assertEquals(ControllerProfiles.F79D.stateFields, device.queriedFields[1])
             assertEquals(1, device.authCount.get())
             assertEquals(9, state.deviceModel)
             assertEquals(120, state.hardnessMgPerLitre)
             assertEquals(159.02, state.remainingCapacity!!, 1e-9)
             assertEquals(90, state.filterMaterialDays) // field 52 read separately
+        }
+    }
+
+    @Test
+    fun `unknown controller has fallback readings without a registered profile`() = runBlocking {
+        FakeController(baseline + (1 to (136 to 0))).use { device ->
+            val c = client(device)
+            assertEquals(136, c.readState().deviceModel)
+            assertNull(c.profile) // Product name F136 is not a protocol-code mapping.
+            assertEquals(listOf(1), device.queriedFields.first())
+        }
+    }
+
+    @Test
+    fun `changed controller identity invalidates the loaded profile and optional cache`() = runBlocking {
+        FakeController(baseline).use { device ->
+            val c = client(device)
+            c.readState()
+            device.fields[1] = 105 to 0
+            device.fields[52] = 180 to 0
+            val state = c.readState()
+            assertNull(c.profile)
+            assertEquals(105, state.deviceModel)
+            assertEquals(180, state.filterMaterialDays)
         }
     }
 

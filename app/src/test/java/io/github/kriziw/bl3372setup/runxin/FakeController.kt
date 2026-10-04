@@ -9,6 +9,7 @@ import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.SocketException
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicInteger
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
@@ -27,6 +28,7 @@ class FakeController(initialFields: Map<Int, Pair<Int, Int>>) : AutoCloseable {
     private val sessionKey = ByteArray(16) { (0xA0 + it).toByte() }
     val authCount = AtomicInteger()
     val writesReceived = AtomicInteger()
+    val queriedFields = CopyOnWriteArrayList<List<Int>>()
 
     /** Reply to the next N commands with this BroadLink error code instead. */
     @Volatile var failNextCommandsWith: Pair<Int, Int>? = null
@@ -73,10 +75,13 @@ class FakeController(initialFields: Map<Int, Pair<Int, Int>>) : AutoCloseable {
         val inner = frame.copyOfRange(17, frame.size - 2).map { it.toInt() and 0xFF }
         val payload = inner.subList(4, inner.size - 2)
         val response = when (inner[3]) {
-            RunxinFrames.QUERY -> RunxinFrames.build(
-                RunxinFrames.QUERY_RESPONSE,
-                payload.flatMap { id -> fields[id]?.let { listOf(id, it.first, it.second) } ?: emptyList() },
-            )
+            RunxinFrames.QUERY -> {
+                queriedFields.add(payload.toList())
+                RunxinFrames.build(
+                    RunxinFrames.QUERY_RESPONSE,
+                    payload.flatMap { id -> fields[id]?.let { listOf(id, it.first, it.second) } ?: emptyList() },
+                )
+            }
             RunxinFrames.WRITE -> {
                 writesReceived.incrementAndGet()
                 if (!ignoreWrites) {

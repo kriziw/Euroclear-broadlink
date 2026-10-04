@@ -62,6 +62,7 @@ import io.github.kriziw.bl3372setup.R
 import io.github.kriziw.bl3372setup.SystemScreens
 import io.github.kriziw.bl3372setup.broadlink.Ipv4
 import io.github.kriziw.bl3372setup.runxin.F79d
+import io.github.kriziw.bl3372setup.runxin.ControllerProfiles
 import io.github.kriziw.bl3372setup.runxin.SoftenerSetting
 import io.github.kriziw.bl3372setup.runxin.SoftenerState
 import io.github.kriziw.bl3372setup.runxin.VacationStatus
@@ -92,7 +93,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun DeviceRoute(mac: String, onBack: () -> Unit) {
+fun DeviceRoute(mac: String, onBack: () -> Unit, onCompatibility: () -> Unit) {
     val context = LocalContext.current
     val application = context.applicationContext as Application
     val viewModel: DeviceViewModel = viewModel(key = mac) { DeviceViewModel(application, mac) }
@@ -116,6 +117,8 @@ fun DeviceRoute(mac: String, onBack: () -> Unit) {
         onSetAddress = viewModel::setAddress,
         onRetry = viewModel::reconnect,
         onUnlock = viewModel::unlockControls,
+        onLock = viewModel::lockControls,
+        onCompatibility = onCompatibility,
         onRemove = {
             viewModel.remove()
             onBack()
@@ -139,6 +142,8 @@ fun DeviceScreen(
     onSetAddress: (java.net.Inet4Address) -> Unit,
     onRetry: () -> Unit,
     onUnlock: () -> Unit,
+    onLock: () -> Unit,
+    onCompatibility: () -> Unit,
     onRemove: () -> Unit,
     onOpenWifi: () -> Unit,
     onRequestLocalNetwork: () -> Unit,
@@ -166,9 +171,10 @@ fun DeviceScreen(
             )
         }) {
             ConnectionCard(state, onRetry, onOpenWifi, onRequestLocalNetwork, onOpenAppSettings, onChangeAddress = { editor = Editor.ADDRESS })
+            ControllerProfileCard(state, onCompatibility)
             val s = state.state
             if (s != null) {
-                if (!state.isVerifiedModel && state.device?.controlsUnlocked != true) UnverifiedModelCard(s, onUnlock)
+                if (!state.isVerifiedModel) UnverifiedModelCard(state, onUnlock, onLock)
                 StatusCard(s)
                 WaterCard(s)
                 SaltCard(s, state, onEdit = { editor = Editor.SALT })
@@ -341,6 +347,10 @@ private fun ConnectionCard(
                 StatusLine(StatusKind.ERROR, networkErrorText(connection.error))
                 OutlinedButton(onClick = onRetry) { Text(stringResource(R.string.action_retry)) }
             }
+            is Connection.UnsupportedModule -> StatusLine(
+                StatusKind.WARNING,
+                stringResource(R.string.compatibility_unsupported_module, "0x%04X".format(connection.deviceType)),
+            )
             Connection.NeedsLocalNetworkPermission -> Unit
         }
         if (state.pendingWrite != null) StatusLine(StatusKind.PROGRESS, stringResource(R.string.device_writing))
@@ -348,13 +358,37 @@ private fun ConnectionCard(
 }
 
 @Composable
-private fun UnverifiedModelCard(s: SoftenerState, onUnlock: () -> Unit) {
-    var confirmed by rememberSaveable { mutableStateOf(false) }
+private fun ControllerProfileCard(state: DeviceUiState, onCompatibility: () -> Unit) {
+    SectionCard(stringResource(R.string.compatibility_identity_title)) {
+        ValueRow(stringResource(R.string.compatibility_module_type), state.device?.deviceType?.let { "0x%04X".format(it) } ?: "–")
+        ValueRow(stringResource(R.string.compatibility_model_code), state.state?.deviceModel?.toString() ?: "–")
+        ValueRow(
+            stringResource(R.string.compatibility_profile),
+            state.profile?.name ?: stringResource(when {
+                state.device != null && !ControllerProfiles.supportsTransport(state.device.deviceType) -> R.string.compatibility_profile_unavailable
+                state.state == null -> R.string.compatibility_profile_pending
+                else -> R.string.compatibility_profile_unknown
+            }),
+        )
+        Hint(stringResource(if (state.isVerifiedModel) R.string.compatibility_profile_verified else R.string.compatibility_profile_hint))
+        TextButton(onClick = onCompatibility) { Text(stringResource(R.string.compatibility_title)) }
+    }
+}
+
+@Composable
+private fun UnverifiedModelCard(state: DeviceUiState, onUnlock: () -> Unit, onLock: () -> Unit) {
+    val s = state.state ?: return
+    var confirmed by rememberSaveable(state.device?.mac, s.deviceModel) { mutableStateOf(false) }
     SectionCard(stringResource(R.string.device_unverified_title)) {
         StatusLine(
             StatusKind.WARNING,
             stringResource(R.string.device_unverified_text, s.deviceModel?.toString() ?: "?", F79d.VERIFIED_MODEL),
         )
+        if (state.experimentalUnlocked) {
+            StatusLine(StatusKind.WARNING, stringResource(R.string.compatibility_experimental_enabled))
+            OutlinedButton(onClick = onLock) { Text(stringResource(R.string.compatibility_lock_controls)) }
+            return@SectionCard
+        }
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth().toggleable(confirmed, role = Role.Checkbox, onValueChange = { confirmed = it }),
@@ -363,7 +397,9 @@ private fun UnverifiedModelCard(s: SoftenerState, onUnlock: () -> Unit) {
             Spacer(Modifier.width(8.dp))
             Text(stringResource(R.string.device_unverified_confirm), style = MaterialTheme.typography.bodyMedium)
         }
-        OutlinedButton(onClick = onUnlock, enabled = confirmed) { Text(stringResource(R.string.action_unlock_controls)) }
+        OutlinedButton(onClick = onUnlock, enabled = confirmed && state.connection == Connection.Live && s.deviceModel != null) {
+            Text(stringResource(R.string.action_unlock_controls))
+        }
     }
 }
 

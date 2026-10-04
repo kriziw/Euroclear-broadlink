@@ -20,6 +20,8 @@ data class SavedDevice(
     val deviceType: Int,
     /** The user confirmed the values match the controller and unlocked controls for an unverified model. */
     val controlsUnlocked: Boolean = false,
+    /** Field-1 identity checked at opt-in. Old unscoped unlocks require confirmation again. */
+    val unlockedModelCode: Int? = null,
 )
 
 /** Saved devices in app-private SharedPreferences (excluded from backup by data_extraction_rules). */
@@ -33,7 +35,13 @@ class DeviceStore(context: Context) {
     /** Adds the device, or updates the entry with the same MAC while keeping its user-chosen name. */
     fun save(device: SavedDevice) = update { list ->
         val existing = list.firstOrNull { it.mac == device.mac }
-        if (existing == null) list + device else list.map { if (it.mac == device.mac) device.copy(name = existing.name) else it }
+        if (existing == null) list + device else list.map {
+            if (it.mac == device.mac) device.copy(
+                name = existing.name,
+                controlsUnlocked = existing.controlsUnlocked && existing.deviceType == device.deviceType,
+                unlockedModelCode = existing.unlockedModelCode.takeIf { existing.deviceType == device.deviceType },
+            ) else it
+        }
     }
 
     fun update(mac: String, transform: (SavedDevice) -> SavedDevice) = update { list ->
@@ -59,6 +67,7 @@ class DeviceStore(context: Context) {
                     lastIp = getString("ip"),
                     deviceType = getInt("type"),
                     controlsUnlocked = optBoolean("unlocked", false),
+                    unlockedModelCode = if (has("unlockedModel") && !isNull("unlockedModel")) getInt("unlockedModel") else null,
                 )
             }
         }
@@ -74,7 +83,8 @@ class DeviceStore(context: Context) {
                     .put("name", it.name)
                     .put("ip", it.lastIp)
                     .put("type", it.deviceType)
-                    .put("unlocked", it.controlsUnlocked),
+                    .put("unlocked", it.controlsUnlocked)
+                    .put("unlockedModel", it.unlockedModelCode),
             )
         }
     }.toString()

@@ -151,9 +151,36 @@
     <string name="device_remove_title">Remove device</string>
     <string name="device_remove_text">Forget this device on this phone? The softener itself is not changed.</string>
 
-    <string name="device_unverified_title">Unverified controller model</string>
-    <string name="device_unverified_text">This controller reports model %1$s. Values are decoded with the Runxin F79D field map, which has been verified only for model %2$d, so they may be wrong. Controls stay locked until you confirm the values below match the controller’s display.</string>
+    <string name="device_unverified_title">Experimental controller profile</string>
+    <string name="device_unverified_text">No registered profile matches controller code %1$s. Readings use the F79D fallback, verified only for code %2$d, and may be wrong. Comparing readings does not verify every command. Controls require your experimental opt-in.</string>
     <string name="device_unverified_confirm">The values below (for example hardness and regeneration time) match my controller’s display.</string>
+    <string name="compatibility_title">Controller compatibility</string>
+    <string name="compatibility_identity_title">Detected controller</string>
+    <string name="compatibility_module_type">Module type</string>
+    <string name="compatibility_model_code">Reported controller code</string>
+    <string name="compatibility_profile">Loaded profile</string>
+    <string name="compatibility_profile_pending">Waiting for controller identification</string>
+    <string name="compatibility_profile_unavailable">No supported transport</string>
+    <string name="compatibility_profile_unknown">Experimental F79D fallback</string>
+    <string name="compatibility_profile_verified">This identity matches the existing hardware-verified local profile.</string>
+    <string name="compatibility_profile_hint">The reported code is a protocol identity; it is not necessarily the product name printed on the valve.</string>
+    <string name="compatibility_experimental_enabled">Experimental controls enabled. Readings and commands remain unverified for this controller.</string>
+    <string name="compatibility_lock_controls">Lock experimental controls</string>
+    <string name="compatibility_unsupported_module">Module type %1$s has no supported Runxin transport. Controller commands are disabled.</string>
+    <string name="compatibility_detection_title">Automatic profile selection</string>
+    <string name="compatibility_detection_text">After connection, the app reads the controller identity and loads a matching local profile. BL3372 type 0x520F with controller code 9 selects Runxin F79D. Other controller codes use an experimental fallback with controls locked until you opt in. An unknown BroadLink module type is unsupported.</string>
+    <string name="compatibility_wifi_title">F79 / F82 Wi-Fi variants</string>
+    <string name="compatibility_wifi_text">Runxin publishes a dedicated Wi-Fi manual for F79A, F79B, F82A and F82B LCD variants. A Wi-Fi product listing does not establish compatibility with this app’s local commands. These product names are not automatically assigned protocol codes.</string>
+    <string name="compatibility_runxin_manuals">Official Runxin manual directory</string>
+    <string name="compatibility_f105_title">F105 / F136 family</string>
+    <string name="compatibility_f105_text">The official manual lists F105 and F136 variants, including F105AHW, F105BHW and F136BHW. Some functions need a Wi-Fi control board. It documents hardness, regeneration time, leakage limits, salt bookkeeping and vacation mode, but does not establish this app’s local field mappings.</string>
+    <string name="compatibility_f105_manual">Official F105 / F136 manual</string>
+    <string name="compatibility_other_title">Other Runxin valves</string>
+    <string name="compatibility_other_text">Runxin also offers manual valves, filter valves, duplex systems and RS-485-equipped controllers. RS-485 support does not imply BL3372 Wi-Fi support. This app currently has no RS-485 transport or local profiles for those product families.</string>
+    <string name="compatibility_broadlink_title">BroadLink modules and products</string>
+    <string name="compatibility_broadlink_text">BroadLink describes product-specific profiles and control scripts in its official SDK. Sharing a brand or Wi-Fi chipset does not make commands interchangeable. This app uses the established Runxin BL3372 transport; it does not control BroadLink remotes, plugs, lights or gateways.</string>
+    <string name="compatibility_broadlink_docs">Official BroadLink control documentation</string>
+    <string name="compatibility_browser_hint">Guide reviewed on 4 October 2026. Source links open your browser and need Internet access. Automatic profile selection uses profiles bundled with the app.</string>
 
     <string name="device_status_title">Status</string>
     <string name="device_phase_remaining">%1$s · %2$s left</string>
@@ -269,4 +296,15 @@
     <string name="language_system">Phone language</string>
     <string name="language_system_hint">Hungarian, unless the phone is set to English</string>
     <string name="cd_language">Change language</string>
+    <string name="catalogue_title">Controller profile library</string>
+    <string name="catalogue_summary">Local control profiles: %1$d · Documentation entries: %2$d. Tap a model for its evidence and source. Documentation entries do not enable controls or identify a connected controller.</string>
+    <string name="catalogue_search">Search model or product alias</string>
+    <string name="catalogue_empty">No matching documented model. The connected controller can still use experimental mode if its module is supported.</string>
+    <string name="catalogue_local">Local controls</string>
+    <string name="catalogue_reference">Reference only</string>
+    <string name="catalogue_local_detail">Automatically loaded for module 0x520F and reported code 9. Local command mapping verified by the public ypsilon-local project on a real F79D device; it is not manufacturer certification.</string>
+    <string name="catalogue_wifi_detail">Named in the official LCD Wi-Fi manual directory. The full manual was not inspected. No proven local command mapping is available in this app; Wi-Fi alone does not establish compatibility.</string>
+    <string name="catalogue_manual_detail">The inspected F105/F136 manufacturer manual links this old model name to the listed product alias. It describes regeneration, hardness, leakage limits, salt bookkeeping and vacation mode. Some functions require a Wi-Fi board. No local command mapping is established for this variant.</string>
+    <string name="catalogue_directory_detail">Named in the official Runxin manual directory. Its individual manual and network interface have not been audited. No local command mapping is available in this app.</string>
+    <string name="catalogue_source">Open profile source</string>
 </resources>

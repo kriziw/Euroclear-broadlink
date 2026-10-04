@@ -100,9 +100,14 @@ class SoftenerClient(
     private val mechanicalTimeoutMillis: Long = 15_000,
     private val mechanicalIntervalMillis: Long = 1_000,
     private val now: () -> Long = { System.nanoTime() / 1_000_000 },
+    private val moduleType: Int = io.github.kriziw.bl3372setup.broadlink.BroadlinkPackets.DEVTYPE_RUNXIN_BL3372,
 ) {
     private val lock = Mutex()
     private var field52: Pair<Int, Int>? = null
+    private var identified = false
+    private var modelCode: Int? = null
+    var profile: ControllerProfile? = null
+        private set
 
     /** Reads fields 1..51 (and field 52 once) and returns the decoded state. */
     suspend fun readState(): SoftenerState = lock.withLock { readUnlocked() }
@@ -140,8 +145,20 @@ class SoftenerClient(
     }
 
     private suspend fun readUnlocked(): SoftenerState {
-        val fields = query(F79d.stateQuery()).toMutableMap()
-        if (field52 == null) {
+        if (!identified) {
+            modelCode = query(RunxinFrames.query(listOf(1)))[1]?.first
+            profile = ControllerProfiles.resolve(moduleType, modelCode)
+            identified = true
+        }
+        // Unknown identities use the existing F79D decoder as an explicitly experimental fallback.
+        val fields = query(RunxinFrames.query(profile?.stateFields ?: F79d.STATE_FIELDS)).toMutableMap()
+        val reportedModel = fields[1]?.first
+        if (reportedModel != modelCode) {
+            modelCode = reportedModel
+            profile = ControllerProfiles.resolve(moduleType, modelCode)
+            field52 = null
+        }
+        if (field52 == null && (profile?.optionalFields ?: listOf(52)).contains(52)) {
             field52 = try {
                 query(F79d.field52Query())[52]
             } catch (_: IOException) {

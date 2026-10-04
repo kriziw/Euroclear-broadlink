@@ -14,6 +14,7 @@ import io.github.kriziw.bl3372setup.app
 import io.github.kriziw.bl3372setup.devices.SavedDevice
 import io.github.kriziw.bl3372setup.ui.device.DeviceRoute
 import io.github.kriziw.bl3372setup.ui.home.HomeScreen
+import io.github.kriziw.bl3372setup.ui.common.CompatibilityGuide
 import io.github.kriziw.bl3372setup.ui.setup.SetupRoute
 import io.github.kriziw.bl3372setup.ui.setup.SetupStep
 
@@ -21,6 +22,7 @@ private const val HOME = "home"
 private const val SETUP = "setup"
 private const val ADD_EXISTING = "add"
 private const val DEVICE = "device/"
+private const val COMPATIBILITY = "compatibility"
 
 /**
  * Minimal navigation: home dashboard, setup wizard (from the start or straight to "find device"),
@@ -34,9 +36,12 @@ fun AppRoot() {
     val defaultName = stringResource(R.string.device_default_name)
     var route by rememberSaveable { mutableStateOf(devices.singleOrNull()?.let { DEVICE + it.mac } ?: HOME) }
 
-    BackHandler(enabled = route != HOME) { route = HOME }
+    var guideReturn by rememberSaveable { mutableStateOf(HOME) }
+    val openCompatibility = { guideReturn = route; route = COMPATIBILITY }
+    BackHandler(enabled = route != HOME) { route = if (route == COMPATIBILITY) guideReturn else HOME }
 
     when {
+        route == COMPATIBILITY -> CompatibilityGuide(onBack = { route = guideReturn })
         route == SETUP || route == ADD_EXISTING -> SetupRoute(
             initialStep = if (route == SETUP) SetupStep.CONNECT else SetupStep.FIND,
             savedMacs = devices.mapTo(HashSet()) { it.mac },
@@ -56,12 +61,13 @@ fun AppRoot() {
             onExit = { route = HOME },
         )
         route.startsWith(DEVICE) && store.get(route.removePrefix(DEVICE)) != null ->
-            DeviceRoute(mac = route.removePrefix(DEVICE), onBack = { route = HOME })
+            DeviceRoute(mac = route.removePrefix(DEVICE), onBack = { route = HOME }, onCompatibility = openCompatibility)
         else -> HomeScreen(
             devices = devices,
             onOpen = { route = DEVICE + it.mac },
             onSetUpNew = { route = SETUP },
             onAddExisting = { route = ADD_EXISTING },
+            onCompatibility = openCompatibility,
         )
     }
 }
