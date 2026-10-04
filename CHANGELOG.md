@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/kriziw/Euroclear-broadlink/compare/v0.4.2...v0.4.3) (2026-10-04)
+
+
+### Bug Fixes
+
+* hide unrelated Broadlink discovery results by default ([#15](https://github.com/kriziw/Euroclear-broadlink/issues/15)) ([a243467](https://github.com/kriziw/Euroclear-broadlink/commit/a2434673fbe279a534910a6370414c4752dbf150))
+
 ## [0.4.2](https://github.com/kriziw/Euroclear-broadlink/compare/v0.4.1...v0.4.2) (2026-10-04)
 
 
