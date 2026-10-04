@@ -41,6 +41,7 @@ fun HomeScreen(
     onSetUpNew: () -> Unit,
     onAddExisting: () -> Unit,
     onCompatibility: () -> Unit,
+    onUpdates: () -> Unit,
 ) {
     AppBackground {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 4.dp)) {
@@ -81,6 +82,9 @@ fun HomeScreen(
 
         OutlinedButton(onClick = onCompatibility, modifier = Modifier.fillMaxWidth()) {
             Text(stringResource(R.string.compatibility_title))
+        }
+        OutlinedButton(onClick = onUpdates, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(R.string.updates_title))
         }
         PrivacyFooter()
     }

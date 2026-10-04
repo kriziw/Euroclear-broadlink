@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The app stores nothing, but exclude everything explicitly so no future change can
-     leak into cloud backup or device-to-device transfer. -->
+<!-- Saved device identities and update preferences stay private. Exclude all data
+     from cloud backup and device-to-device transfer. Wi-Fi credentials are never stored. -->
 <data-extraction-rules>
     <cloud-backup>
         <exclude domain="root" />

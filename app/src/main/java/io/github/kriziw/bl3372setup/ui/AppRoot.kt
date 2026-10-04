@@ -6,6 +6,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -15,6 +19,8 @@ import io.github.kriziw.bl3372setup.devices.SavedDevice
 import io.github.kriziw.bl3372setup.ui.device.DeviceRoute
 import io.github.kriziw.bl3372setup.ui.home.HomeScreen
 import io.github.kriziw.bl3372setup.ui.common.CompatibilityGuide
+import io.github.kriziw.bl3372setup.ui.common.UpdateScreen
+import io.github.kriziw.bl3372setup.updates.UpdateViewModel
 import io.github.kriziw.bl3372setup.ui.setup.SetupRoute
 import io.github.kriziw.bl3372setup.ui.setup.SetupStep
 
@@ -23,6 +29,7 @@ private const val SETUP = "setup"
 private const val ADD_EXISTING = "add"
 private const val DEVICE = "device/"
 private const val COMPATIBILITY = "compatibility"
+private const val UPDATES = "updates"
 
 /**
  * Minimal navigation: home dashboard, setup wizard (from the start or straight to "find device"),
@@ -38,9 +45,26 @@ fun AppRoot() {
 
     var guideReturn by rememberSaveable { mutableStateOf(HOME) }
     val openCompatibility = { guideReturn = route; route = COMPATIBILITY }
-    BackHandler(enabled = route != HOME) { route = if (route == COMPATIBILITY) guideReturn else HOME }
+    val updates: UpdateViewModel = viewModel()
+    val updateState by updates.state.collectAsStateWithLifecycle()
+    var updateReturn by rememberSaveable { mutableStateOf(HOME) }
+    val openUpdates = { updates.hideAnnouncement(); updateReturn = route; route = UPDATES }
+    BackHandler(enabled = route != HOME) {
+        route = when (route) { COMPATIBILITY -> guideReturn; UPDATES -> updateReturn; else -> HOME }
+    }
+
+    if (updateState.announce && updateState.update != null && route != UPDATES) {
+        AlertDialog(
+            onDismissRequest = updates::dismiss,
+            title = { Text(stringResource(R.string.updates_available, updateState.update!!.version.name)) },
+            text = { Text(stringResource(R.string.updates_notice)) },
+            confirmButton = { TextButton(onClick = openUpdates) { Text(stringResource(R.string.updates_view)) } },
+            dismissButton = { TextButton(onClick = updates::dismiss) { Text(stringResource(R.string.updates_later)) } },
+        )
+    }
 
     when {
+        route == UPDATES -> UpdateScreen(updates, onBack = { route = updateReturn })
         route == COMPATIBILITY -> CompatibilityGuide(onBack = { route = guideReturn })
         route == SETUP || route == ADD_EXISTING -> SetupRoute(
             initialStep = if (route == SETUP) SetupStep.CONNECT else SetupStep.FIND,
@@ -68,6 +92,7 @@ fun AppRoot() {
             onSetUpNew = { route = SETUP },
             onAddExisting = { route = ADD_EXISTING },
             onCompatibility = openCompatibility,
+            onUpdates = openUpdates,
         )
     }
 }
