@@ -264,4 +264,12 @@
     <string name="write_not_confirmed">%1$s elküldve, de a vezérlőfej nem erősítette meg a változást. Lehet, hogy nem fogadja el ezt a beállítást.</string>
     <string name="write_ambiguous">%1$s küldésekor nem érkezett válasz, és a változás nem erősödött meg. Ellenőrizze az értéket, mielőtt újra próbálja.</string>
     <string name="write_failed">%1$s küldése nem sikerült. %2$s</string>
+
+    <!-- Language -->
+    <string name="language_title">Nyelv</string>
+    <string name="language_system">A telefon nyelve</string>
+    <string name="language_system_hint">Magyar, kivéve ha a telefon angolra van állítva</string>
+    <string name="language_hungarian" translatable="false">Magyar</string>
+    <string name="language_english" translatable="false">English</string>
+    <string name="cd_language">Nyelv módosítása</string>
 </resources>

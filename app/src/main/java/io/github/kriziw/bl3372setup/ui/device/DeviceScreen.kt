@@ -69,6 +69,7 @@ import io.github.kriziw.bl3372setup.runxin.VolumeUnit
 import io.github.kriziw.bl3372setup.runxin.WriteResult
 import io.github.kriziw.bl3372setup.ui.common.AppBackground
 import io.github.kriziw.bl3372setup.ui.common.Hint
+import io.github.kriziw.bl3372setup.ui.common.LanguageDialog
 import io.github.kriziw.bl3372setup.ui.common.SectionCard
 import io.github.kriziw.bl3372setup.ui.common.StatusKind
 import io.github.kriziw.bl3372setup.ui.common.StatusLine
@@ -270,6 +271,8 @@ fun DeviceScreen(
 @Composable
 private fun DeviceTopBar(title: String, onBack: () -> Unit, onRename: () -> Unit, onChangeAddress: () -> Unit, onRemove: () -> Unit) {
     var menu by remember { mutableStateOf(false) }
+    var language by rememberSaveable { mutableStateOf(false) }
+    if (language) LanguageDialog(onDismiss = { language = false })
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)) {
         IconButton(onClick = onBack) { Icon(painterResource(R.drawable.ic_arrow_back), stringResource(R.string.cd_back)) }
         Text(
@@ -285,6 +288,7 @@ private fun DeviceTopBar(title: String, onBack: () -> Unit, onRename: () -> Unit
             DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
                 DropdownMenuItem(text = { Text(stringResource(R.string.device_rename)) }, onClick = { menu = false; onRename() })
                 DropdownMenuItem(text = { Text(stringResource(R.string.device_change_address)) }, onClick = { menu = false; onChangeAddress() })
+                DropdownMenuItem(text = { Text(stringResource(R.string.language_title)) }, onClick = { menu = false; language = true })
                 DropdownMenuItem(text = { Text(stringResource(R.string.device_remove_title)) }, onClick = { menu = false; onRemove() })
             }
         }
