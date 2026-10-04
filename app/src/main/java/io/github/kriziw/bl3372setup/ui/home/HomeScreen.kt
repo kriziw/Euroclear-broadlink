@@ -40,6 +40,7 @@ fun HomeScreen(
     onOpen: (SavedDevice) -> Unit,
     onSetUpNew: () -> Unit,
     onAddExisting: () -> Unit,
+    onCompatibility: () -> Unit,
 ) {
     AppBackground {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 4.dp)) {
@@ -78,6 +79,9 @@ fun HomeScreen(
             Hint(stringResource(R.string.home_add_existing_hint))
         }
 
+        OutlinedButton(onClick = onCompatibility, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(R.string.compatibility_title))
+        }
         PrivacyFooter()
     }
 }

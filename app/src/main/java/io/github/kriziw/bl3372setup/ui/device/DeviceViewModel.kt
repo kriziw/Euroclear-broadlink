@@ -17,7 +17,8 @@ import io.github.kriziw.bl3372setup.network.NetworkError
 import io.github.kriziw.bl3372setup.network.WifiLink
 import io.github.kriziw.bl3372setup.network.withMulticastLock
 import io.github.kriziw.bl3372setup.runxin.Bl3372Transport
-import io.github.kriziw.bl3372setup.runxin.F79d
+import io.github.kriziw.bl3372setup.runxin.ControllerProfiles
+import io.github.kriziw.bl3372setup.runxin.VolumeUnit
 import io.github.kriziw.bl3372setup.runxin.SoftenerClient
 import io.github.kriziw.bl3372setup.runxin.SoftenerSetting
 import io.github.kriziw.bl3372setup.runxin.SoftenerState
@@ -46,6 +47,7 @@ sealed interface Connection {
     data object Live : Connection
     data class NotFound(val lastIp: String) : Connection
     data class Failed(val error: NetworkError) : Connection
+    data class UnsupportedModule(val deviceType: Int) : Connection
 }
 
 /** Outcome of the most recent write, shown once in a snackbar. */
@@ -60,13 +62,19 @@ data class DeviceUiState(
     val pendingWrite: SoftenerSetting? = null,
     val lastWrite: WriteOutcome? = null,
 ) {
-    /** Runxin F79D (model 9) behind a BL3372 (type 0x520F): the combination ypsilon-local verified. */
+    val profile get() = ControllerProfiles.resolve(device?.deviceType, state?.deviceModel)
+
     val isVerifiedModel: Boolean
-        get() = state?.deviceModel == F79d.VERIFIED_MODEL && device?.deviceType == BroadlinkPackets.DEVTYPE_RUNXIN_BL3372
+        get() = profile != null
+
+    val experimentalUnlocked: Boolean
+        get() = ControllerProfiles.experimentalAllowed(
+            device?.deviceType, state?.deviceModel, device?.controlsUnlocked == true, device?.unlockedModelCode,
+        )
 
     val controlsEnabled: Boolean
         get() = connection == Connection.Live && pendingWrite == null &&
-            (isVerifiedModel || device?.controlsUnlocked == true)
+            (isVerifiedModel || experimentalUnlocked)
 
     /** Forced regeneration only starts from normal service, never from vacation or a closed valve. */
     val canRegenerate: Boolean
@@ -122,7 +130,14 @@ class DeviceViewModel(application: Application, private val mac: String) : Andro
         reconnect()
     }
 
-    fun unlockControls() = store.update(mac) { it.copy(controlsUnlocked = true) }
+    fun unlockControls() {
+        val current = _state.value
+        val model = current.state?.deviceModel ?: return
+        if (current.connection != Connection.Live || !ControllerProfiles.supportsTransport(current.device?.deviceType)) return
+        store.update(mac) { it.copy(controlsUnlocked = true, unlockedModelCode = model) }
+    }
+
+    fun lockControls() = store.update(mac) { it.copy(controlsUnlocked = false, unlockedModelCode = null) }
 
     fun remove() {
         stop()
@@ -134,6 +149,7 @@ class DeviceViewModel(application: Application, private val mac: String) : Andro
     fun apply(setting: SoftenerSetting) {
         val c = client ?: return
         if (!_state.value.controlsEnabled) return
+        if (setting is SoftenerSetting.FlowShutoff && _state.value.state?.volumeUnit != VolumeUnit.CUBIC_METRES) return
         if (setting is SoftenerSetting.Regenerate && !_state.value.canRegenerate) return
         _state.update { it.copy(pendingWrite = setting) }
         viewModelScope.launch {
@@ -205,9 +221,15 @@ class DeviceViewModel(application: Application, private val mac: String) : Andro
         }
         store.update(mac) { it.copy(lastIp = found.address.hostAddress!!, deviceType = found.deviceType) }
 
+        if (!ControllerProfiles.supportsTransport(found.deviceType)) {
+            _state.update { it.copy(state = null, updatedAt = null) }
+            setConnection(Connection.UnsupportedModule(found.deviceType))
+            return null
+        }
+
         setConnection(Connection.Connecting)
         val session = BroadlinkSession(sockets, found.endpoint())
-        return SoftenerClient(Bl3372Transport(session)).also { client = it }
+        return SoftenerClient(Bl3372Transport(session), moduleType = found.deviceType).also { client = it }
     }
 
     private suspend fun find(

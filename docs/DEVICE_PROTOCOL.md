@@ -69,7 +69,9 @@ Retry rules, following ypsilon-local:
 * Opcodes: `09` query (payload = field ids), `19` write (payload = `[id, b1, b2]` triples).
   Replies use `C9` and `D9`.
 * Both checksums are the additive 8-bit sum of everything before them.
-* The app reads fields 1–51 every poll, and field 52 (a slow-changing service interval) once.
+* On a new connection the app first queries field 1 to select a bundled controller profile.
+  The F79D profile reads fields 1–51 every poll, and field 52 (a slow-changing service interval)
+  once. Unmatched identities use this map as an explicitly experimental fallback.
 
 Fields the app shows, with their encodings. The **W** column marks settings the app can change;
 each of those was write-verified on real hardware by ypsilon-local (Ypsilon G6, F79D, model 9).
@@ -121,9 +123,12 @@ The Euro-Clear Midnight's ECOPRO+ head uses the same "Water device" vendor app a
 features: SafeHOME limits, hardness in mg/l, and the identical vacation sequence. Its manual
 names the head type with an example of "F136". Its model number has **not** been confirmed.
 
-For any other model the app shows every value with a warning and keeps controls locked. You can
-unlock them per device after confirming that the displayed values match the controller's own
-display. Writes are still verified by read-back.
+For an unmatched model the app shows fallback readings with a persistent experimental warning
+and keeps controls locked. You can unlock them after confirming that the displayed values match
+the controller's own display. The opt-in is scoped to the reported controller code; old unscoped
+opt-ins require confirmation again. You can relock controls. Writes are still verified by read-back.
+Other module types receive no Runxin commands. Official portfolio research and profile-loading
+rules are in [COMPATIBILITY.md](COMPATIBILITY.md).
 
 ## 6. VLANs and routed networks
 
