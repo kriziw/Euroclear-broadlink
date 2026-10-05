@@ -93,13 +93,19 @@ each of those was write-verified on real hardware by ypsilon-local (Ypsilon G6, 
 | 43 | salt added (kg, 0–100; bookkeeping, not a level sensor) | u8 | ✔ |
 | 44/45/46 | service days, days remaining, regeneration by volume (0) or time (1) | u8 | |
 | 47 | raw-water hardness, mg/l (50–1500) | u16 LE | ✔ |
-| 49 | vacation flag | bool | read-only |
+| 49 | vacation flag (1 start, 0 end) | bool | experimental only |
 | 50/51 | salt dissolving / pause remaining, min | u8 | |
 | 52 | filter media interval, days | u16 LE | |
 
-**Vacation mode is read-only on purpose.** ypsilon-local showed that a direct field-49 write is
-acknowledged but not applied on current F79D firmware. The Midnight manual's method (hold ▼ for
-6 s while in service) is shown in the app instead.
+**Vacation mode is experimental.** The legacy WaterDevice UI writes field 49 = 1 to start and 0 to
+end, with the progression 0 → 3 → 7 → 2 → 8 (refill, 240 min salt dissolving, brine draw at 25 % of
+the set time, pause 2). The Midnight manual describes the same sequence for holding ▼ for 6 s.
+ypsilon-local showed that the Ypsilon G6 (model 9) acknowledges the write without applying it, so
+the app does not offer it for the verified F79D profile. For experimental controllers (after the
+opt-in) it follows the legacy guards: start only from service (station 0, flag off), end only
+from the stable pause (station 8). Success is reported only when a fresh read shows the requested
+flag (15 s window, like regeneration); otherwise the app points to the controller's own button.
+Not yet confirmed on the Midnight (model 12).
 
 ## 4. Write rule: send once, then prove it by reading
 

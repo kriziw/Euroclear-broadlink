@@ -117,7 +117,7 @@ class SoftenerClient(
      * Success is only ever reported from fresh read-back, never from the write acknowledgement.
      */
     suspend fun write(setting: SoftenerSetting): WriteResult = lock.withLock {
-        val mechanical = setting is SoftenerSetting.Regenerate
+        val mechanical = setting.isMechanical
         val timeout = if (mechanical) mechanicalTimeoutMillis else settingTimeoutMillis
         val interval = if (mechanical) mechanicalIntervalMillis else settingIntervalMillis
 

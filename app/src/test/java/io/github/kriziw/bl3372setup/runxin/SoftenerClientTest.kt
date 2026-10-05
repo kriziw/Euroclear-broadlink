@@ -116,6 +116,36 @@ class SoftenerClientTest {
     }
 
     @Test
+    fun `vacation mode writes field 49 and is confirmed by the controller's own flag`() = runBlocking {
+        assertEquals(listOf(49, 1, 0), SoftenerSetting.Vacation(true).encode())
+        assertEquals(listOf(49, 0, 0), SoftenerSetting.Vacation(false).encode())
+        FakeController(baseline + (1 to (12 to 0))).use { device ->
+            val result = client(device).write(SoftenerSetting.Vacation(true))
+            assertTrue(result is WriteResult.Confirmed)
+            assertEquals(true, (result as WriteResult.Confirmed).state.vacationFlag)
+            assertEquals(1, device.writesReceived.get())
+        }
+    }
+
+    @Test
+    fun `a vacation write the controller acknowledges but ignores is not confirmed`() = runBlocking {
+        // What ypsilon-local observed on the Ypsilon G6: ACK, but the flag stays false.
+        FakeController(baseline).use { device ->
+            device.ignoreWrites = true
+            val result = client(device).write(SoftenerSetting.Vacation(true))
+            assertTrue(result is WriteResult.NotConfirmed)
+            assertEquals(false, (result as WriteResult.NotConfirmed).lastState?.vacationFlag)
+            assertEquals(1, device.writesReceived.get()) // never resent
+        }
+    }
+
+    @Test
+    fun `resin volume is in tenths of a litre on the Midnight (model 12)`() {
+        assertEquals(25.0, SoftenerState(mapOf(1 to (12 to 0), 26 to (250 to 0))).resinVolumeLitres!!, 0.0)
+        assertEquals(40.0, SoftenerState(mapOf(1 to (9 to 0), 26 to (40 to 0))).resinVolumeLitres!!, 0.0)
+    }
+
+    @Test
     fun `transient -5 replies are retried for reads`() = runBlocking {
         FakeController(baseline).use { device ->
             val c = client(device)

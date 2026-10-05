@@ -79,6 +79,23 @@ data class DeviceUiState(
     /** Forced regeneration only starts from normal service, never from vacation or a closed valve. */
     val canRegenerate: Boolean
         get() = controlsEnabled && state?.let { it.station == Station.IN_SERVICE && it.vacationFlag != true } == true
+
+    /**
+     * Vacation mode is offered for experimental controller profiles only: on the verified F79D
+     * (model 9) the field-49 write is known to be acknowledged without effect.
+     */
+    val offersVacation: Boolean
+        get() = state != null && profile == null && ControllerProfiles.supportsTransport(device?.deviceType)
+
+    /** Like the controller's own button: vacation starts only from normal service. */
+    val canStartVacation: Boolean
+        get() = offersVacation && controlsEnabled &&
+            state?.let { it.station == Station.IN_SERVICE && it.vacationFlag == false } == true
+
+    /** It ends only from the stable vacation pause (pause 2), not while still preparing. */
+    val canEndVacation: Boolean
+        get() = offersVacation && controlsEnabled &&
+            state?.let { it.vacationFlag == true && it.station == Station.PAUSE_2 } == true
 }
 
 class DeviceViewModel(application: Application, private val mac: String) : AndroidViewModel(application) {
@@ -151,6 +168,9 @@ class DeviceViewModel(application: Application, private val mac: String) : Andro
         if (!_state.value.controlsEnabled) return
         if (setting is SoftenerSetting.FlowShutoff && _state.value.state?.volumeUnit != VolumeUnit.CUBIC_METRES) return
         if (setting is SoftenerSetting.Regenerate && !_state.value.canRegenerate) return
+        if (setting is SoftenerSetting.Vacation &&
+            !(if (setting.on) _state.value.canStartVacation else _state.value.canEndVacation)
+        ) return
         _state.update { it.copy(pendingWrite = setting) }
         viewModelScope.launch {
             val outcome = try {

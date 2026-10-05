@@ -20,6 +20,9 @@
     <string name="action_open_wifi">Open Wi-Fi networks</string>
     <string name="action_regenerate">Regenerate</string>
     <string name="action_regenerate_now">Regenerate now</string>
+    <string name="action_vacation">Vacation</string>
+    <string name="action_vacation_start">Start vacation mode</string>
+    <string name="action_vacation_end">End vacation mode</string>
     <string name="action_remove">Remove</string>
     <string name="action_retry">Retry</string>
     <string name="action_save">Save</string>
@@ -224,6 +227,12 @@
     <string name="regenerate_confirm_title">Start regeneration now?</string>
     <string name="regenerate_confirm_text">The softener regenerates immediately. It delivers no water during the first phase and only hard water afterwards, and uses salt and water. A full cycle takes a few hours.</string>
     <string name="regenerate_hint">Only available while the softener is in service. The app confirms that the valve has started moving.</string>
+    <string name="vacation_start_title">Start vacation mode?</string>
+    <string name="vacation_start_text" formatted="false">The controller refills the brine tank, lets the salt dissolve for 4 hours, runs a shortened brine and slow rinse (25% of the normal time), then pauses until you end vacation mode. This is the same as holding ▼ for 6 seconds on the controller.</string>
+    <string name="vacation_end_title">End vacation mode?</string>
+    <string name="vacation_end_text">The controller leaves vacation mode, the same as holding ▼ for 6 seconds on it.</string>
+    <string name="vacation_untested">Not yet confirmed on this controller model. The app checks the controller’s response; if it does not switch, use the ▼ button on the controller.</string>
+    <string name="vacation_end_wait">Vacation mode can be ended once the controller reaches its vacation pause.</string>
 
     <string name="station_in_service">In service</string>
     <string name="station_backwash">Backwash</string>
@@ -286,6 +295,9 @@
 
     <string name="write_confirmed">%1$s saved and confirmed by the controller.</string>
     <string name="write_regeneration_started">Regeneration started. The controller confirmed the valve is moving.</string>
+    <string name="write_vacation_on">Vacation mode started. The controller confirmed it.</string>
+    <string name="write_vacation_off">Vacation mode ended. The controller confirmed it.</string>
+    <string name="write_vacation_not_confirmed">The controller did not switch vacation mode. Use the controller instead: hold ▼ for 6 seconds while in service.</string>
     <string name="write_not_confirmed">%1$s was sent, but the controller did not confirm the change. It may not accept this setting.</string>
     <string name="write_ambiguous">No reply while sending %1$s, and the change was not confirmed. Check the value before trying again.</string>
     <string name="write_failed">Could not send %1$s. %2$s</string>
