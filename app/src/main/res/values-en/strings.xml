@@ -439,4 +439,31 @@
         <item quantity="one">%1$d week</item>
         <item quantity="other">%1$d weeks</item>
     </plurals>
+
+    <!-- Other brands: Wi-Fi setup -->
+    <string name="appliance_band_hint">Softener Wi-Fi modules usually need your router’s 2.4 GHz network; 5 GHz-only and WPA3-only networks may not work.</string>
+    <string name="appliance_wifi_setup">Set up Wi-Fi</string>
+    <string name="appliance_wifi_setup_hint">For a new softener that is not on your Wi-Fi yet.</string>
+    <string name="appliance_on_network_title">Already on your Wi-Fi</string>
+    <string name="appliance_searching">Searching… %1$d / %2$d</string>
+    <string name="appliance_search_none">No device of this brand answered. Check that it is on this network and that the login is right, or enter its address.</string>
+    <string name="appliance_or_address">Or enter its address:</string>
+    <string name="appliance_on_device_wifi">This phone is connected to the softener’s own Wi-Fi.</string>
+    <string name="appliance_open_setup_page">Open the device’s setup page</string>
+    <string name="appliance_setup_page_hint">The page is the device’s own. Your Wi-Fi password goes to the device, not to WaterCare.</string>
+    <string name="appliance_wifi_after">When the softener has joined, reconnect this phone to your Wi-Fi and use “Search this network”.</string>
+    <string name="judo_wifi_steps">1. Switch the softener off and on again: the Connectivity Module opens its own Wi-Fi “Connectivity-…” for about 10 minutes.\n2. Open Wi-Fi networks and join it.\n3. Come back, confirm below and open the module’s setup page.\n4. Tick “WLAN on/off”, enter your Wi-Fi name and password, and save.</string>
+    <string name="gruenbeck_wifi_steps">1. Open Wi-Fi networks and join the softener’s own Wi-Fi “softliQ:SC_…” with its 8-digit password (see the softliQ manual).\n2. Come back, confirm below and open the softener’s setup page.\n3. Choose the connection to a Wi-Fi router, enter your Wi-Fi name and password, and save.\n4. Your router needs a 2.4 GHz network with WPA/WPA2, a fixed channel between 1 and 10, and DHCP.</string>
+    <string name="bwt_wifi_steps">1. On the softener, open Settings → General → Wi-Fi connection and switch it on.\n2. Choose your network, enter its password and tap Connect.\n3. Open Settings → General → Connection and turn on the Local API.\n4. The address is shown under Info → Connection status. Come back and search this network, or enter that address.</string>
+    <string name="syr_wifi_steps">1. Start the softener’s access point from its Wi-Fi settings on the display (see the NeoSoft manual).\n2. Open Wi-Fi networks and join the softener’s Wi-Fi.\n3. Come back, confirm below and enter your home Wi-Fi. WaterCare sends it straight to the softener.</string>
+    <string name="judo_page_hint">Tick “WLAN on/off”, enter your Wi-Fi name and password, and save.</string>
+    <string name="gruenbeck_page_hint">Choose the connection to a Wi-Fi router, enter your Wi-Fi name and password, and save.</string>
+    <string name="syr_send">Send to softener</string>
+    <string name="syr_sending">Waiting for the softener to connect…</string>
+    <string name="syr_connected">The softener joined your Wi-Fi at %1$s.</string>
+    <string name="syr_connected_no_address">The softener reports that it is connected to your Wi-Fi.</string>
+    <string name="syr_link_lost">The softener’s Wi-Fi closed after the settings were sent, as it does when it switches to your network.</string>
+    <string name="syr_not_connected">The softener did not report a connection within a minute. Check the Wi-Fi name and password (2.4 GHz) and try again.</string>
+    <string name="syr_encoding_warning">The name or password contains spaces or / ? # %. Some SYR firmware cannot take these through its local API; if it fails, use the softener’s display.</string>
+    <string name="action_use_address">Use this address</string>
 </resources>

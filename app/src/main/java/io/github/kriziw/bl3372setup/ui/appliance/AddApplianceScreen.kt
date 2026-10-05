@@ -16,6 +16,9 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -32,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
@@ -47,10 +51,12 @@ import io.github.kriziw.bl3372setup.SystemScreens
 import io.github.kriziw.bl3372setup.app
 import io.github.kriziw.bl3372setup.appliance.ApplianceAddress
 import io.github.kriziw.bl3372setup.appliance.ApplianceDrivers
+import io.github.kriziw.bl3372setup.appliance.ApplianceScanner
 import io.github.kriziw.bl3372setup.appliance.ApplianceState
 import io.github.kriziw.bl3372setup.appliance.Brand
 import io.github.kriziw.bl3372setup.appliance.CredentialKind
 import io.github.kriziw.bl3372setup.appliance.judo.JudoDriver
+import io.github.kriziw.bl3372setup.broadlink.Ipv4
 import io.github.kriziw.bl3372setup.devices.SavedDevice
 import io.github.kriziw.bl3372setup.network.LocalHttp
 import io.github.kriziw.bl3372setup.network.NetworkError
@@ -59,12 +65,14 @@ import io.github.kriziw.bl3372setup.ui.common.AppScaffold
 import io.github.kriziw.bl3372setup.ui.common.BackButton
 import io.github.kriziw.bl3372setup.ui.common.Banner
 import io.github.kriziw.bl3372setup.ui.common.Hint
+import io.github.kriziw.bl3372setup.ui.common.OptionCard
 import io.github.kriziw.bl3372setup.ui.common.PrivacyFooter
 import io.github.kriziw.bl3372setup.ui.common.SectionCard
 import io.github.kriziw.bl3372setup.ui.common.StatusKind
 import io.github.kriziw.bl3372setup.ui.common.networkErrorText
 import io.github.kriziw.bl3372setup.ui.setup.LocalNetworkCard
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -76,11 +84,18 @@ import kotlinx.coroutines.withTimeout
 import java.io.IOException
 import java.util.UUID
 
+/** An appliance answered at [host] during a network search. */
+data class FoundAppliance(val host: String, val model: String)
+
 data class AddApplianceState(
     val testing: Boolean = false,
     val found: ApplianceState? = null,
     val error: NetworkError? = null,
     val localNetworkGranted: Boolean = true,
+    val scanning: Boolean = false,
+    val scanned: Int = 0,
+    val scanTotal: Int = 0,
+    val scanResults: List<FoundAppliance>? = null,
 )
 
 class AddApplianceViewModel(application: Application) : AndroidViewModel(application) {
@@ -88,26 +103,80 @@ class AddApplianceViewModel(application: Application) : AndroidViewModel(applica
     private val store = application.app.deviceStore
     private val _state = MutableStateFlow(AddApplianceState(localNetworkGranted = Permissions.hasLocalNetwork(application)))
     val state: StateFlow<AddApplianceState> = _state.asStateFlow()
-    private var job: Job? = null
+    private var testJob: Job? = null
+    private var scanJob: Job? = null
 
     fun refreshPermission() = _state.update { it.copy(localNetworkGranted = Permissions.hasLocalNetwork(getApplication())) }
 
+    /** Forgets the last connection test (the form changed). A running search continues. */
     fun reset() {
-        job?.cancel()
+        testJob?.cancel()
         _state.update { it.copy(testing = false, found = null, error = null) }
+    }
+
+    /** Forgets everything, e.g. when another brand is chosen. */
+    fun clear() {
+        reset()
+        scanJob?.cancel()
+        _state.update { it.copy(scanning = false, scanResults = null) }
     }
 
     /** Reads the appliance until it has identified itself; slow devices answer with a partial state first. */
     fun test(brand: Brand, address: ApplianceAddress) {
-        job?.cancel()
+        testJob?.cancel()
         _state.update { it.copy(testing = true, found = null, error = null) }
-        job = viewModelScope.launch {
+        testJob = viewModelScope.launch {
             val link = monitor.link.value
             if (link == null) {
                 _state.update { it.copy(testing = false, error = NetworkError.NotConnected) }
                 return@launch
             }
-            val driver = ApplianceDrivers.create(brand, LocalHttp(NetworkTcpConnector(link.network)), address)
+            try {
+                val found = identify(LocalHttp(NetworkTcpConnector(link.network)), brand, address, TEST_TIMEOUT_MILLIS)
+                _state.update { it.copy(testing = false, found = found) }
+            } catch (e: IOException) {
+                _state.update { it.copy(testing = false, error = NetworkError.of(e)) }
+            } catch (_: TimeoutCancellationException) {
+                _state.update { it.copy(testing = false, error = NetworkError.Timeout) }
+            }
+        }
+    }
+
+    /**
+     * Searches the phone's /24 for the brand's port, then asks each open host to identify itself
+     * with [login] (JUDO and BWT need it). Nothing is sent to hosts whose port is closed.
+     */
+    fun scan(brand: Brand, port: Int, login: ApplianceAddress) {
+        scanJob?.cancel()
+        scanJob = viewModelScope.launch {
+            val link = monitor.link.value
+            val own = link?.address
+            if (link == null || own == null) {
+                _state.update { it.copy(error = NetworkError.NotConnected) }
+                return@launch
+            }
+            val hosts = Ipv4.surrounding24(own).hosts().filter { it != own }.mapNotNull { it.hostAddress }
+            _state.update { it.copy(scanning = true, scanned = 0, scanTotal = hosts.size, scanResults = emptyList(), error = null, found = null) }
+            val connector = NetworkTcpConnector(link.network)
+            val open = ApplianceScanner.openHosts(connector, hosts, port) { done -> _state.update { it.copy(scanned = done) } }
+            val http = LocalHttp(connector)
+            open.forEach { host ->
+                val state = try {
+                    identify(http, brand, login.copy(host = host, port = port), SCAN_IDENTIFY_MILLIS)
+                } catch (_: IOException) {
+                    null
+                } catch (_: TimeoutCancellationException) {
+                    null
+                }
+                state?.model?.let { model -> _state.update { it.copy(scanResults = it.scanResults.orEmpty() + FoundAppliance(host, model)) } }
+            }
+            _state.update { it.copy(scanning = false) }
+        }
+    }
+
+    private suspend fun identify(http: LocalHttp, brand: Brand, address: ApplianceAddress, timeoutMillis: Long): ApplianceState =
+        coroutineScope {
+            val driver = ApplianceDrivers.create(brand, http, address)
             val identified = CompletableDeferred<ApplianceState>()
             val reader = launch {
                 try {
@@ -117,17 +186,11 @@ class AddApplianceViewModel(application: Application) : AndroidViewModel(applica
                 }
             }
             try {
-                val found = withTimeout(TEST_TIMEOUT_MILLIS) { identified.await() }
-                _state.update { it.copy(testing = false, found = found) }
-            } catch (e: IOException) {
-                _state.update { it.copy(testing = false, error = NetworkError.of(e)) }
-            } catch (_: TimeoutCancellationException) {
-                _state.update { it.copy(testing = false, error = NetworkError.Timeout) }
+                withTimeout(timeoutMillis) { identified.await() }
             } finally {
                 reader.cancel()
             }
         }
-    }
 
     /** Saves the identified appliance and returns its id. */
     fun save(brand: Brand, address: ApplianceAddress): String? {
@@ -151,11 +214,19 @@ class AddApplianceViewModel(application: Application) : AndroidViewModel(applica
 
     private companion object {
         const val TEST_TIMEOUT_MILLIS = 45_000L
+        const val SCAN_IDENTIFY_MILLIS = 15_000L
     }
 }
 
 @Composable
-fun AddApplianceRoute(onBack: () -> Unit, onSaved: (String) -> Unit, viewModel: AddApplianceViewModel = viewModel()) {
+fun AddApplianceRoute(
+    initialBrand: String?,
+    initialHost: String?,
+    onBack: () -> Unit,
+    onWifiSetup: (Brand) -> Unit,
+    onSaved: (String) -> Unit,
+    viewModel: AddApplianceViewModel = viewModel(),
+) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { viewModel.refreshPermission() }
@@ -164,25 +235,26 @@ fun AddApplianceRoute(onBack: () -> Unit, onSaved: (String) -> Unit, viewModel: 
         onPauseOrDispose {}
     }
 
-    var brandId by rememberSaveable { mutableStateOf<String?>(null) }
+    var brandId by rememberSaveable { mutableStateOf(initialBrand) }
     val brand = Brand.of(brandId)
-    var host by rememberSaveable { mutableStateOf("") }
+    var host by rememberSaveable { mutableStateOf(initialHost.orEmpty()) }
     var port by rememberSaveable(brandId) { mutableStateOf(brand?.defaultPort?.toString().orEmpty()) }
     var user by rememberSaveable(brandId) { mutableStateOf(if (brand == Brand.JUDO) JudoDriver.DEFAULT_USER else "") }
     // Never saved across process death; the user re-enters it if Android recreates the screen.
     var secret by remember(brandId) { mutableStateOf(if (brand == Brand.JUDO) JudoDriver.DEFAULT_PASSWORD else "") }
     val portValue = port.trim().toIntOrNull()?.takeIf { it in 1..65535 }
-    val address = if (brand != null && portValue != null && host.isNotBlank()) {
+    val needsSecret = brand != null && brand.credential != CredentialKind.NONE
+    val login = if (brand != null && portValue != null && (!needsSecret || secret.isNotEmpty())) {
         ApplianceAddress(
             host = host.trim(),
             port = portValue,
             user = user.trim().ifEmpty { null }.takeIf { brand.credential == CredentialKind.USER_PASSWORD },
-            secret = secret.takeIf { brand.credential != CredentialKind.NONE && it.isNotEmpty() },
+            secret = secret.takeIf { needsSecret },
         )
     } else {
         null
     }
-    val ready = address != null && (brand?.credential == CredentialKind.NONE || !address.secret.isNullOrEmpty())
+    val address = login?.takeIf { it.host.isNotBlank() }
 
     AppScaffold(title = stringResource(R.string.home_add_other), navigation = { BackButton(onBack) }) {
         if (!state.localNetworkGranted && Permissions.localNetworkRequired) {
@@ -198,8 +270,11 @@ fun AddApplianceRoute(onBack: () -> Unit, onSaved: (String) -> Unit, viewModel: 
                         containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
                     ),
                     modifier = Modifier.fillMaxWidth().selectable(selected, role = Role.RadioButton) {
-                        brandId = option.id
-                        viewModel.reset()
+                        if (option.id != brandId) {
+                            brandId = option.id
+                            host = ""
+                            viewModel.clear()
+                        }
                     },
                 ) {
                     Row(Modifier.padding(16.dp), verticalAlignment = Alignment.Top) {
@@ -215,8 +290,54 @@ fun AddApplianceRoute(onBack: () -> Unit, onSaved: (String) -> Unit, viewModel: 
         }
 
         if (brand != null) {
-            SectionCard {
+            OptionCard(
+                icon = R.drawable.ic_wifi,
+                title = stringResource(R.string.appliance_wifi_setup),
+                description = stringResource(R.string.appliance_wifi_setup_hint),
+                onClick = { onWifiSetup(brand) },
+            )
+            SectionCard(title = stringResource(R.string.appliance_on_network_title)) {
                 Hint(brandSetupHint(brand))
+                LoginFields(brand, user, { user = it; viewModel.reset() }, secret, { secret = it; viewModel.reset() })
+                FilledTonalButton(
+                    onClick = { if (login != null && portValue != null) viewModel.scan(brand, portValue, login) },
+                    enabled = login != null && !state.scanning,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    if (state.scanning) {
+                        CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
+                        Spacer(Modifier.width(10.dp))
+                        Text(stringResource(R.string.appliance_searching, state.scanned, state.scanTotal))
+                    } else {
+                        Icon(painterResource(R.drawable.ic_search), contentDescription = null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.action_search_network))
+                    }
+                }
+                state.scanResults?.forEach { result ->
+                    Card(
+                        onClick = {
+                            host = result.host
+                            login?.let { viewModel.test(brand, it.copy(host = result.host)) }
+                        },
+                        shape = MaterialTheme.shapes.medium,
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Column(Modifier.weight(1f)) {
+                                Text(result.model, style = MaterialTheme.typography.titleSmall)
+                                Hint(result.host)
+                            }
+                            Icon(painterResource(R.drawable.ic_chevron_right), contentDescription = null)
+                        }
+                    }
+                }
+                if (state.scanResults?.isEmpty() == true && !state.scanning) {
+                    Hint(stringResource(R.string.appliance_search_none))
+                }
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                Hint(stringResource(R.string.appliance_or_address))
                 OutlinedTextField(
                     value = host,
                     onValueChange = { host = it; viewModel.reset() },
@@ -234,11 +355,9 @@ fun AddApplianceRoute(onBack: () -> Unit, onSaved: (String) -> Unit, viewModel: 
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                 )
-                LoginFields(brand, user, { user = it; viewModel.reset() }, secret, { secret = it; viewModel.reset() })
-                Hint(stringResource(R.string.appliance_plain_http))
                 Button(
                     onClick = { address?.let { viewModel.test(brand, it) } },
-                    enabled = ready && !state.testing,
+                    enabled = address != null && !state.testing,
                     modifier = Modifier.fillMaxWidth().height(52.dp),
                 ) {
                     if (state.testing) {
@@ -249,6 +368,7 @@ fun AddApplianceRoute(onBack: () -> Unit, onSaved: (String) -> Unit, viewModel: 
                         Text(stringResource(R.string.action_connect))
                     }
                 }
+                Hint(stringResource(R.string.appliance_plain_http))
             }
             state.error?.let { Banner(StatusKind.ERROR, networkErrorText(it)) }
             state.found?.let { found ->

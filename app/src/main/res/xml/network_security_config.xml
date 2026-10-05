@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HTTPS everywhere, except the two device setup pages shown in-app during Wi-Fi setup: they are
+     plain HTTP on the devices' own access points. (Local API traffic uses raw sockets.) -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- JUDO Connectivity Module access point -->
+        <domain includeSubdomains="false">192.168.4.1</domain>
+        <!-- Grünbeck softliQ:SC access point -->
+        <domain includeSubdomains="false">192.168.0.1</domain>
+    </domain-config>
+</network-security-config>

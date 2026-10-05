@@ -442,4 +442,31 @@
         <item quantity="one">%1$d hét</item>
         <item quantity="other">%1$d hét</item>
     </plurals>
+
+    <!-- Other brands: Wi-Fi setup -->
+    <string name="appliance_band_hint">A vízlágyítók Wi-Fi-moduljai általában a router 2,4 GHz-es hálózatát igénylik; csak 5 GHz-es vagy csak WPA3-as hálózattal nem biztos, hogy működnek.</string>
+    <string name="appliance_wifi_setup">Wi-Fi beállítása</string>
+    <string name="appliance_wifi_setup_hint">Új vízlágyítóhoz, amely még nincs a Wi-Fi-hálózatán.</string>
+    <string name="appliance_on_network_title">Már a Wi-Fi-hálózatán van</string>
+    <string name="appliance_searching">Keresés… %1$d / %2$d</string>
+    <string name="appliance_search_none">Ilyen gyártmányú készülék nem válaszolt. Ellenőrizze, hogy ezen a hálózaton van-e és helyes-e a belépés, vagy adja meg a címét.</string>
+    <string name="appliance_or_address">Vagy adja meg a címét:</string>
+    <string name="appliance_on_device_wifi">Ez a telefon a vízlágyító saját Wi-Fi-hálózatához csatlakozik.</string>
+    <string name="appliance_open_setup_page">A készülék beállítóoldalának megnyitása</string>
+    <string name="appliance_setup_page_hint">Ez a készülék saját oldala. A Wi-Fi-jelszó a készülékhez kerül, nem a WaterCare-hez.</string>
+    <string name="appliance_wifi_after">Ha a vízlágyító csatlakozott, kapcsolja vissza a telefont a saját Wi-Fi-hálózatára, és használja a „Hálózat keresése” gombot.</string>
+    <string name="judo_wifi_steps">1. Kapcsolja ki, majd be a vízlágyítót: a Connectivity modul kb. 10 percre saját Wi-Fi-hálózatot nyit („Connectivity-…”).\n2. Nyissa meg a Wi-Fi-hálózatokat, és csatlakozzon hozzá.\n3. Térjen vissza, erősítse meg lent, és nyissa meg a modul beállítóoldalát.\n4. Jelölje be a „WLAN on/off” lehetőséget, adja meg a Wi-Fi nevét és jelszavát, majd mentse.</string>
+    <string name="gruenbeck_wifi_steps">1. Nyissa meg a Wi-Fi-hálózatokat, és csatlakozzon a vízlágyító saját hálózatához („softliQ:SC_…”) a 8 jegyű jelszóval (lásd a softliQ kézikönyvét).\n2. Térjen vissza, erősítse meg lent, és nyissa meg a vízlágyító beállítóoldalát.\n3. Válassza a Wi-Fi-routerhez kapcsolódást, adja meg a Wi-Fi nevét és jelszavát, majd mentse.\n4. A routeren 2,4 GHz-es, WPA/WPA2 titkosítású hálózat, 1 és 10 közötti fix csatorna és DHCP szükséges.</string>
+    <string name="bwt_wifi_steps">1. A vízlágyítón nyissa meg: Beállítások → Általános → WLAN-kapcsolat, és kapcsolja be.\n2. Válassza ki a hálózatát, adja meg a jelszavát, és koppintson a Csatlakozás gombra.\n3. Nyissa meg: Beállítások → Általános → Kapcsolat, és kapcsolja be a Local API-t.\n4. A címet az Info → Kapcsolat állapota alatt látja. Térjen vissza, és keressen a hálózaton, vagy adja meg ezt a címet.</string>
+    <string name="syr_wifi_steps">1. Indítsa el a vízlágyító hozzáférési pontját a kijelző Wi-Fi-beállításaiból (lásd a NeoSoft kézikönyvét).\n2. Nyissa meg a Wi-Fi-hálózatokat, és csatlakozzon a vízlágyító hálózatához.\n3. Térjen vissza, erősítse meg lent, és adja meg az otthoni Wi-Fi adatait. A WaterCare közvetlenül a vízlágyítónak küldi el.</string>
+    <string name="judo_page_hint">Jelölje be a „WLAN on/off” lehetőséget, adja meg a Wi-Fi nevét és jelszavát, majd mentse.</string>
+    <string name="gruenbeck_page_hint">Válassza a Wi-Fi-routerhez kapcsolódást, adja meg a Wi-Fi nevét és jelszavát, majd mentse.</string>
+    <string name="syr_send">Küldés a vízlágyítónak</string>
+    <string name="syr_sending">Várakozás a vízlágyító csatlakozására…</string>
+    <string name="syr_connected">A vízlágyító csatlakozott a Wi-Fi-hálózathoz, címe: %1$s.</string>
+    <string name="syr_connected_no_address">A vízlágyító jelzi, hogy csatlakozott a Wi-Fi-hálózathoz.</string>
+    <string name="syr_link_lost">A beállítások elküldése után a vízlágyító Wi-Fi-je megszűnt, ahogy a hálózatváltáskor szokott.</string>
+    <string name="syr_not_connected">A vízlágyító egy percen belül nem jelzett kapcsolatot. Ellenőrizze a Wi-Fi nevét és jelszavát (2,4 GHz), majd próbálja újra.</string>
+    <string name="syr_encoding_warning">A név vagy a jelszó szóközt vagy / ? # % jelet tartalmaz. Egyes SYR firmware-ek ezt nem fogadják el a helyi felületen; ha nem sikerül, használja a vízlágyító kijelzőjét.</string>
+    <string name="action_use_address">Ennek a címnek a használata</string>
 </resources>

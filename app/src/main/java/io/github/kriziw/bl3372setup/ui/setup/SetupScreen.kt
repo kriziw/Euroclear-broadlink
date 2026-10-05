@@ -362,7 +362,7 @@ private fun ConnectStep(state: SetupUiState, actions: SetupActions) {
 /** Renders "1. …
 2. …" text as a list with numbered markers. */
 @Composable
-private fun NumberedSteps(text: String) {
+internal fun NumberedSteps(text: String) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         text.lines().filter { it.isNotBlank() }.forEachIndexed { index, line ->
             Row(verticalAlignment = Alignment.Top) {
