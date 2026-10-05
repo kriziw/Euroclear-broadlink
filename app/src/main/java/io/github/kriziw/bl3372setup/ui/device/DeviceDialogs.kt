@@ -206,5 +206,5 @@ internal fun TextDialog(
 
 /** A dialog's starting text, fully selected so that typing replaces it. */
 @Composable
-private fun rememberSelectedText(initial: String) =
+internal fun rememberSelectedText(initial: String) =
     rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(initial, TextRange(0, initial.length))) }

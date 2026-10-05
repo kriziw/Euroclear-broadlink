@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import io.github.kriziw.bl3372setup.R
+import io.github.kriziw.bl3372setup.appliance.BrandCatalogue
+import io.github.kriziw.bl3372setup.appliance.BrandSupport
 import io.github.kriziw.bl3372setup.runxin.CatalogueEvidence
 import io.github.kriziw.bl3372setup.runxin.ControllerCatalogue
 import io.github.kriziw.bl3372setup.runxin.CompatibilityStatus
@@ -29,6 +31,7 @@ fun CompatibilityGuide(onBack: () -> Unit) {
             Text(stringResource(R.string.compatibility_detection_text))
         }
         ControllerLibrary()
+        OtherBrands()
         SectionCard(title = stringResource(R.string.compatibility_wifi_title)) {
             Text(stringResource(R.string.compatibility_wifi_text))
             TextButton(onClick = { uriHandler.openUri("https://run-xin.com/en/category126.htm") }) {
@@ -51,6 +54,35 @@ fun CompatibilityGuide(onBack: () -> Unit) {
             }
         }
         Hint(stringResource(R.string.compatibility_browser_hint))
+    }
+}
+
+/** Softeners of other brands from the Home Assistant community review, grouped by how WaterCare relates to them. */
+@Composable
+private fun OtherBrands() {
+    val uriHandler = LocalUriHandler.current
+    SectionCard(title = stringResource(R.string.catalogue_other_brands_title)) {
+        Text(stringResource(R.string.catalogue_other_brands_hint))
+    }
+    BrandCatalogue.bySupport().forEach { (support, entries) ->
+        SectionCard(
+            title = stringResource(
+                when (support) {
+                    BrandSupport.LOCAL_CONTROL -> R.string.brand_support_control
+                    BrandSupport.LOCAL_MONITOR -> R.string.brand_support_monitor
+                    BrandSupport.CLOUD_ONLY -> R.string.brand_support_cloud
+                    BrandSupport.BLUETOOTH -> R.string.brand_support_bluetooth
+                    BrandSupport.DIY -> R.string.brand_support_diy
+                },
+            ),
+        ) {
+            entries.forEachIndexed { index, entry ->
+                if (index > 0) HorizontalDivider()
+                Text(entry.name, style = MaterialTheme.typography.titleSmall)
+                Hint(entry.models)
+                TextButton(onClick = { uriHandler.openUri(entry.sourceUrl) }) { Text(stringResource(R.string.catalogue_source)) }
+            }
+        }
     }
 }
 

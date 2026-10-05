@@ -12,11 +12,14 @@ sealed interface NetworkError {
     data object Timeout : NetworkError
     /** The module refused the default BroadLink login (e.g. after pairing with the vendor cloud). */
     data object AuthRejected : NetworkError
+    /** An appliance's local API refused the stored user name, password or login code. */
+    data object LoginRejected : NetworkError
     data class Other(val detail: String) : NetworkError
 
     companion object {
         fun of(e: IOException): NetworkError {
             if (e is BroadlinkException && e.code == BroadlinkException.AUTH_FAILED) return AuthRejected
+            if (e is LoginRejectedException) return LoginRejected
             if (e is SocketTimeoutException) return Timeout
             val text = generateSequence<Throwable>(e) { it.cause }.mapNotNull { it.message }.joinToString(" ")
             return when {
