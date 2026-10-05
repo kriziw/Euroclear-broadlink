@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
@@ -36,6 +37,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -47,7 +49,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
@@ -254,6 +258,34 @@ fun Banner(
                 }
             }
         }
+    }
+}
+
+/**
+ * A one-line note for experimental support, with a small switch that turns the controls on or off.
+ * Turning them on is the user's opt-in; [canEnable] keeps it off until fresh readings are shown.
+ */
+@Composable
+fun ExperimentalNote(on: Boolean, canEnable: Boolean, onChange: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+    val status = LocalStatusColors.current
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.medium)
+            .background(status.warningContainer.copy(alpha = 0.45f))
+            .toggleable(value = on, enabled = on || canEnable, role = Role.Switch, onValueChange = onChange)
+            .padding(start = 12.dp, end = 8.dp, top = 2.dp, bottom = 2.dp),
+    ) {
+        Icon(painterResource(R.drawable.ic_warning), contentDescription = null, tint = status.warning, modifier = Modifier.size(16.dp))
+        Spacer(Modifier.width(10.dp))
+        Text(
+            stringResource(if (on) R.string.experimental_note_on else R.string.experimental_note_off),
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.weight(1f).padding(vertical = 6.dp),
+        )
+        Spacer(Modifier.width(8.dp))
+        Switch(checked = on, onCheckedChange = null, enabled = on || canEnable, modifier = Modifier.scale(0.75f))
     }
 }
 

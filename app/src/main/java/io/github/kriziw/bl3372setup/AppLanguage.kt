@@ -10,11 +10,13 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.edit
 import java.util.Locale
 
-/** The app's own language choice. [SYSTEM] follows the phone (Hungarian unless it is English). */
+/** The app's own language choice. [SYSTEM] follows the phone, falling back to English. */
 enum class LanguageOption(val tag: String?) {
     SYSTEM(null),
+    ENGLISH("en"),
     HUNGARIAN("hu"),
-    ENGLISH("en");
+    SPANISH("es"),
+    GERMAN("de");
 
     companion object {
         /** Maps a stored or system-reported language tag (e.g. `hu-HU`) to an option. */

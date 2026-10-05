@@ -22,6 +22,7 @@ fun networkErrorText(error: NetworkError): String = when (error) {
     NetworkError.NotConnected -> stringResource(R.string.error_not_connected)
     NetworkError.Timeout -> stringResource(R.string.error_timeout)
     NetworkError.AuthRejected -> stringResource(R.string.error_auth_rejected)
+    NetworkError.LoginRejected -> stringResource(R.string.error_login_rejected)
     is NetworkError.Other -> error.detail
 }
 

@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.kriziw.bl3372setup.R
+import io.github.kriziw.bl3372setup.appliance.Brand
 import io.github.kriziw.bl3372setup.broadlink.BroadlinkPackets
 import io.github.kriziw.bl3372setup.devices.SavedDevice
 import io.github.kriziw.bl3372setup.ui.common.AppScaffold
@@ -47,6 +48,7 @@ fun HomeScreen(
     onOpen: (SavedDevice) -> Unit,
     onSetUpNew: () -> Unit,
     onAddExisting: () -> Unit,
+    onAddOther: () -> Unit,
     onSettings: () -> Unit,
 ) {
     var addSheet by rememberSaveable { mutableStateOf(false) }
@@ -76,7 +78,7 @@ fun HomeScreen(
         },
     ) {
         if (devices.isEmpty()) {
-            EmptyState(onSetUpNew, onAddExisting)
+            EmptyState(onSetUpNew, onAddExisting, onAddOther)
         } else {
             devices.forEach { DeviceCard(it, onOpen) }
             // Room for the floating button over the last card.
@@ -88,12 +90,13 @@ fun HomeScreen(
             onDismiss = { addSheet = false },
             onSetUpNew = { addSheet = false; onSetUpNew() },
             onAddExisting = { addSheet = false; onAddExisting() },
+            onAddOther = { addSheet = false; onAddOther() },
         )
     }
 }
 
 @Composable
-private fun EmptyState(onSetUpNew: () -> Unit, onAddExisting: () -> Unit) {
+private fun EmptyState(onSetUpNew: () -> Unit, onAddExisting: () -> Unit, onAddOther: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -110,11 +113,11 @@ private fun EmptyState(onSetUpNew: () -> Unit, onAddExisting: () -> Unit) {
             modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
-    AddOptions(onSetUpNew, onAddExisting)
+    AddOptions(onSetUpNew, onAddExisting, onAddOther)
 }
 
 @Composable
-private fun AddOptions(onSetUpNew: () -> Unit, onAddExisting: () -> Unit) {
+private fun AddOptions(onSetUpNew: () -> Unit, onAddExisting: () -> Unit, onAddOther: () -> Unit) {
     OptionCard(
         icon = R.drawable.ic_wifi,
         title = stringResource(R.string.home_set_up_new),
@@ -127,18 +130,24 @@ private fun AddOptions(onSetUpNew: () -> Unit, onAddExisting: () -> Unit) {
         description = stringResource(R.string.home_add_existing_hint),
         onClick = onAddExisting,
     )
+    OptionCard(
+        icon = R.drawable.ic_water_drop,
+        title = stringResource(R.string.home_add_other),
+        description = stringResource(R.string.home_add_other_hint),
+        onClick = onAddOther,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AddDeviceSheet(onDismiss: () -> Unit, onSetUpNew: () -> Unit, onAddExisting: () -> Unit) {
+private fun AddDeviceSheet(onDismiss: () -> Unit, onSetUpNew: () -> Unit, onAddExisting: () -> Unit, onAddOther: () -> Unit) {
     ModalBottomSheet(onDismissRequest = onDismiss) {
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp).navigationBarsPadding(),
         ) {
             Text(stringResource(R.string.home_add_title), style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(start = 4.dp))
-            AddOptions(onSetUpNew, onAddExisting)
+            AddOptions(onSetUpNew, onAddExisting, onAddOther)
         }
     }
 }
@@ -156,11 +165,15 @@ private fun DeviceCard(device: SavedDevice, onOpen: (SavedDevice) -> Unit) {
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(device.name, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                val brand = Brand.of(device.brand)
                 Text(
-                    stringResource(
-                        if (device.deviceType == BroadlinkPackets.DEVTYPE_RUNXIN_BL3372) R.string.device_type_runxin else R.string.device_type_other,
-                        "0x%04X".format(device.deviceType),
-                    ),
+                    when {
+                        brand != null -> device.model ?: brand.displayName
+                        else -> stringResource(
+                            if (device.deviceType == BroadlinkPackets.DEVTYPE_RUNXIN_BL3372) R.string.device_type_runxin else R.string.device_type_other,
+                            "0x%04X".format(device.deviceType),
+                        )
+                    },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

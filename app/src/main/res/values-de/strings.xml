@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (formal Sie). -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
+    <string name="app_name">WaterCare</string>
+
+    <!-- Common actions -->
+    <string name="action_allow_local_network">Zugriff auf lokales Netzwerk erlauben</string>
+    <string name="action_back">Zurück</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_check_wifi_name">WLAN-Namen prüfen</string>
+    <string name="action_configure">Gerät konfigurieren</string>
+    <string name="action_connect">Verbinden</string>
+    <string name="action_done">Fertig</string>
+    <string name="action_hide">Ausblenden</string>
+    <string name="action_location_settings">Standorteinstellungen</string>
+    <string name="action_next">Weiter</string>
+    <string name="action_open">Öffnen</string>
+    <string name="action_open_app_settings">App-Einstellungen öffnen</string>
+    <string name="action_open_wifi">WLAN-Netzwerke öffnen</string>
+    <string name="action_regenerate">Regenerieren</string>
+    <string name="action_regenerate_now">Jetzt regenerieren</string>
+    <string name="action_vacation">Urlaub</string>
+    <string name="action_vacation_start">Urlaubsmodus starten</string>
+    <string name="action_vacation_end">Urlaubsmodus beenden</string>
+    <string name="action_remove">Entfernen</string>
+    <string name="action_retry">Erneut versuchen</string>
+    <string name="action_save">Speichern</string>
+    <string name="action_save_and_open">Speichern und öffnen</string>
+    <string name="action_scan">Scannen</string>
+    <string name="action_search_network">Dieses Netzwerk durchsuchen</string>
+    <string name="action_send_again">Erneut senden</string>
+    <string name="action_show">Anzeigen</string>
+    <string name="action_sync_clock">Mit Telefon synchronisieren</string>
+
+    <string name="cd_back">Zurück</string>
+    <string name="cd_edit">%1$s bearbeiten</string>
+    <string name="cd_hide_password">Passwort verbergen</string>
+    <string name="cd_more">Weitere Optionen</string>
+    <string name="cd_close">Schließen</string>
+    <string name="cd_show_password">Passwort anzeigen</string>
+
+    <string name="footer_privacy">Steuerungsdaten bleiben auf diesem Telefon. Kein Konto, keine Speicherung des WLAN-Passworts. Update-Prüfungen kontaktieren GitHub; automatische Prüfungen lassen sich abschalten.</string>
+    <string name="local_network_explanation">Android 17 verlangt die Berechtigung „Geräte in der Nähe“, bevor eine App mit Geräten im lokalen Netzwerk kommunizieren darf, auch mit der Enthärtungsanlage und ihrem Einrichtungsnetz.</string>
+    <string name="local_network_declined">Die Berechtigung wurde abgelehnt. Erlauben Sie sie unter App-Info → Berechtigungen → Geräte in der Nähe.</string>
+
+    <!-- Errors -->
+    <string name="error_auth_rejected">Das Modul hat die lokale Anmeldung abgelehnt. Das kann passieren, nachdem es mit der Cloud-App des Herstellers gekoppelt wurde; eine erneute WLAN-Einrichtung mit dieser App setzt es meist zurück.</string>
+    <string name="error_local_network_blocked">Android hat den Zugriff auf das lokale Netzwerk blockiert. Erlauben Sie „Geräte in der Nähe“ für diese App und schalten Sie ein VPN aus.</string>
+    <string name="error_not_connected">Die WLAN-Verbindung ist nicht verfügbar.</string>
+    <string name="error_timeout">Das Gerät hat nicht geantwortet.</string>
+
+    <!-- Home -->
+    <string name="home_subtitle">Ihre Enthärtungsanlagen, lokal gesteuert</string>
+    <string name="home_empty_title">Noch kein Gerät</string>
+    <string name="home_empty_text">Richten Sie das WLAN einer neuen Enthärtungsanlage ein oder fügen Sie eine hinzu, die schon in Ihrem Netzwerk ist.</string>
+    <string name="home_add_title">Gerät hinzufügen</string>
+    <string name="home_set_up_new">Neues Gerät einrichten</string>
+    <string name="home_set_up_new_hint">Übergibt der Steuerung Schritt für Schritt Ihren WLAN-Namen und Ihr Passwort.</string>
+    <string name="home_add_existing">Gerät aus meinem Netzwerk hinzufügen</string>
+    <string name="home_add_existing_hint">Findet es per Suche, per IP-Adresse oder durch Scannen eines anderen Subnetzes/VLANs.</string>
+    <string name="settings_title">Einstellungen</string>
+
+    <!-- Setup wizard -->
+    <string name="setup_step_of">Schritt %1$d von %2$d</string>
+    <string name="setup_skip_to_find">Schon im WLAN?</string>
+    <string name="setup_step1_title">Mit dem Gerät verbinden</string>
+    <string name="setup_step2_title">Ihr WLAN zu Hause</string>
+    <string name="setup_step3_title">Gerät konfigurieren</string>
+    <string name="setup_step4_title">Gerät im Netzwerk finden</string>
+
+    <string name="setup_no_wifi">Dieses Telefon ist mit keinem WLAN verbunden.</string>
+    <string name="setup_wrong_network">Verbunden mit „%1$s“. Der Name weicht von üblichen Geräte-WLAN-Namen ab. Wenn dies das Netzwerk Ihres Geräts ist, bestätigen Sie unten, um fortzufahren.</string>
+    <string name="setup_network_has_internet">Android meldet Internetzugang in diesem WLAN. Prüfen Sie, ob Sie mit dem Netzwerk des Geräts verbunden sind, und bestätigen Sie unten, wenn es stimmt.</string>
+    <string name="setup_network_without_internet">Mit einem WLAN ohne Internetzugang verbunden.</string>
+    <string name="setup_manual_confirmation">Ich habe die WLAN-Einstellungen von Android geprüft und bestätige, dass dieses Telefon mit dem Einrichtungs-WLAN des Geräts verbunden ist.</string>
+    <string name="setup_location_explanation">Android verrät Apps den WLAN-Namen nur mit der Berechtigung für den genauen Standort. Diese App nutzt sie für nichts anderes und liest Ihren Standort nie. Sie können das auch überspringen und unten bestätigen.</string>
+    <string name="setup_location_off">Schalten Sie den Standort ein, damit Android dieser App den WLAN-Namen zeigen kann, oder bestätigen Sie unten.</string>
+    <string name="setup_ssid_hidden">Android hat den Netzwerknamen nicht angezeigt. Bestätigen Sie unten, wenn es %1$s ist.</string>
+    <string name="setup_join_instructions">1. Versetzen Sie das Gerät laut Anleitung in den WLAN-Einrichtungsmodus. Bei manchen Runxin-Köpfen: Strom aus- und wieder einschalten und Menü/OK gedrückt halten, bis es piept.\n2. Öffnen Sie die WLAN-Einstellungen von Android und verbinden Sie sich mit dem Netzwerk des Geräts, z. B. WiFi-BL3372, WiFi-BL…, BroadlinkProv oder BroadLink_…; Ihr Gerät kann einen anderen Namen verwenden.\n3. Wenn Android „Kein Internet“ meldet, bleiben Sie verbunden.\n4. Kehren Sie hierher zurück und bestätigen Sie, dass Sie mit dem Netzwerk des Geräts verbunden sind. Der WLAN-Name ist ein Hinweis, keine Voraussetzung.</string>
+    <string name="setup_detail_phone">Telefon %1$s</string>
+    <string name="setup_detail_gateway">Gateway %1$s</string>
+    <string name="setup_detail_internet">Internet verfügbar</string>
+    <string name="setup_detail_no_internet">Kein Internet</string>
+
+    <string name="setup_ssid_label">WLAN-Name (SSID)</string>
+    <string name="setup_password_label">Passwort</string>
+    <string name="setup_password_unused">Passwort (bei offenen Netzen nicht verwendet)</string>
+    <string name="setup_bytes_counter" tools:ignore="PluralsCandidate">%1$d / %2$d Bytes · Groß-/Kleinschreibung beachten</string>
+    <string name="setup_too_long" tools:ignore="PluralsCandidate">Zu lang: %1$d Bytes (max. %2$d).</string>
+    <string name="setup_ssid_is_device_ap">Das ist das eigene Einrichtungsnetz des Moduls. Geben Sie den Namen Ihres WLANs zu Hause ein.</string>
+    <string name="setup_password_too_long" tools:ignore="PluralsCandidate">Zu lang: %1$d Bytes. Das BroadLink-Einrichtungspaket fasst höchstens %2$d (die offizielle App hat dieselbe Grenze).</string>
+    <string name="setup_password_too_short" tools:ignore="PluralsCandidate">WPA-Passwörter haben mindestens %1$d Zeichen.</string>
+    <string name="setup_security_label">Sicherheit</string>
+    <string name="setup_security_open">Offen</string>
+    <string name="setup_security_hint">WPA2 passt zu fast jedem Router. Wenn sich das Modul nicht verbindet, versuchen Sie WPA/WPA2.</string>
+    <string name="setup_band_hint">Das BL3372 unterstützt nur 2,4-GHz-WLAN. Verwenden Sie den 2,4-GHz-Netzwerknamen Ihres Routers; reine 5-GHz- und reine WPA3-Netze funktionieren nicht.</string>
+    <string name="setup_ssid_spaces">Der Name beginnt oder endet mit einem Leerzeichen. Prüfen Sie, ob das gewollt ist.</string>
+    <string name="setup_ssid_non_ascii">Der Name enthält Nicht-ASCII-Zeichen; er wird als UTF-8 gesendet.</string>
+    <string name="setup_password_non_ascii">Das Passwort enthält Nicht-ASCII-Zeichen. WPA-Passwörter sind normalerweise reines ASCII; das Modul könnte es ablehnen.</string>
+
+    <string name="setup_configure_explanation">Sendet WLAN-Namen und Passwort über die %1$s-Verbindung direkt an das Modul. Das BroadLink-Einrichtungsprotokoll ist unverschlüsselt; führen Sie dies nahe am Gerät und zügig durch.</string>
+    <string name="setup_reason_connect_first">Bestätigen Sie oben, dass dieses Telefon mit dem Einrichtungs-WLAN des Geräts verbunden ist.</string>
+    <string name="setup_reason_fill_details">Geben Sie die Daten Ihres WLANs zu Hause ein (Schritt 2).</string>
+    <string name="setup_sending">Konfiguration wird gesendet…</string>
+    <string name="setup_sending_round">Konfiguration wird gesendet… (Runde %1$d von %2$d)</string>
+    <string name="setup_sending_failed">Senden fehlgeschlagen.</string>
+    <string name="setup_acknowledged">Das Modul hat die Einstellungen bestätigt (Antwort von %1$s).</string>
+    <string name="setup_not_acknowledged">Einstellungen %1$d× gesendet. Es kam keine Bestätigung zurück; viele Module senden nie eine, das allein bedeutet also keinen Fehler.</string>
+    <string name="setup_link_lost_after_send">Einstellungen gesendet, und die %1$s-Verbindung brach direkt danach ab.</string>
+    <string name="setup_watching_ap">%1$s wird beobachtet… Sobald das Modul die Einstellungen übernimmt, startet es neu, sein Einrichtungsnetz verschwindet und es verbindet sich mit „%2$s“.</string>
+    <string name="setup_ap_gone">%1$s ist %2$d s nach dem Senden verschwunden. Das Modul hat höchstwahrscheinlich neu gestartet und verbindet sich jetzt mit „%3$s“. Verbinden Sie dieses Telefon wieder mit diesem Netzwerk, um es zu finden.</string>
+    <string name="setup_ap_still_up">Dieses Telefon ist nach 90 s noch mit %1$s verbunden. Das Modul hat die Einstellungen möglicherweise nicht übernommen.</string>
+    <string name="setup_troubleshooting">• Prüfen Sie WLAN-Name und Passwort (bei beiden zählt die Groß-/Kleinschreibung).\n• Der Router muss 2,4 GHz anbieten und darf nicht nur WPA3 verwenden.\n• Versuchen Sie die Sicherheitseinstellung WPA/WPA2.\n• Manche BroadLink-Firmware scheitert an Sonderzeichen im Passwort; ein Gastnetz mit einem Passwort aus Buchstaben und Ziffern kann helfen.\n• Versetzen Sie die Steuerung erneut in den WLAN-Einrichtungsmodus, verbinden Sie sich neu und senden Sie noch einmal.</string>
+
+    <string name="setup_discovery_explanation">Wenn sich das Modul mit Ihrem WLAN verbunden hat, verbinden Sie dieses Telefon mit Ihrem Netzwerk. Die App findet das Modul über die lokale BroadLink-Erkennung.</string>
+    <string name="setup_connect_home_wifi">Verbinden Sie dieses Telefon mit Ihrem WLAN zu Hause.</string>
+    <string name="setup_still_on_ap">Dieses Telefon ist noch im Einrichtungsnetz. Wechseln Sie zuerst in Ihr WLAN zu Hause.</string>
+    <string name="setup_searching_on">Suche in „%1$s“</string>
+    <string name="setup_current_network">dem aktuellen WLAN</string>
+    <string name="setup_other_vlan_toggle">Gerät in einem anderen VLAN oder Subnetz?</string>
+    <string name="setup_vlan_explanation">Suchen funktionieren nicht über VLANs oder Router hinweg. Ist die Enthärtungsanlage in einem anderen Netz (z. B. einem IoT-VLAN), geben Sie ihre IP-Adresse ein oder scannen Sie ihr Subnetz. Ihre Firewall muss UDP-Port 80 von diesem Telefon zum Gerät erlauben.</string>
+    <string name="setup_address_label">IP-Adresse oder Hostname</string>
+    <string name="setup_subnet_label">Subnetz (z. B. 192.168.20.0/24)</string>
+    <string name="setup_searching_seconds">Suche… (bis zu %1$d s)</string>
+    <string name="setup_nothing_found_broadcast">Kein BroadLink-Gerät hat geantwortet. Das Modul kann ein bis zwei Minuten zum Verbinden brauchen; suchen Sie erneut. Ist es in einem anderen VLAN, nutzen Sie die Option oben.</string>
+    <string name="setup_nothing_found_unicast">Unter dieser Adresse hat kein BroadLink-Gerät geantwortet. Prüfen Sie die Adresse und ob Ihre Firewall UDP-Port 80 dorthin erlaubt.</string>
+    <string name="setup_search_failed">Suche fehlgeschlagen.</string>
+    <string name="setup_invalid_address">Geben Sie eine IPv4-Adresse (z. B. 192.168.20.15) oder einen Hostnamen ein, der in diesem Netzwerk aufgelöst wird.</string>
+    <string name="setup_invalid_subnet">Geben Sie ein Subnetz wie 192.168.20.0/24 ein (höchstens /%1$d).</string>
+    <string name="setup_device_found_at">Gerät gefunden unter %1$s</string>
+    <string name="setup_device_locked">Meldet sich als gesperrt (lokale Steuerung durch die Hersteller-App deaktiviert).</string>
+
+    <!-- Device -->
+    <string name="device_default_name">Enthärtungsanlage</string>
+    <string name="device_type_runxin">Runxin-Steuerung mit BroadLink BL3372 (Typ %1$s)</string>
+    <string name="device_type_other">BroadLink-Gerät (Typ %1$s)</string>
+    <string name="device_connecting">Verbinde…</string>
+    <string name="device_locating">Gerät wird gesucht…</string>
+    <string name="device_locating_subnet">Gerät wird in seinem Subnetz gesucht…</string>
+    <string name="device_live">Live · aktualisiert %1$s</string>
+    <string name="device_offline">Nicht verbunden</string>
+    <string name="device_no_wifi">Dieses Telefon ist nicht im WLAN.</string>
+    <string name="device_not_found">Keine Antwort vom Gerät (letzte Adresse %1$s).</string>
+    <string name="device_not_found_hint">Prüfen Sie, ob die Enthärtungsanlage Strom hat und im WLAN ist. Ist sie in einem anderen VLAN, erlauben Sie UDP-Port 80 oder geben Sie ihre neue Adresse ein.</string>
+    <string name="device_writing">Wird an die Steuerung gesendet…</string>
+    <string name="device_rename">Umbenennen</string>
+    <string name="device_name_label">Name</string>
+    <string name="device_change_address">Adresse ändern</string>
+    <string name="device_address_label">IPv4-Adresse</string>
+    <string name="device_address_hint">Nützlich, wenn die Enthärtungsanlage in einem anderen VLAN ist und sich ihre Adresse geändert hat. Eine feste Adresse im Router vermeidet das.</string>
+    <string name="device_remove_title">Gerät entfernen</string>
+    <string name="device_remove_text">Dieses Gerät auf diesem Telefon vergessen? Die Enthärtungsanlage selbst wird nicht verändert.</string>
+
+    <string name="compatibility_title">Kompatibilität der Steuerungen</string>
+    <string name="compatibility_identity_title">Erkannte Steuerung</string>
+    <string name="compatibility_module_type">Modultyp</string>
+    <string name="compatibility_model_code">Gemeldeter Steuerungscode</string>
+    <string name="compatibility_profile">Geladenes Profil</string>
+    <string name="compatibility_profile_unavailable">Kein unterstützter Übertragungsweg</string>
+    <string name="compatibility_profile_unknown">Experimenteller F79D-Ersatz</string>
+    <string name="compatibility_profile_verified">Für diese Steuerungsidentität ist ein unterstütztes lokales Steuerungsprofil geladen.</string>
+    <string name="compatibility_profile_hint">Der gemeldete Code ist eine Protokollkennung, nicht unbedingt der Produktname auf dem Ventil.</string>
+    <string name="compatibility_unsupported_module">Modultyp %1$s hat keinen unterstützten Runxin-Übertragungsweg. Steuerbefehle sind deaktiviert.</string>
+    <string name="compatibility_detection_title">Automatische Profilauswahl</string>
+    <string name="compatibility_detection_text">WaterCare prüft das verbundene Modul und die Identität der Steuerung und lädt dann das passende lokale Steuerungsprofil. Ein Profil kann für mehrere Enthärtungsanlagen mit derselben Steuerungsidentität gelten. Nicht verifizierte Identitäten nutzen den experimentellen Modus; die Steuerung bleibt gesperrt, bis Sie sie einschalten. Andere BroadLink-Modultypen werden nicht unterstützt.</string>
+    <string name="compatibility_wifi_title">F79 / F82 WLAN-Varianten</string>
+    <string name="compatibility_wifi_text">Runxin veröffentlicht eine eigene WLAN-Anleitung für die LCD-Varianten F79A, F79B, F82A und F82B. Ein WLAN-Produkteintrag belegt keine Kompatibilität mit den lokalen Befehlen dieser App. Diesen Produktnamen werden nicht automatisch Protokollcodes zugeordnet.</string>
+    <string name="compatibility_runxin_manuals">Offizielles Runxin-Anleitungsverzeichnis</string>
+    <string name="compatibility_f105_title">F105 / F136-Familie</string>
+    <string name="compatibility_f105_text">Die offizielle Anleitung nennt F105- und F136-Varianten, darunter F105AHW, F105BHW und F136BHW. Manche Funktionen brauchen eine WLAN-Steuerplatine. Sie beschreibt Härte, Regenerationszeit, Leckagegrenzen, Salzbuchhaltung und Urlaubsmodus, belegt aber nicht die lokalen Feldzuordnungen dieser App.</string>
+    <string name="compatibility_f105_manual">Offizielle F105 / F136-Anleitung</string>
+    <string name="compatibility_other_title">Andere Runxin-Ventile</string>
+    <string name="compatibility_other_text">Runxin bietet auch manuelle Ventile, Filterventile, Duplex-Anlagen und Steuerungen mit RS-485 an. RS-485 bedeutet keine BL3372-WLAN-Unterstützung. Diese App hat derzeit keinen RS-485-Übertragungsweg und keine lokalen Profile für diese Produktfamilien.</string>
+    <string name="compatibility_broadlink_title">BroadLink-Module und -Produkte</string>
+    <string name="compatibility_broadlink_text">BroadLink beschreibt produktspezifische Profile und Steuerskripte in seinem offiziellen SDK. Gleiche Marke oder gleicher WLAN-Chip machen Befehle nicht austauschbar. Diese App nutzt den etablierten Runxin-BL3372-Übertragungsweg; sie steuert keine BroadLink-Fernbedienungen, Steckdosen, Leuchten oder Gateways.</string>
+    <string name="compatibility_broadlink_docs">Offizielle BroadLink-Steuerungsdokumentation</string>
+    <string name="compatibility_browser_hint">Übersicht geprüft am 4. Oktober 2026. Quellenlinks öffnen Ihren Browser und brauchen Internet. Die automatische Profilauswahl nutzt in der App enthaltene Profile.</string>
+
+    <string name="device_status_title">Status</string>
+    <string name="device_phase_remaining">%1$s · noch %2$s</string>
+    <string name="device_flow_now">Aktueller Durchfluss</string>
+    <string name="device_closed_reason">Ventil geschlossen: %1$s</string>
+    <string name="device_alerts_title">Bitte beachten</string>
+    <string name="device_vacation">Urlaubsmodus</string>
+    <string name="device_vacation_hint">Der Urlaubsmodus wird an der Steuerung geschaltet: im Betrieb ▼ (Ab) 6 Sekunden gedrückt halten; zum Beenden genauso.</string>
+    <string name="device_controller_clock">Uhr der Steuerung</string>
+
+    <string name="device_remaining_capacity">Restkapazität</string>
+    <string name="device_today">Heute verbraucht</string>
+    <string name="device_weekly_average">Wochendurchschnitt der Steuerung</string>
+    <string name="device_capacity_per_cycle">Kapazität pro Zyklus</string>
+    <string name="device_regeneration_mode">Regeneration</string>
+    <string name="device_regeneration_by_volume">Nach Menge (Zähler)</string>
+    <string name="device_regeneration_by_days">Alle %1$s Tage</string>
+    <string name="device_days_remaining">Tage bis zur Regeneration</string>
+
+    <string name="device_salt_title">Salz und Wartung</string>
+    <string name="device_regeneration_reminder">Harz-Erinnerung nach (Regenerationen)</string>
+    <string name="device_filter_days">Filtermedium-Intervall</string>
+
+    <string name="device_settings_title">Einstellungen</string>
+    <string name="device_controls_locked">Die Steuerung ist für dieses Gerät gesperrt.</string>
+    <string name="device_safehome_title">SafeHOME-Leckageschutz</string>
+    <string name="device_programme_title">Regenerationsprogramm</string>
+    <string name="device_raw_title">Diagnose</string>
+    <string name="device_raw_hint">Rohe Felder der Steuerung, zur Fehlersuche.</string>
+    <string name="device_details_title">Details</string>
+
+    <string name="setting_hardness">Rohwasserhärte</string>
+    <string name="setting_hardness_hint">Laut Midnight-Handbuch die gemessene deutsche Härte (°dH) × 10 eingeben, z. B. 15 °dH → 150 mg/l.</string>
+    <string name="setting_salt_added">Nachgefülltes Salz</string>
+    <string name="setting_salt_added_hint">Die Salzbuchhaltung der Steuerung, kein gemessener Salzstand. Geben Sie ein, wie viel Salz Sie nachgefüllt haben.</string>
+    <string name="setting_regeneration_time">Regenerationszeit</string>
+    <string name="setting_regeneration_time_hint">Wählen Sie eine Zeit, in der niemand Wasser nutzt; das Handbuch empfiehlt 22:00–0:00.</string>
+    <string name="setting_continuous_flow">Grenze für Dauerdurchfluss</string>
+    <string name="setting_flow_shutoff">Maximaler Durchfluss</string>
+    <string name="setting_safehome_hint">SafeHOME schließt das Ventil, wenn Wasser länger oder schneller fließt als diese Grenzen (Verdacht auf Rohrbruch). 0 = aus.</string>
+
+    <string name="regenerate_confirm_title">Regeneration jetzt starten?</string>
+    <string name="regenerate_confirm_text">Die Enthärtungsanlage regeneriert sofort. In der ersten Phase liefert sie kein Wasser, danach nur hartes Wasser, und sie verbraucht Salz und Wasser. Ein voller Zyklus dauert einige Stunden.</string>
+    <string name="regenerate_hint">Nur verfügbar, solange die Anlage in Betrieb ist. Die App bestätigt, dass sich das Ventil bewegt.</string>
+    <string name="vacation_start_title">Urlaubsmodus starten?</string>
+    <string name="vacation_start_text" formatted="false">Die Steuerung füllt den Solebehälter, lässt das Salz 4 Stunden lösen, führt eine verkürzte Besalzung mit langsamer Spülung (25 % der normalen Zeit) aus und pausiert dann, bis Sie den Urlaubsmodus beenden. Das entspricht dem 6-sekündigen Drücken von ▼ an der Steuerung.</string>
+    <string name="vacation_end_title">Urlaubsmodus beenden?</string>
+    <string name="vacation_end_text">Die Steuerung verlässt den Urlaubsmodus, wie beim 6-sekündigen Drücken von ▼.</string>
+    <string name="vacation_untested">Für dieses Steuerungsmodell noch nicht bestätigt. Die App prüft die Antwort der Steuerung; wechselt sie nicht, nutzen Sie die Taste ▼ an der Steuerung.</string>
+    <string name="vacation_end_wait">Der Urlaubsmodus kann beendet werden, sobald die Steuerung ihre Urlaubspause erreicht hat.</string>
+
+    <string name="station_in_service">In Betrieb</string>
+    <string name="station_backwash">Rückspülung</string>
+    <string name="station_brine_draw">Besalzung und langsame Spülung</string>
+    <string name="station_brine_refill">Solebehälter füllen</string>
+    <string name="station_fast_rinse">Schnellspülung</string>
+    <string name="station_closed">Ventil geschlossen</string>
+    <string name="station_salt_dissolving">Salz löst sich</string>
+    <string name="station_pause_1">Pause 1</string>
+    <string name="station_pause_2">Pause 2</string>
+
+    <string name="close_reason_manual">manuell geschlossen</string>
+    <string name="close_reason_leak">Leckage erkannt</string>
+    <string name="close_reason_continuous_flow">Dauerdurchfluss zu lang</string>
+    <string name="close_reason_flow_exceeded">maximaler Durchfluss überschritten</string>
+
+    <string name="vacation_off">Aus</string>
+    <string name="vacation_preparing">Wird vorbereitet</string>
+    <string name="vacation_active">Aktiv</string>
+
+    <string name="alert_low_brine">Niedrige Solekonzentration</string>
+    <string name="alert_salt_reminder">Salz nachfüllen</string>
+    <string name="alert_resin">Harzaustausch fällig</string>
+    <string name="alert_filter">Filtermediumwechsel fällig</string>
+    <string name="fault_clock">Fehler im Uhrenchip</string>
+    <string name="fault_multiple_position">Ventilpositionsfehler (mehrere Signale)</string>
+    <string name="fault_no_position">Ventilpositionsfehler (kein Signal)</string>
+    <string name="fault_memory">Speicherfehler</string>
+
+    <string name="programme_backwash">Rückspülung</string>
+    <string name="programme_brine_slow_rinse">Besalzung und langsame Spülung</string>
+    <string name="programme_brine_refill">Solebehälter füllen</string>
+    <string name="programme_fast_rinse">Schnellspülung</string>
+    <string name="programme_rinsing_frequency">Spülhäufigkeit</string>
+    <string name="programme_backwash_interval">Rückspülintervall</string>
+    <string name="programme_max_interval">Maximales Regenerationsintervall</string>
+    <string name="programme_resin_volume">Harzvolumen</string>
+    <string name="programme_output_mode">Ausgangsrelais-Modus</string>
+    <string name="programme_brine_draw">Soleansaugung</string>
+    <string name="programme_brine_draw_forward">Vorwärts</string>
+    <string name="programme_brine_draw_reverse">Rückwärts</string>
+    <string name="programme_work_pattern">Arbeitsweise (Code)</string>
+    <string name="programme_units">Einheiten</string>
+    <string name="programme_time_format">Zeitformat</string>
+
+    <string name="unit_minutes">min</string>
+    <plurals name="value_days">
+        <item quantity="one">%1$d Tag</item>
+        <item quantity="other">%1$d Tage</item>
+    </plurals>
+    <string name="value_minutes">%1$d min</string>
+    <string name="value_hardness">%1$d mg/l (≈ %2$s °dH)</string>
+    <string name="value_off">Aus</string>
+    <string name="value_yes">Ja</string>
+    <string name="value_no">Nein</string>
+    <string name="value_unknown_code">Unbekannt (%1$s)</string>
+
+    <string name="dialog_range">Erlaubt: %1$d–%2$d %3$s</string>
+    <string name="dialog_range_decimal">Erlaubt: %1$.2f–%2$.2f %3$s</string>
+
+    <string name="write_confirmed">%1$s gespeichert und von der Steuerung bestätigt.</string>
+    <string name="write_regeneration_started">Regeneration gestartet. Die Steuerung hat bestätigt, dass sich das Ventil bewegt.</string>
+    <string name="write_vacation_on">Urlaubsmodus gestartet. Die Steuerung hat es bestätigt.</string>
+    <string name="write_vacation_off">Urlaubsmodus beendet. Die Steuerung hat es bestätigt.</string>
+    <string name="write_vacation_not_confirmed">Die Steuerung hat den Urlaubsmodus nicht umgeschaltet. Nutzen Sie stattdessen die Steuerung: im Betrieb ▼ 6 Sekunden gedrückt halten.</string>
+    <string name="write_not_confirmed">%1$s wurde gesendet, aber die Steuerung hat die Änderung nicht bestätigt. Sie akzeptiert diese Einstellung womöglich nicht.</string>
+    <string name="write_ambiguous">Keine Antwort beim Senden von %1$s, und die Änderung wurde nicht bestätigt. Prüfen Sie den Wert, bevor Sie es erneut versuchen.</string>
+    <string name="write_failed">%1$s konnte nicht gesendet werden. %2$s</string>
+
+    <!-- Language -->
+    <string name="language_title">Sprache</string>
+    <string name="language_system">Sprache des Telefons</string>
+    <string name="language_system_hint">Englisch, wenn das Telefon eine andere Sprache nutzt</string>
+    <string name="catalogue_title">Kompatibilität der Steuerungen nach Familie</string>
+    <string name="catalogue_summary">Durchsuchen Sie unterstützte und nicht verifizierte Steuerungsmodelle. Die Unterstützung beruht auf dokumentierten lokalen Befehlen, die WaterCare umsetzt. Die Identität der verbundenen Steuerung entscheidet über die Kompatibilität, nicht allein die Marke der Anlage.</string>
+    <string name="catalogue_search">Modell oder Produktalias suchen</string>
+    <string name="catalogue_empty">Kein passendes dokumentiertes Modell. Die verbundene Steuerung kann trotzdem den experimentellen Modus nutzen, wenn ihr Modul unterstützt wird.</string>
+    <string name="catalogue_supported">Unterstützt</string>
+    <string name="catalogue_unverified">Nicht verifiziert</string>
+    <string name="catalogue_variants">Modelle anzeigen</string>
+    <string name="catalogue_supported_hint">Für diese Steuerungen setzt WaterCare eine dokumentierte lokale Befehlszuordnung um. Das F79D-Profil gilt für kompatible Anlagen mit einem BL3372-Modul, das Typ 0x520F und Steuerungscode 9 meldet.</string>
+    <string name="catalogue_unverified_hint">Herstellerdokumente nennen diese Modelle, aber ihre lokale Befehlszuordnung ist in WaterCare nicht belegt. Sie sind zum Durchsuchen nach Familie gruppiert. Ein unterstütztes Modul kann dennoch experimentelle Steuerungen nutzen; ein gemeinsamer Familienname aktiviert sie nicht automatisch.</string>
+    <string name="catalogue_local_detail">WaterCare setzt die von ypsilon-local dokumentierte lokale F79D-Status- und Steuerungszuordnung um. Sie wird für Modultyp 0x520F und Steuerungscode 9 automatisch geladen und gilt nach Steuerungsidentität für kompatible Anlagen.</string>
+    <string name="catalogue_wifi_detail">Das offizielle Verzeichnis führt eine LCD-WLAN-Anleitung für dieses Modell. WaterCare hat keine dokumentierte lokale Befehlszuordnung für diese Variante. WLAN allein belegt keine lokale Steuerbarkeit.</string>
+    <string name="catalogue_manual_detail">Das F105/F136-Herstellerhandbuch ordnet diesen Modellnamen dem genannten Produktalias zu und beschreibt Regeneration, Härte, Leckagegrenzen, Salzbuchhaltung und Urlaubsmodus. Manche Funktionen brauchen eine WLAN-Platine. Die lokale Befehlszuordnung ist in WaterCare nicht verifiziert.</string>
+    <string name="catalogue_directory_detail">Dieses Modell steht im offiziellen Runxin-Anleitungsverzeichnis. Lokale Schnittstelle und Befehlszuordnung sind in WaterCare nicht verifiziert.</string>
+    <string name="catalogue_source">Quelle öffnen</string>
+    <string name="updates_title">App-Updates</string>
+    <string name="updates_installed">Installierte Version: %1$s</string>
+    <string name="updates_privacy">Prüfungen kontaktieren GitHub für öffentliche Release-Informationen. Downloads kontaktieren GitHub und dessen Asset-Server. Es werden keine Steuerungsdaten oder WLAN-Zugangsdaten gesendet. Einrichtung und Betrieb funktionieren ohne Internet.</string>
+    <string name="updates_automatic">Beim Start nach Updates suchen</string>
+    <string name="updates_check">Nach Updates suchen</string>
+    <string name="updates_checking">Suche…</string>
+    <string name="updates_current">Es gibt kein neueres stabiles Release mit überprüfbarer APK.</string>
+    <string name="updates_check_failed">GitHub konnte nicht geprüft werden. Prüfen Sie Ihre Internetverbindung und versuchen Sie es später erneut.</string>
+    <string name="updates_download_failed">Download oder APK-Prüfung fehlgeschlagen. Laden Sie erneut herunter.</string>
+    <string name="updates_incompatible">Diese Installation nutzt einen anderen Signaturschlüssel, etwa ein Android-Studio-Debug-Build. Eine Release-APK kann sie nicht aktualisieren. Installieren Sie das offizielle signierte Release separat; beim Deinstallieren dieses Builds gehen die gespeicherten Geräte verloren.</string>
+    <string name="updates_install_failed">Die APK konnte nicht an den Android-Installer übergeben werden. Der geprüfte Download ist noch vorhanden; tippen Sie erneut auf „Update installieren“.</string>
+    <string name="updates_available">Update verfügbar: %1$s</string>
+    <string name="updates_download_size">Downloadgröße: %1$.1f MB</string>
+    <string name="updates_release_notes">Release auf GitHub ansehen</string>
+    <string name="updates_progress">Download: %1$d%%</string>
+    <string name="updates_cancel">Download abbrechen</string>
+    <string name="updates_install_hint">Die APK wurde geprüft. Android fragt eventuell, ob Installationen aus dieser App erlaubt sind. Sie bestätigen das Update im Android-Installer.</string>
+    <string name="updates_install">Update installieren</string>
+    <string name="updates_download">Update herunterladen</string>
+    <string name="updates_notice">Ein neueres stabiles Release mit APK ist verfügbar. Sehen Sie sich die Details an und entscheiden Sie, ob Sie es herunterladen.</string>
+    <string name="updates_view">Update ansehen</string>
+    <string name="updates_later">Diese Version ignorieren</string>
+    <string name="setup_recognised_network">„%1$s“ sieht wie ein Einrichtungsnetz eines Geräts aus. Bestätigen Sie unten, dass es zu Ihrem Gerät gehört.</string>
+    <string name="setup_connection_confirmed">Verbindung mit dem Geräte-WLAN bestätigt. Sie können fortfahren.</string>
+    <string name="setup_device_wifi">dem Einrichtungs-WLAN des Geräts</string>
+    <string name="setup_show_other_devices">Andere Broadlink-Geräte anzeigen (%1$d)</string>
+    <string name="setup_other_devices_hint">Thermostate und Geräte, deren Typ nicht als Wasseraufbereitungsmodul erkannt wird, sind standardmäßig ausgeblendet. Dieser Schalter zeigt sie ohne erneuten Scan.</string>
+    <string name="setup_no_water_devices">Kein erkanntes Wasseraufbereitungsgerät hat geantwortet. Andere Broadlink-Geräte sind über den Schalter unten verfügbar.</string>
+
+    <!-- Other brands -->
+    <string name="experimental_note_off">Experimentelle Unterstützung. Schalten Sie die Steuerung nur ein, wenn die Werte mit der Anzeige des Geräts übereinstimmen.</string>
+    <string name="experimental_note_on">Experimentelle Steuerung an. Änderungen gelten erst, wenn das Gerät sie meldet.</string>
+    <string name="home_add_other">Andere Marke hinzufügen</string>
+    <string name="home_add_other_hint">JUDO, BWT Perla, Grünbeck softliQ oder SYR NeoSoft in Ihrem Netzwerk (experimentell).</string>
+    <string name="appliance_choose_brand">Marke</string>
+    <string name="appliance_brand_judo_hint">i-soft, i-soft SAFE+, i-soft PRO und SOFTwell mit JUDO Connectivity-Modul. Status, Salz, Härte, Regeneration und das Leckageschutzventil.</string>
+    <string name="appliance_brand_bwt_hint">Perla One, Duplex und PerlaMAXX mit Firmware 2.02 oder neuer. Nur Status: Die lokale BWT-Schnittstelle kann keine Einstellungen ändern.</string>
+    <string name="appliance_brand_gruenbeck_hint">softliQ SC18, SC23, MC16 und MC32 mit eingebautem Webserver. Status, Betriebsart und Regeneration.</string>
+    <string name="appliance_brand_syr_hint">NeoSoft 2500 und 5000 Connect. Status, Regenerationsart, -intervall und -zeit. LEX-Plus-Modelle sind nur über die Cloud erreichbar.</string>
+    <string name="appliance_judo_setup">Nutzt die Web-Anmeldung des Connectivity-Moduls (Standard admin / Connectivity). Das Modul antwortet etwa alle 10 Sekunden, ein vollständiges Auslesen dauert daher etwa eine Minute.</string>
+    <string name="appliance_bwt_setup">Schalten Sie am Gerät Einstellungen → Allgemeines → Verbindung → Local API ein. Den Login-Code haben Sie bei der Registrierung per E-Mail erhalten; es ist nicht Ihr Passwort der BWT-App.</string>
+    <string name="appliance_gruenbeck_setup">Keine Anmeldung nötig. Die Enthärtungsanlage muss in Ihrem WLAN sein.</string>
+    <string name="appliance_syr_setup">Keine Anmeldung nötig. Nutzt die lokale Schnittstelle des Geräts auf Port 5333.</string>
+    <string name="appliance_plain_http">Diese Geräte bieten nur unverschlüsseltes HTTP: Die Anmeldung wird unverschlüsselt übertragen, aber nur in Ihrem lokalen Netzwerk.</string>
+    <string name="appliance_port">Port</string>
+    <string name="appliance_user">Benutzername</string>
+    <string name="appliance_code">Login-Code</string>
+    <string name="appliance_found">%1$s gefunden.</string>
+    <string name="appliance_change_login">Anmeldung ändern</string>
+    <string name="appliance_reading_slow">Gerät wird ausgelesen… JUDO-Module antworten langsam.</string>
+    <string name="appliance_readings_title">Messwerte</string>
+    <string name="appliance_read_only">Die lokale BWT-Schnittstelle ist nur lesbar. Ändern Sie Einstellungen an der Anlage selbst.</string>
+    <string name="appliance_device_title">Gerät</string>
+    <string name="appliance_model">Modell</string>
+    <string name="appliance_firmware">Firmware</string>
+    <string name="appliance_last_regeneration">Letzte Regeneration</string>
+    <string name="appliance_next_maintenance">Nächste Wartung</string>
+    <string name="appliance_protocol_source">Protokolldokumentation</string>
+    <string name="appliance_regenerate_text">Die Enthärtungsanlage startet jetzt eine Regeneration. Sie verbraucht Salz und Wasser und liefert bis zum Ende hartes oder gar kein Wasser.</string>
+    <string name="appliance_write_accepted">%1$s gesendet. Das Gerät hat es angenommen, kann das Ergebnis aber nicht melden.</string>
+    <string name="valve_close_title">Wasserzufuhr schließen?</string>
+    <string name="valve_close_text">Das Leckageschutzventil sperrt die Wasserzufuhr zum Haus, bis Sie es wieder öffnen.</string>
+    <string name="valve_open_title">Wasserzufuhr öffnen?</string>
+    <string name="valve_open_text">Das Leckageschutzventil öffnet, und das Wasser fließt wieder ins Haus.</string>
+    <string name="action_close_valve">Ventil schließen</string>
+    <string name="action_open_valve">Ventil öffnen</string>
+    <string name="dialog_range_text">Erlaubt: %1$s–%2$s %3$s</string>
+    <string name="unit_days">Tage</string>
+    <string name="error_login_rejected">Das Gerät hat die Anmeldung abgelehnt. Prüfen Sie Benutzername, Passwort oder Code.</string>
+    <string name="status_regenerating">Regeneriert</string>
+    <string name="status_holiday">Urlaubsmodus</string>
+    <string name="status_out_of_service">Außer Betrieb</string>
+    <string name="status_not_reported">Status nicht gemeldet</string>
+    <string name="step_salting">Besalzung</string>
+    <string name="step_slow_rinse">Langsame Spülung</string>
+    <string name="step_wash_out">Auswaschen</string>
+    <string name="reading_remaining_capacity_2">Restkapazität (Behälter 2)</string>
+    <string name="reading_salt_level">Salzstand</string>
+    <string name="reading_salt_stock">Salzvorrat</string>
+    <string name="reading_salt_range">Salz reicht für</string>
+    <string name="reading_water_month">Diesen Monat</string>
+    <string name="reading_water_year">Dieses Jahr</string>
+    <string name="reading_water_total">Wasser gesamt</string>
+    <string name="reading_soft_water_total">Weichwasser gesamt</string>
+    <string name="reading_soft_hardness">Weichwasserhärte</string>
+    <string name="reading_maintenance">Wartung fällig in</string>
+    <string name="reading_regenerations">Regenerationen</string>
+    <string name="reading_operating_days">Betriebstage</string>
+    <string name="setting_target_hardness">Wunschhärte</string>
+    <string name="setting_target_hardness_hint">Härte des Wassers nach der Enthärtungsanlage.</string>
+    <string name="setting_salt_stock_hint">Geben Sie nach dem Nachfüllen die gesamte Salzmenge im Behälter ein.</string>
+    <string name="setting_salt_warning">Salzwarnung</string>
+    <string name="setting_salt_warning_hint">Warnen, wenn das Salz weniger als so viele Tage reicht.</string>
+    <string name="setting_operating_mode">Betriebsart</string>
+    <string name="setting_regeneration_mode">Regenerationsart</string>
+    <string name="setting_regeneration_interval">Regenerationsintervall</string>
+    <string name="choice_eco">Eco</string>
+    <string name="choice_power">Power</string>
+    <string name="choice_comfort">Comfort</string>
+    <string name="choice_individual">Individuell</string>
+    <string name="choice_standard">Standard</string>
+    <string name="choice_automatic">Automatik</string>
+    <string name="alert_with_code">%1$s (Code %2$s)</string>
+    <string name="alert_kind_salt_low">Salz geht zur Neige</string>
+    <string name="alert_kind_salt_empty">Kein Salz mehr</string>
+    <string name="alert_kind_maintenance">Wartung fällig</string>
+    <string name="alert_kind_power">Stromausfall</string>
+    <string name="alert_kind_leak">Leckageschutz-Ereignis</string>
+    <string name="alert_kind_flow">Durchflussgrenze überschritten</string>
+    <string name="alert_kind_motor">Motor- oder Ventilfehler</string>
+    <string name="alert_kind_sensor">Sensorfehler</string>
+    <string name="alert_kind_brine">Soleproblem</string>
+    <string name="alert_kind_meter">Fehler am Wasserzähler</string>
+    <string name="alert_kind_update">Software-Update</string>
+    <string name="alert_kind_other">Gerätemeldung</string>
+    <string name="catalogue_other_brands_title">Andere Marken</string>
+    <string name="catalogue_other_brands_hint">Beliebte Enthärtungsanlagen aus der Home-Assistant-Community, geprüft im Oktober 2026. WaterCare kommuniziert nur mit Geräten in Ihrem lokalen Netzwerk; reine Cloud-Geräte sind zur Information aufgeführt.</string>
+    <string name="brand_support_control">In WaterCare: lokale Steuerung (experimentell)</string>
+    <string name="brand_support_monitor">In WaterCare: lokale Überwachung (experimentell)</string>
+    <string name="brand_support_cloud">Nur Cloud: nicht unterstützt, WaterCare bleibt lokal</string>
+    <string name="brand_support_bluetooth">Bluetooth: noch nicht unterstützt</string>
+    <string name="brand_support_diy">Keine Vernetzung: nur Bastelprojekte mit Sensoren</string>
+    <plurals name="value_weeks">
+        <item quantity="one">%1$d Woche</item>
+        <item quantity="other">%1$d Wochen</item>
+    </plurals>
+
+    <!-- Other brands: Wi-Fi setup -->
+    <string name="appliance_band_hint">WLAN-Module von Enthärtungsanlagen brauchen meist das 2,4-GHz-Netz Ihres Routers; reine 5-GHz- oder reine WPA3-Netze funktionieren eventuell nicht.</string>
+    <string name="appliance_wifi_setup">WLAN einrichten</string>
+    <string name="appliance_wifi_setup_hint">Für eine neue Enthärtungsanlage, die noch nicht in Ihrem WLAN ist.</string>
+    <string name="appliance_on_network_title">Schon in Ihrem WLAN</string>
+    <string name="appliance_searching">Suche… %1$d / %2$d</string>
+    <string name="appliance_search_none">Kein Gerät dieser Marke hat geantwortet. Prüfen Sie, ob es in diesem Netzwerk ist und die Anmeldung stimmt, oder geben Sie seine Adresse ein.</string>
+    <string name="appliance_or_address">Oder geben Sie seine Adresse ein:</string>
+    <string name="appliance_on_device_wifi">Dieses Telefon ist mit dem eigenen WLAN der Enthärtungsanlage verbunden.</string>
+    <string name="appliance_open_setup_page">Einrichtungsseite des Geräts öffnen</string>
+    <string name="appliance_setup_page_hint">Die Seite stammt vom Gerät selbst. Ihr WLAN-Passwort geht an das Gerät, nicht an WaterCare.</string>
+    <string name="appliance_wifi_after">Sobald die Anlage verbunden ist, verbinden Sie dieses Telefon wieder mit Ihrem WLAN und nutzen Sie „Dieses Netzwerk durchsuchen“.</string>
+    <string name="judo_wifi_steps">1. Schalten Sie die Anlage aus und wieder ein: Das Connectivity-Modul öffnet etwa 10 Minuten lang sein eigenes WLAN „Connectivity-…“.\n2. Öffnen Sie die WLAN-Netzwerke und verbinden Sie sich damit.\n3. Kehren Sie zurück, bestätigen Sie unten und öffnen Sie die Einrichtungsseite des Moduls.\n4. Schalten Sie dort WLAN ein, geben Sie WLAN-Namen und Passwort ein und speichern Sie.</string>
+    <string name="gruenbeck_wifi_steps">1. Öffnen Sie die WLAN-Netzwerke und verbinden Sie sich mit dem eigenen WLAN der Anlage „softliQ:SC_…“ und ihrem 8-stelligen Passwort (siehe softliQ-Anleitung).\n2. Kehren Sie zurück, bestätigen Sie unten und öffnen Sie die Einrichtungsseite der Anlage.\n3. Wählen Sie die Verbindung mit einem WLAN-Router, geben Sie WLAN-Namen und Passwort ein und speichern Sie.\n4. Ihr Router braucht ein 2,4-GHz-Netz mit WPA/WPA2, einen festen Kanal zwischen 1 und 10 und DHCP.</string>
+    <string name="bwt_wifi_steps">1. Öffnen Sie an der Anlage Einstellungen → Allgemeines → WLAN-Verbindung und schalten Sie sie ein.\n2. Wählen Sie Ihr Netzwerk, geben Sie das Passwort ein und tippen Sie auf Verbinden.\n3. Öffnen Sie Einstellungen → Allgemeines → Verbindung und schalten Sie die Local API ein.\n4. Die Adresse steht unter Info → Verbindungsstatus. Kehren Sie zurück und durchsuchen Sie dieses Netzwerk oder geben Sie die Adresse ein.</string>
+    <string name="syr_wifi_steps">1. Starten Sie den Access Point der Anlage über die WLAN-Einstellungen im Display (siehe NeoSoft-Anleitung).\n2. Öffnen Sie die WLAN-Netzwerke und verbinden Sie sich mit dem WLAN der Anlage.\n3. Kehren Sie zurück, bestätigen Sie unten und geben Sie Ihr WLAN zu Hause ein. WaterCare sendet es direkt an die Anlage.</string>
+    <string name="judo_page_hint">Schalten Sie WLAN ein, geben Sie WLAN-Namen und Passwort ein und speichern Sie.</string>
+    <string name="gruenbeck_page_hint">Wählen Sie die Verbindung mit einem WLAN-Router, geben Sie WLAN-Namen und Passwort ein und speichern Sie.</string>
+    <string name="syr_send">An die Anlage senden</string>
+    <string name="syr_sending">Warten, bis sich die Anlage verbindet…</string>
+    <string name="syr_connected">Die Anlage ist mit Ihrem WLAN verbunden, Adresse %1$s.</string>
+    <string name="syr_connected_no_address">Die Anlage meldet, dass sie mit Ihrem WLAN verbunden ist.</string>
+    <string name="syr_link_lost">Das WLAN der Anlage wurde nach dem Senden der Einstellungen geschlossen, wie beim Wechsel in Ihr Netzwerk üblich.</string>
+    <string name="syr_not_connected">Die Anlage hat innerhalb einer Minute keine Verbindung gemeldet. Prüfen Sie WLAN-Namen und Passwort (2,4 GHz) und versuchen Sie es erneut.</string>
+    <string name="syr_encoding_warning">Name oder Passwort enthält Leerzeichen oder / ? # %. Manche SYR-Firmware nimmt das über die lokale Schnittstelle nicht an; schlägt es fehl, nutzen Sie das Display der Anlage.</string>
+    <string name="action_use_address">Diese Adresse verwenden</string>
+</resources>

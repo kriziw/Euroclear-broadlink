@@ -16,6 +16,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kriziw.bl3372setup.R
 import io.github.kriziw.bl3372setup.app
 import io.github.kriziw.bl3372setup.devices.SavedDevice
+import io.github.kriziw.bl3372setup.ui.appliance.AddApplianceRoute
+import io.github.kriziw.bl3372setup.ui.appliance.ApplianceRoute
+import io.github.kriziw.bl3372setup.ui.appliance.ApplianceWifiSetupRoute
+import io.github.kriziw.bl3372setup.appliance.Brand
 import io.github.kriziw.bl3372setup.ui.device.DeviceRoute
 import io.github.kriziw.bl3372setup.ui.home.HomeScreen
 import io.github.kriziw.bl3372setup.ui.common.CompatibilityGuide
@@ -28,6 +32,8 @@ import io.github.kriziw.bl3372setup.ui.setup.SetupStep
 private const val HOME = "home"
 private const val SETUP = "setup"
 private const val ADD_EXISTING = "add"
+private const val ADD_APPLIANCE = "add-brand"
+private const val APPLIANCE_WIFI = "brand-wifi/"
 private const val DEVICE = "device/"
 private const val SETTINGS = "settings"
 private const val COMPATIBILITY = "compatibility"
@@ -57,6 +63,9 @@ fun AppRoot() {
     val openUpdates = { updates.hideAnnouncement(); open(UPDATES) }
     val openCompatibility = { open(COMPATIBILITY) }
     val openSettings = { open(SETTINGS) }
+    // The add-brand screen's brand and address, kept while its Wi-Fi setup screen is open.
+    var addBrand by rememberSaveable { mutableStateOf<String?>(null) }
+    var addHost by rememberSaveable { mutableStateOf<String?>(null) }
 
     if (updateState.announce && updateState.update != null && route != UPDATES) {
         AlertDialog(
@@ -96,6 +105,28 @@ fun AppRoot() {
             },
             onExit = back,
         )
+        route.startsWith(APPLIANCE_WIFI) && Brand.of(route.removePrefix(APPLIANCE_WIFI)) != null -> ApplianceWifiSetupRoute(
+            brand = Brand.of(route.removePrefix(APPLIANCE_WIFI))!!,
+            onBack = back,
+            onDone = { host ->
+                if (host != null) addHost = host
+                back()
+            },
+        )
+        route == ADD_APPLIANCE -> AddApplianceRoute(
+            initialBrand = addBrand,
+            initialHost = addHost,
+            onWifiSetup = { brand -> addBrand = brand.id; open(APPLIANCE_WIFI + brand.id) },
+            onBack = { addBrand = null; addHost = null; back() },
+            // Adding is finished; going back from the device returns home.
+            onSaved = { id -> addBrand = null; addHost = null; stack = listOf(HOME, DEVICE + id) },
+        )
+        route.startsWith(DEVICE) && store.get(route.removePrefix(DEVICE))?.brand != null -> ApplianceRoute(
+            id = route.removePrefix(DEVICE),
+            onBack = back,
+            onCompatibility = openCompatibility,
+            onSettings = openSettings,
+        )
         route.startsWith(DEVICE) && store.get(route.removePrefix(DEVICE)) != null -> DeviceRoute(
             mac = route.removePrefix(DEVICE),
             onBack = back,
@@ -107,6 +138,7 @@ fun AppRoot() {
             onOpen = { open(DEVICE + it.mac) },
             onSetUpNew = { open(SETUP) },
             onAddExisting = { open(ADD_EXISTING) },
+            onAddOther = { addBrand = null; addHost = null; open(ADD_APPLIANCE) },
             onSettings = openSettings,
         )
     }

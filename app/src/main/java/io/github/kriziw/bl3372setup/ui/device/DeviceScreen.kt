@@ -21,14 +21,12 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -78,6 +76,7 @@ import io.github.kriziw.bl3372setup.ui.common.BackButton
 import io.github.kriziw.bl3372setup.ui.common.Banner
 import io.github.kriziw.bl3372setup.ui.common.BannerAction
 import io.github.kriziw.bl3372setup.ui.common.ExpandableCard
+import io.github.kriziw.bl3372setup.ui.common.ExperimentalNote
 import io.github.kriziw.bl3372setup.ui.common.Hint
 import io.github.kriziw.bl3372setup.ui.common.ListCard
 import io.github.kriziw.bl3372setup.ui.common.ListSubheader
@@ -143,7 +142,7 @@ fun DeviceRoute(mac: String, onBack: () -> Unit, onCompatibility: () -> Unit, on
 }
 
 /** Which dialog is open. */
-private enum class Editor { HARDNESS, SALT, REGEN_TIME, CONTINUOUS_FLOW, FLOW_SHUTOFF, REGENERATE, VACATION_START, VACATION_END, UNLOCK, RENAME, ADDRESS, REMOVE }
+private enum class Editor { HARDNESS, SALT, REGEN_TIME, CONTINUOUS_FLOW, FLOW_SHUTOFF, REGENERATE, VACATION_START, VACATION_END, RENAME, ADDRESS, REMOVE }
 
 /**
  * The dashboard for one softener: status first, then usage, then the settings people change,
@@ -196,7 +195,13 @@ fun DeviceScreen(
         if (s == null) {
             if (state.connection.isWaiting) Loading(state.connection)
         } else {
-            if (!state.isVerifiedModel) ExperimentalBanner(state, onUnlock = { editor = Editor.UNLOCK }, onLock = onLock)
+            if (!state.isVerifiedModel) {
+                ExperimentalNote(
+                    on = state.experimentalUnlocked,
+                    canEnable = state.connection == Connection.Live && s.deviceModel != null,
+                    onChange = { if (it) onUnlock() else onLock() },
+                )
+            }
             StatusHero(
                 s,
                 state,
@@ -290,11 +295,6 @@ fun DeviceScreen(
                 dismissButton = { TextButton(onClick = { editor = null }) { Text(stringResource(R.string.action_cancel)) } },
             )
         }
-        Editor.UNLOCK -> UnlockDialog(
-            state = state,
-            onDismiss = { editor = null },
-            onConfirm = { editor = null; onUnlock() },
-        )
         Editor.RENAME -> TextDialog(
             title = stringResource(R.string.device_rename),
             initial = state.device?.name.orEmpty(),
@@ -422,63 +422,6 @@ private fun Loading(connection: Connection) {
             ),
         )
     }
-}
-
-@Composable
-private fun ExperimentalBanner(state: DeviceUiState, onUnlock: () -> Unit, onLock: () -> Unit) {
-    val s = state.state ?: return
-    if (state.experimentalUnlocked) {
-        Banner(
-            StatusKind.WARNING,
-            title = stringResource(R.string.device_unverified_title),
-            text = stringResource(R.string.compatibility_experimental_enabled),
-        ) {
-            BannerAction(stringResource(R.string.compatibility_lock_controls), onLock)
-        }
-    } else {
-        Banner(
-            StatusKind.WARNING,
-            title = stringResource(R.string.device_unverified_title),
-            text = stringResource(R.string.device_unverified_short, s.deviceModel?.toString() ?: "?"),
-        ) {
-            BannerAction(
-                stringResource(R.string.action_unlock_controls),
-                onUnlock,
-                enabled = state.connection == Connection.Live && s.deviceModel != null,
-            )
-        }
-    }
-}
-
-/** The experimental opt-in: the full explanation, and the user's confirmation that readings match. */
-@Composable
-private fun UnlockDialog(state: DeviceUiState, onDismiss: () -> Unit, onConfirm: () -> Unit) {
-    val s = state.state
-    var confirmed by rememberSaveable(state.device?.mac, s?.deviceModel) { mutableStateOf(false) }
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        icon = { Icon(painterResource(R.drawable.ic_warning), contentDescription = null) },
-        title = { Text(stringResource(R.string.device_unverified_title)) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(stringResource(R.string.device_unverified_text, s?.deviceModel?.toString() ?: "?", F79d.VERIFIED_MODEL))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth().toggleable(confirmed, role = Role.Checkbox, onValueChange = { confirmed = it }),
-                ) {
-                    Checkbox(checked = confirmed, onCheckedChange = null)
-                    Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.device_unverified_confirm), style = MaterialTheme.typography.bodyMedium)
-                }
-            }
-        },
-        confirmButton = {
-            Button(onClick = onConfirm, enabled = confirmed && state.connection == Connection.Live && s?.deviceModel != null) {
-                Text(stringResource(R.string.action_unlock_controls))
-            }
-        },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
-    )
 }
 
 /** Phase, soft water left, flow, and the actions that move the valve. */

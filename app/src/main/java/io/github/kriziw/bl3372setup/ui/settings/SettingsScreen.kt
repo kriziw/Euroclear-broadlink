@@ -40,6 +40,8 @@ fun SettingsScreen(installedVersion: String, onBack: () -> Unit, onUpdates: () -
                         LanguageOption.SYSTEM -> R.string.language_system
                         LanguageOption.HUNGARIAN -> R.string.language_hungarian
                         LanguageOption.ENGLISH -> R.string.language_english
+                        LanguageOption.SPANISH -> R.string.language_spanish
+                        LanguageOption.GERMAN -> R.string.language_german
                     },
                 ),
                 icon = R.drawable.ic_language,

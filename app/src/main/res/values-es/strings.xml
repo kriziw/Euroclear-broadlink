@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spanish (formal usted). -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
+    <string name="app_name">WaterCare</string>
+
+    <!-- Common actions -->
+    <string name="action_allow_local_network">Permitir acceso a la red local</string>
+    <string name="action_back">Atrás</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_check_wifi_name">Comprobar nombre de la Wi-Fi</string>
+    <string name="action_configure">Configurar dispositivo</string>
+    <string name="action_connect">Conectar</string>
+    <string name="action_done">Hecho</string>
+    <string name="action_hide">Ocultar</string>
+    <string name="action_location_settings">Ajustes de ubicación</string>
+    <string name="action_next">Siguiente</string>
+    <string name="action_open">Abrir</string>
+    <string name="action_open_app_settings">Abrir ajustes de la app</string>
+    <string name="action_open_wifi">Abrir redes Wi-Fi</string>
+    <string name="action_regenerate">Regenerar</string>
+    <string name="action_regenerate_now">Regenerar ahora</string>
+    <string name="action_vacation">Vacaciones</string>
+    <string name="action_vacation_start">Iniciar modo vacaciones</string>
+    <string name="action_vacation_end">Finalizar modo vacaciones</string>
+    <string name="action_remove">Eliminar</string>
+    <string name="action_retry">Reintentar</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_save_and_open">Guardar y abrir</string>
+    <string name="action_scan">Escanear</string>
+    <string name="action_search_network">Buscar en esta red</string>
+    <string name="action_send_again">Enviar de nuevo</string>
+    <string name="action_show">Mostrar</string>
+    <string name="action_sync_clock">Sincronizar con el teléfono</string>
+
+    <string name="cd_back">Atrás</string>
+    <string name="cd_edit">Editar %1$s</string>
+    <string name="cd_hide_password">Ocultar contraseña</string>
+    <string name="cd_more">Más opciones</string>
+    <string name="cd_close">Cerrar</string>
+    <string name="cd_show_password">Mostrar contraseña</string>
+
+    <string name="footer_privacy">Los datos del controlador se quedan en este teléfono. Sin cuenta ni almacenamiento de la contraseña Wi-Fi. La búsqueda de actualizaciones contacta con GitHub; puede desactivar la búsqueda automática.</string>
+    <string name="local_network_explanation">Android 17 necesita el permiso «Dispositivos cercanos» para que una app pueda comunicarse con dispositivos de la red local, incluidos el descalcificador y su red de configuración.</string>
+    <string name="local_network_declined">El permiso se ha denegado. Concédalo en Información de la app → Permisos → Dispositivos cercanos.</string>
+
+    <!-- Errors -->
+    <string name="error_auth_rejected">El módulo rechazó el inicio de sesión local. Puede ocurrir tras vincularlo con la app en la nube del fabricante; volver a configurar su Wi-Fi con esta app suele restablecerlo.</string>
+    <string name="error_local_network_blocked">Android bloqueó el acceso a la red local. Permita «Dispositivos cercanos» para esta app y desactive cualquier VPN.</string>
+    <string name="error_not_connected">La conexión Wi-Fi no está disponible.</string>
+    <string name="error_timeout">El dispositivo no respondió.</string>
+
+    <!-- Home -->
+    <string name="home_subtitle">Sus descalcificadores, controlados localmente</string>
+    <string name="home_empty_title">Aún no hay dispositivos</string>
+    <string name="home_empty_text">Configure la Wi-Fi de un descalcificador nuevo o añada uno que ya esté en su red.</string>
+    <string name="home_add_title">Añadir un dispositivo</string>
+    <string name="home_set_up_new">Configurar un dispositivo nuevo</string>
+    <string name="home_set_up_new_hint">Envía al controlador el nombre y la contraseña de su Wi-Fi, paso a paso.</string>
+    <string name="home_add_existing">Añadir un dispositivo que ya está en mi red</string>
+    <string name="home_add_existing_hint">Lo encuentra por búsqueda, por dirección IP o escaneando otra subred/VLAN.</string>
+    <string name="settings_title">Ajustes</string>
+
+    <!-- Setup wizard -->
+    <string name="setup_step_of">Paso %1$d de %2$d</string>
+    <string name="setup_skip_to_find">¿Ya está en la Wi-Fi?</string>
+    <string name="setup_step1_title">Conectar con el dispositivo</string>
+    <string name="setup_step2_title">Su Wi-Fi de casa</string>
+    <string name="setup_step3_title">Configurar el dispositivo</string>
+    <string name="setup_step4_title">Encontrar el dispositivo en su red</string>
+
+    <string name="setup_no_wifi">Este teléfono no está conectado a ninguna red Wi-Fi.</string>
+    <string name="setup_wrong_network">Conectado a «%1$s». El nombre no se parece a los nombres habituales de Wi-Fi de dispositivos. Si es la red de su dispositivo, confírmelo abajo para continuar.</string>
+    <string name="setup_network_has_internet">Android indica acceso a Internet en esta Wi-Fi. Compruebe que se ha unido a la red del dispositivo y confírmelo abajo si es correcto.</string>
+    <string name="setup_network_without_internet">Conectado a una red Wi-Fi sin acceso a Internet.</string>
+    <string name="setup_manual_confirmation">He revisado los ajustes de Wi-Fi de Android y confirmo que este teléfono está conectado a la Wi-Fi de configuración del dispositivo.</string>
+    <string name="setup_location_explanation">Android solo muestra el nombre de la Wi-Fi a las apps con permiso de ubicación precisa. Esta app no lo usa para nada más y nunca lee su ubicación. También puede omitirlo y confirmar abajo.</string>
+    <string name="setup_location_off">Active la ubicación para que Android muestre a esta app el nombre de la Wi-Fi, o confirme abajo.</string>
+    <string name="setup_ssid_hidden">Android no mostró el nombre de la red. Confirme abajo si es %1$s.</string>
+    <string name="setup_join_instructions">1. Ponga el dispositivo en modo de configuración Wi-Fi según su manual. En algunos cabezales Runxin, desconecte y vuelva a conectar la alimentación y mantenga pulsado Menú/OK hasta que pite.\n2. Abra los ajustes de Wi-Fi de Android y únase a la red creada por el dispositivo, por ejemplo WiFi-BL3372, WiFi-BL…, BroadlinkProv o BroadLink_…; su dispositivo puede usar otro nombre.\n3. Si Android indica que no hay Internet, elija seguir conectado.\n4. Vuelva aquí y confirme que se ha unido a la red del dispositivo. El nombre de la Wi-Fi es una pista, no un requisito.</string>
+    <string name="setup_detail_phone">Teléfono %1$s</string>
+    <string name="setup_detail_gateway">Puerta de enlace %1$s</string>
+    <string name="setup_detail_internet">Internet disponible</string>
+    <string name="setup_detail_no_internet">Sin Internet</string>
+
+    <string name="setup_ssid_label">Nombre de la Wi-Fi (SSID)</string>
+    <string name="setup_password_label">Contraseña</string>
+    <string name="setup_password_unused">Contraseña (no se usa en redes abiertas)</string>
+    <string name="setup_bytes_counter" tools:ignore="PluralsCandidate">%1$d / %2$d bytes · distingue mayúsculas</string>
+    <string name="setup_too_long" tools:ignore="PluralsCandidate">Demasiado largo: %1$d bytes (máx. %2$d).</string>
+    <string name="setup_ssid_is_device_ap">Esa es la red de configuración del propio módulo. Introduzca el nombre de su Wi-Fi de casa.</string>
+    <string name="setup_password_too_long" tools:ignore="PluralsCandidate">Demasiado larga: %1$d bytes. El paquete de configuración de BroadLink admite como máximo %2$d (la app oficial tiene el mismo límite).</string>
+    <string name="setup_password_too_short" tools:ignore="PluralsCandidate">Las contraseñas WPA tienen al menos %1$d caracteres.</string>
+    <string name="setup_security_label">Seguridad</string>
+    <string name="setup_security_open">Abierta</string>
+    <string name="setup_security_hint">WPA2 sirve para casi cualquier router. Si el módulo no se conecta, pruebe WPA/WPA2.</string>
+    <string name="setup_band_hint">El BL3372 solo admite Wi-Fi de 2,4 GHz. Use el nombre de red de 2,4 GHz de su router; las redes solo de 5 GHz o solo WPA3 no funcionan.</string>
+    <string name="setup_ssid_spaces">El nombre empieza o termina con un espacio. Compruebe que es intencionado.</string>
+    <string name="setup_ssid_non_ascii">El nombre contiene caracteres no ASCII; se envía como UTF-8.</string>
+    <string name="setup_password_non_ascii">La contraseña contiene caracteres no ASCII. Las contraseñas WPA suelen ser ASCII; el módulo podría rechazarla.</string>
+
+    <string name="setup_configure_explanation">Envía el nombre y la contraseña de la Wi-Fi directamente al módulo a través de la conexión %1$s. El protocolo de configuración de BroadLink no está cifrado, así que hágalo cerca del dispositivo y termine pronto.</string>
+    <string name="setup_reason_connect_first">Confirme arriba que este teléfono está conectado a la Wi-Fi de configuración del dispositivo.</string>
+    <string name="setup_reason_fill_details">Rellene los datos de su Wi-Fi de casa (paso 2).</string>
+    <string name="setup_sending">Enviando la configuración…</string>
+    <string name="setup_sending_round">Enviando la configuración… (ronda %1$d de %2$d)</string>
+    <string name="setup_sending_failed">El envío ha fallado.</string>
+    <string name="setup_acknowledged">El módulo confirmó los ajustes (respuesta de %1$s).</string>
+    <string name="setup_not_acknowledged">Ajustes enviados %1$d×. No llegó confirmación; muchos módulos nunca la envían, así que esto por sí solo no indica un fallo.</string>
+    <string name="setup_link_lost_after_send">Ajustes enviados, y la conexión %1$s se cortó justo después.</string>
+    <string name="setup_watching_ap">Vigilando %1$s… Cuando el módulo acepta los ajustes se reinicia, su red de configuración desaparece y se une a «%2$s».</string>
+    <string name="setup_ap_gone">%1$s desapareció %2$d s después del envío. Lo más probable es que el módulo se haya reiniciado y se esté uniendo a «%3$s». Vuelva a conectar este teléfono a esa red para encontrarlo.</string>
+    <string name="setup_ap_still_up">Este teléfono sigue conectado a %1$s tras 90 s. Puede que el módulo no haya aceptado los ajustes.</string>
+    <string name="setup_troubleshooting">• Compruebe el nombre y la contraseña de la Wi-Fi (ambos distinguen mayúsculas).\n• Asegúrese de que el router ofrece 2,4 GHz y no es solo WPA3.\n• Pruebe el ajuste de seguridad WPA/WPA2.\n• Algunos firmware de BroadLink fallan con caracteres especiales en la contraseña; una red de invitados con contraseña de letras y números puede ayudar.\n• Vuelva a poner el controlador en modo de configuración Wi-Fi, reconéctese y envíe de nuevo.</string>
+
+    <string name="setup_discovery_explanation">Cuando el módulo se haya unido a su Wi-Fi, conecte este teléfono a su red. La app encuentra el módulo con la detección local de BroadLink.</string>
+    <string name="setup_connect_home_wifi">Conecte este teléfono a su Wi-Fi de casa.</string>
+    <string name="setup_still_on_ap">Este teléfono sigue en la red de configuración. Cambie primero a su Wi-Fi de casa.</string>
+    <string name="setup_searching_on">Buscando en «%1$s»</string>
+    <string name="setup_current_network">la red Wi-Fi actual</string>
+    <string name="setup_other_vlan_toggle">¿Dispositivo en otra VLAN o subred?</string>
+    <string name="setup_vlan_explanation">Las búsquedas no atraviesan VLAN ni routers. Si el descalcificador está en otra red (por ejemplo una VLAN de IoT), introduzca su dirección IP o escanee su subred. Su cortafuegos debe permitir el puerto UDP 80 desde este teléfono al dispositivo.</string>
+    <string name="setup_address_label">Dirección IP o nombre de host</string>
+    <string name="setup_subnet_label">Subred (p. ej. 192.168.20.0/24)</string>
+    <string name="setup_searching_seconds">Buscando… (hasta %1$d s)</string>
+    <string name="setup_nothing_found_broadcast">Ningún dispositivo BroadLink respondió. El módulo puede tardar uno o dos minutos en unirse; busque de nuevo. Si está en otra VLAN, use la opción de arriba.</string>
+    <string name="setup_nothing_found_unicast">Ningún dispositivo BroadLink respondió en esa dirección. Compruebe la dirección y que su cortafuegos permite el puerto UDP 80 hacia ella.</string>
+    <string name="setup_search_failed">La búsqueda ha fallado.</string>
+    <string name="setup_invalid_address">Introduzca una dirección IPv4 (p. ej. 192.168.20.15) o un nombre de host que se resuelva en esta red.</string>
+    <string name="setup_invalid_subnet">Introduzca una subred como 192.168.20.0/24 (como máximo /%1$d).</string>
+    <string name="setup_device_found_at">Dispositivo encontrado en %1$s</string>
+    <string name="setup_device_locked">Indica que está bloqueado (control local desactivado por la app del fabricante).</string>
+
+    <!-- Device -->
+    <string name="device_default_name">Descalcificador</string>
+    <string name="device_type_runxin">Controlador Runxin con BroadLink BL3372 (tipo %1$s)</string>
+    <string name="device_type_other">Dispositivo BroadLink (tipo %1$s)</string>
+    <string name="device_connecting">Conectando…</string>
+    <string name="device_locating">Buscando el dispositivo…</string>
+    <string name="device_locating_subnet">Buscando el dispositivo en su subred…</string>
+    <string name="device_live">En directo · actualizado %1$s</string>
+    <string name="device_offline">Sin conexión</string>
+    <string name="device_no_wifi">Este teléfono no está en una Wi-Fi.</string>
+    <string name="device_not_found">Sin respuesta del dispositivo (última dirección %1$s).</string>
+    <string name="device_not_found_hint">Compruebe que el descalcificador tiene corriente y está en la Wi-Fi. Si está en otra VLAN, permita el puerto UDP 80 o introduzca su nueva dirección.</string>
+    <string name="device_writing">Enviando al controlador…</string>
+    <string name="device_rename">Cambiar nombre</string>
+    <string name="device_name_label">Nombre</string>
+    <string name="device_change_address">Cambiar dirección</string>
+    <string name="device_address_label">Dirección IPv4</string>
+    <string name="device_address_hint">Útil cuando el descalcificador está en otra VLAN y su dirección cambió. Reservarle una dirección fija en el router lo evita.</string>
+    <string name="device_remove_title">Eliminar dispositivo</string>
+    <string name="device_remove_text">¿Olvidar este dispositivo en este teléfono? El descalcificador no se modifica.</string>
+
+    <string name="compatibility_title">Compatibilidad de controladores</string>
+    <string name="compatibility_identity_title">Controlador detectado</string>
+    <string name="compatibility_module_type">Tipo de módulo</string>
+    <string name="compatibility_model_code">Código de controlador indicado</string>
+    <string name="compatibility_profile">Perfil cargado</string>
+    <string name="compatibility_profile_unavailable">Sin transporte compatible</string>
+    <string name="compatibility_profile_unknown">Alternativa experimental F79D</string>
+    <string name="compatibility_profile_verified">Hay un perfil de control local compatible cargado para esta identidad de controlador.</string>
+    <string name="compatibility_profile_hint">El código indicado es una identidad de protocolo; no es necesariamente el nombre del producto impreso en la válvula.</string>
+    <string name="compatibility_unsupported_module">El tipo de módulo %1$s no tiene un transporte Runxin compatible. Los comandos del controlador están desactivados.</string>
+    <string name="compatibility_detection_title">Selección automática de perfil</string>
+    <string name="compatibility_detection_text">WaterCare comprueba el módulo conectado y la identidad del controlador y carga su perfil de control local compatible. Un perfil puede aplicarse a varios descalcificadores con la misma identidad de controlador. Las identidades no verificadas usan el modo experimental con los controles bloqueados hasta que usted los active. Otros tipos de módulo BroadLink no son compatibles.</string>
+    <string name="compatibility_wifi_title">Variantes Wi-Fi F79 / F82</string>
+    <string name="compatibility_wifi_text">Runxin publica un manual Wi-Fi específico para las variantes LCD F79A, F79B, F82A y F82B. Que un producto figure con Wi-Fi no demuestra compatibilidad con los comandos locales de esta app. A estos nombres de producto no se les asignan automáticamente códigos de protocolo.</string>
+    <string name="compatibility_runxin_manuals">Directorio oficial de manuales de Runxin</string>
+    <string name="compatibility_f105_title">Familia F105 / F136</string>
+    <string name="compatibility_f105_text">El manual oficial enumera variantes F105 y F136, entre ellas F105AHW, F105BHW y F136BHW. Algunas funciones necesitan una placa de control Wi-Fi. Documenta dureza, hora de regeneración, límites de fugas, registro de sal y modo vacaciones, pero no establece las asignaciones de campos locales de esta app.</string>
+    <string name="compatibility_f105_manual">Manual oficial F105 / F136</string>
+    <string name="compatibility_other_title">Otras válvulas Runxin</string>
+    <string name="compatibility_other_text">Runxin también ofrece válvulas manuales, válvulas de filtro, sistemas dúplex y controladores con RS-485. RS-485 no implica Wi-Fi BL3372. Actualmente esta app no tiene transporte RS-485 ni perfiles locales para esas familias.</string>
+    <string name="compatibility_broadlink_title">Módulos y productos BroadLink</string>
+    <string name="compatibility_broadlink_text">BroadLink describe perfiles y scripts de control específicos de cada producto en su SDK oficial. Compartir marca o chip Wi-Fi no hace intercambiables los comandos. Esta app usa el transporte Runxin BL3372 establecido; no controla mandos, enchufes, luces ni pasarelas BroadLink.</string>
+    <string name="compatibility_broadlink_docs">Documentación oficial de control de BroadLink</string>
+    <string name="compatibility_browser_hint">Guía revisada el 4 de octubre de 2026. Los enlaces a fuentes abren su navegador y necesitan Internet. La selección automática de perfil usa perfiles incluidos en la app.</string>
+
+    <string name="device_status_title">Estado</string>
+    <string name="device_phase_remaining">%1$s · quedan %2$s</string>
+    <string name="device_flow_now">Caudal actual</string>
+    <string name="device_closed_reason">Válvula cerrada: %1$s</string>
+    <string name="device_alerts_title">Requiere atención</string>
+    <string name="device_vacation">Modo vacaciones</string>
+    <string name="device_vacation_hint">El modo vacaciones se activa en el controlador: en servicio, mantenga pulsado ▼ (Abajo) 6 segundos; haga lo mismo para terminarlo.</string>
+    <string name="device_controller_clock">Reloj del controlador</string>
+
+    <string name="device_remaining_capacity">Capacidad restante</string>
+    <string name="device_today">Consumo de hoy</string>
+    <string name="device_weekly_average">Media semanal del controlador</string>
+    <string name="device_capacity_per_cycle">Capacidad por ciclo</string>
+    <string name="device_regeneration_mode">Regeneración</string>
+    <string name="device_regeneration_by_volume">Por volumen (contador)</string>
+    <string name="device_regeneration_by_days">Cada %1$s días</string>
+    <string name="device_days_remaining">Días hasta la regeneración</string>
+
+    <string name="device_salt_title">Sal y mantenimiento</string>
+    <string name="device_regeneration_reminder">Aviso de resina tras (regeneraciones)</string>
+    <string name="device_filter_days">Intervalo del medio filtrante</string>
+
+    <string name="device_settings_title">Ajustes</string>
+    <string name="device_controls_locked">Los controles están bloqueados para este controlador.</string>
+    <string name="device_safehome_title">Protección contra fugas SafeHOME</string>
+    <string name="device_programme_title">Programa de regeneración</string>
+    <string name="device_raw_title">Diagnóstico</string>
+    <string name="device_raw_hint">Campos sin procesar del controlador, para resolver problemas.</string>
+    <string name="device_details_title">Detalles</string>
+
+    <string name="setting_hardness">Dureza del agua de entrada</string>
+    <string name="setting_hardness_hint">Según el manual de Midnight, introduzca la dureza alemana medida (°dH) × 10; p. ej., 15 °dH → 150 mg/l.</string>
+    <string name="setting_salt_added">Sal añadida</string>
+    <string name="setting_salt_added_hint">El registro de sal del controlador, no un nivel medido. Introduzca cuánta sal ha añadido.</string>
+    <string name="setting_regeneration_time">Hora de regeneración</string>
+    <string name="setting_regeneration_time_hint">Elija una hora en la que nadie use agua; el manual sugiere 22:00–0:00.</string>
+    <string name="setting_continuous_flow">Límite de caudal continuo</string>
+    <string name="setting_flow_shutoff">Caudal máximo</string>
+    <string name="setting_safehome_hint">SafeHOME cierra la válvula cuando el agua fluye más tiempo o más rápido que estos límites (posible rotura de tubería). 0 = desactivado.</string>
+
+    <string name="regenerate_confirm_title">¿Iniciar la regeneración ahora?</string>
+    <string name="regenerate_confirm_text">El descalcificador regenera de inmediato. Durante la primera fase no suministra agua y después solo agua dura, y consume sal y agua. Un ciclo completo dura unas horas.</string>
+    <string name="regenerate_hint">Solo disponible mientras el descalcificador está en servicio. La app confirma que la válvula ha empezado a moverse.</string>
+    <string name="vacation_start_title">¿Iniciar el modo vacaciones?</string>
+    <string name="vacation_start_text" formatted="false">El controlador rellena el depósito de salmuera, deja disolver la sal 4 horas, realiza una salmuera y un enjuague lento acortados (25 % del tiempo normal) y luego hace una pausa hasta que usted finalice el modo vacaciones. Equivale a mantener pulsado ▼ 6 segundos en el controlador.</string>
+    <string name="vacation_end_title">¿Finalizar el modo vacaciones?</string>
+    <string name="vacation_end_text">El controlador sale del modo vacaciones, igual que al mantener pulsado ▼ 6 segundos.</string>
+    <string name="vacation_untested">Aún no confirmado en este modelo de controlador. La app comprueba la respuesta del controlador; si no cambia, use el botón ▼ del controlador.</string>
+    <string name="vacation_end_wait">El modo vacaciones puede finalizarse cuando el controlador llegue a su pausa de vacaciones.</string>
+
+    <string name="station_in_service">En servicio</string>
+    <string name="station_backwash">Contralavado</string>
+    <string name="station_brine_draw">Salmuera y enjuague lento</string>
+    <string name="station_brine_refill">Rellenado de salmuera</string>
+    <string name="station_fast_rinse">Enjuague rápido</string>
+    <string name="station_closed">Válvula cerrada</string>
+    <string name="station_salt_dissolving">Disolución de sal</string>
+    <string name="station_pause_1">Pausa 1</string>
+    <string name="station_pause_2">Pausa 2</string>
+
+    <string name="close_reason_manual">cerrada manualmente</string>
+    <string name="close_reason_leak">fuga detectada</string>
+    <string name="close_reason_continuous_flow">caudal continuo demasiado largo</string>
+    <string name="close_reason_flow_exceeded">caudal máximo superado</string>
+
+    <string name="vacation_off">Desactivado</string>
+    <string name="vacation_preparing">Preparando</string>
+    <string name="vacation_active">Activo</string>
+
+    <string name="alert_low_brine">Concentración de salmuera baja</string>
+    <string name="alert_salt_reminder">Añadir sal</string>
+    <string name="alert_resin">Cambio de resina pendiente</string>
+    <string name="alert_filter">Cambio del medio filtrante pendiente</string>
+    <string name="fault_clock">Fallo del chip de reloj</string>
+    <string name="fault_multiple_position">Fallo de posición de válvula (varias señales)</string>
+    <string name="fault_no_position">Fallo de posición de válvula (sin señal)</string>
+    <string name="fault_memory">Fallo de memoria</string>
+
+    <string name="programme_backwash">Contralavado</string>
+    <string name="programme_brine_slow_rinse">Salmuera y enjuague lento</string>
+    <string name="programme_brine_refill">Rellenado de salmuera</string>
+    <string name="programme_fast_rinse">Enjuague rápido</string>
+    <string name="programme_rinsing_frequency">Frecuencia de enjuague</string>
+    <string name="programme_backwash_interval">Intervalo de contralavado</string>
+    <string name="programme_max_interval">Intervalo máximo de regeneración</string>
+    <string name="programme_resin_volume">Volumen de resina</string>
+    <string name="programme_output_mode">Modo del relé de salida</string>
+    <string name="programme_brine_draw">Aspiración de salmuera</string>
+    <string name="programme_brine_draw_forward">Directa</string>
+    <string name="programme_brine_draw_reverse">Inversa</string>
+    <string name="programme_work_pattern">Modo de trabajo (código)</string>
+    <string name="programme_units">Unidades</string>
+    <string name="programme_time_format">Formato de hora</string>
+
+    <string name="unit_minutes">min</string>
+    <plurals name="value_days">
+        <item quantity="one">%1$d día</item>
+        <item quantity="many">%1$d días</item>
+        <item quantity="other">%1$d días</item>
+    </plurals>
+    <string name="value_minutes">%1$d min</string>
+    <string name="value_hardness">%1$d mg/l (≈ %2$s °dH)</string>
+    <string name="value_off">Desactivado</string>
+    <string name="value_yes">Sí</string>
+    <string name="value_no">No</string>
+    <string name="value_unknown_code">Desconocido (%1$s)</string>
+
+    <string name="dialog_range">Permitido: %1$d–%2$d %3$s</string>
+    <string name="dialog_range_decimal">Permitido: %1$.2f–%2$.2f %3$s</string>
+
+    <string name="write_confirmed">%1$s guardado y confirmado por el controlador.</string>
+    <string name="write_regeneration_started">Regeneración iniciada. El controlador confirmó que la válvula se mueve.</string>
+    <string name="write_vacation_on">Modo vacaciones iniciado. El controlador lo confirmó.</string>
+    <string name="write_vacation_off">Modo vacaciones finalizado. El controlador lo confirmó.</string>
+    <string name="write_vacation_not_confirmed">El controlador no cambió el modo vacaciones. Use el controlador: en servicio, mantenga pulsado ▼ 6 segundos.</string>
+    <string name="write_not_confirmed">Se envió %1$s, pero el controlador no confirmó el cambio. Puede que no acepte este ajuste.</string>
+    <string name="write_ambiguous">Sin respuesta al enviar %1$s, y el cambio no se confirmó. Compruebe el valor antes de intentarlo de nuevo.</string>
+    <string name="write_failed">No se pudo enviar %1$s. %2$s</string>
+
+    <!-- Language -->
+    <string name="language_title">Idioma</string>
+    <string name="language_system">Idioma del teléfono</string>
+    <string name="language_system_hint">Inglés si el teléfono usa otro idioma</string>
+    <string name="catalogue_title">Compatibilidad de controladores por familia</string>
+    <string name="catalogue_summary">Consulte los modelos de controlador compatibles y no verificados. La compatibilidad se basa en comandos locales documentados implementados en WaterCare. La identidad del controlador conectado determina la compatibilidad; la marca del descalcificador por sí sola no.</string>
+    <string name="catalogue_search">Buscar modelo o alias de producto</string>
+    <string name="catalogue_empty">Ningún modelo documentado coincide. El controlador conectado puede usar el modo experimental si su módulo es compatible.</string>
+    <string name="catalogue_supported">Compatible</string>
+    <string name="catalogue_unverified">No verificado</string>
+    <string name="catalogue_variants">Ver modelos</string>
+    <string name="catalogue_supported_hint">Estos controladores tienen una asignación de comandos locales documentada e implementada en WaterCare. El perfil F79D se aplica a descalcificadores compatibles con un módulo BL3372 que indica el tipo 0x520F y el código de controlador 9.</string>
+    <string name="catalogue_unverified_hint">La documentación del fabricante identifica estos modelos, pero su asignación de comandos locales no está establecida en WaterCare. Se agrupan por familia para consultarlos. Un módulo compatible puede usar controles experimentales; compartir nombre de familia no los activa automáticamente.</string>
+    <string name="catalogue_local_detail">WaterCare implementa la asignación local de estado y control F79D documentada por ypsilon-local. Se carga automáticamente para el tipo de módulo 0x520F y el código de controlador 9, y se aplica por identidad de controlador a descalcificadores compatibles.</string>
+    <string name="catalogue_wifi_detail">El directorio oficial incluye un manual Wi-Fi LCD para este modelo. WaterCare no tiene una asignación de comandos locales documentada para esta variante. Tener Wi-Fi no demuestra por sí solo la compatibilidad de control local.</string>
+    <string name="catalogue_manual_detail">El manual del fabricante F105/F136 vincula este modelo con el alias indicado y describe regeneración, dureza, límites de fugas, registro de sal y modo vacaciones. Algunas funciones requieren una placa Wi-Fi. Su asignación de comandos locales no está verificada en WaterCare.</string>
+    <string name="catalogue_directory_detail">Este modelo figura en el directorio oficial de manuales de Runxin. Su interfaz local y su asignación de comandos no están verificadas en WaterCare.</string>
+    <string name="catalogue_source">Abrir fuente</string>
+    <string name="updates_title">Actualizaciones de la app</string>
+    <string name="updates_installed">Versión instalada: %1$s</string>
+    <string name="updates_privacy">Las comprobaciones contactan con GitHub para obtener información pública de versiones. Las descargas contactan con GitHub y sus servidores de archivos. No se envían datos del controlador ni credenciales Wi-Fi. La configuración y el uso funcionan sin Internet.</string>
+    <string name="updates_automatic">Buscar actualizaciones al iniciar</string>
+    <string name="updates_check">Buscar actualizaciones</string>
+    <string name="updates_checking">Comprobando…</string>
+    <string name="updates_current">No hay una versión estable más reciente con un APK verificable.</string>
+    <string name="updates_check_failed">No se pudo consultar GitHub. Compruebe su conexión a Internet e inténtelo más tarde.</string>
+    <string name="updates_download_failed">La descarga o la verificación del APK falló. Descárguelo de nuevo.</string>
+    <string name="updates_incompatible">Esta instalación usa otra clave de firma, como una compilación de depuración de Android Studio. Un APK de versión no puede actualizarla. Instale por separado la versión oficial firmada; desinstalar esta compilación elimina sus dispositivos guardados.</string>
+    <string name="updates_install_failed">No se pudo pasar el APK al instalador de Android. La descarga verificada sigue disponible; pulse de nuevo «Instalar actualización».</string>
+    <string name="updates_available">Actualización disponible: %1$s</string>
+    <string name="updates_download_size">Tamaño de la descarga: %1$.1f MB</string>
+    <string name="updates_release_notes">Ver la versión en GitHub</string>
+    <string name="updates_progress">Descargando: %1$d%%</string>
+    <string name="updates_cancel">Cancelar descarga</string>
+    <string name="updates_install_hint">El APK está verificado. Puede que Android le pida permitir instalaciones desde esta app. Confirmará la actualización en el instalador de Android.</string>
+    <string name="updates_install">Instalar actualización</string>
+    <string name="updates_download">Descargar actualización</string>
+    <string name="updates_notice">Hay una versión estable más reciente con APK. Consulte los detalles y decida si la descarga.</string>
+    <string name="updates_view">Ver actualización</string>
+    <string name="updates_later">Ignorar esta versión</string>
+    <string name="setup_recognised_network">«%1$s» parece una red de configuración de un dispositivo. Confirme abajo que pertenece a su dispositivo.</string>
+    <string name="setup_connection_confirmed">Conexión a la Wi-Fi del dispositivo confirmada. Puede continuar.</string>
+    <string name="setup_device_wifi">la Wi-Fi de configuración del dispositivo</string>
+    <string name="setup_show_other_devices">Mostrar otros dispositivos Broadlink (%1$d)</string>
+    <string name="setup_other_devices_hint">Los termostatos y los dispositivos cuyo tipo no se reconoce como módulo de tratamiento de agua están ocultos por defecto. Este interruptor los muestra sin volver a escanear.</string>
+    <string name="setup_no_water_devices">No respondió ningún dispositivo de tratamiento de agua reconocido. Hay otros dispositivos Broadlink disponibles con el interruptor de abajo.</string>
+
+    <!-- Other brands -->
+    <string name="experimental_note_off">Compatibilidad experimental. Active los controles solo si los valores coinciden con la pantalla del propio dispositivo.</string>
+    <string name="experimental_note_on">Controles experimentales activados. Los cambios solo cuentan cuando el dispositivo los confirma.</string>
+    <string name="home_add_other">Añadir otra marca</string>
+    <string name="home_add_other_hint">JUDO, BWT Perla, Grünbeck softliQ o SYR NeoSoft en su red (experimental).</string>
+    <string name="appliance_choose_brand">Marca</string>
+    <string name="appliance_brand_judo_hint">i-soft, i-soft SAFE+, i-soft PRO y SOFTwell con el módulo JUDO Connectivity. Estado, sal, dureza, regeneración y la válvula de protección contra fugas.</string>
+    <string name="appliance_brand_bwt_hint">Perla One, Duplex y PerlaMAXX con firmware 2.02 o posterior. Solo estado: la API local de BWT no puede cambiar ajustes.</string>
+    <string name="appliance_brand_gruenbeck_hint">softliQ SC18, SC23, MC16 y MC32 con el servidor web integrado. Estado, modo de funcionamiento y regeneración.</string>
+    <string name="appliance_brand_syr_hint">NeoSoft 2500 y 5000 Connect. Estado, modo, intervalo y hora de regeneración. Los modelos LEX Plus solo funcionan en la nube.</string>
+    <string name="appliance_judo_setup">Usa el inicio de sesión web del módulo Connectivity (por defecto admin / Connectivity). El módulo responde aproximadamente cada 10 segundos, así que una lectura completa tarda cerca de un minuto.</string>
+    <string name="appliance_bwt_setup">En el dispositivo, active Ajustes → General → Conexión → Local API. El código de acceso le llegó por correo al registrar el dispositivo; no es la contraseña de la app de BWT.</string>
+    <string name="appliance_gruenbeck_setup">No hace falta iniciar sesión. El descalcificador debe estar en su Wi-Fi.</string>
+    <string name="appliance_syr_setup">No hace falta iniciar sesión. Usa la API local del dispositivo en el puerto 5333.</string>
+    <string name="appliance_plain_http">Estos dispositivos solo ofrecen HTTP sin cifrar: el inicio de sesión viaja sin cifrar, pero solo por su red local.</string>
+    <string name="appliance_port">Puerto</string>
+    <string name="appliance_user">Usuario</string>
+    <string name="appliance_code">Código de acceso</string>
+    <string name="appliance_found">Encontrado: %1$s.</string>
+    <string name="appliance_change_login">Cambiar inicio de sesión</string>
+    <string name="appliance_reading_slow">Leyendo el dispositivo… Los módulos JUDO responden despacio.</string>
+    <string name="appliance_readings_title">Lecturas</string>
+    <string name="appliance_read_only">La API local de BWT es de solo lectura. Cambie los ajustes en el propio descalcificador.</string>
+    <string name="appliance_device_title">Dispositivo</string>
+    <string name="appliance_model">Modelo</string>
+    <string name="appliance_firmware">Firmware</string>
+    <string name="appliance_last_regeneration">Última regeneración</string>
+    <string name="appliance_next_maintenance">Próximo mantenimiento</string>
+    <string name="appliance_protocol_source">Documentación del protocolo</string>
+    <string name="appliance_regenerate_text">El descalcificador inicia ahora una regeneración. Consume sal y agua, y hasta que termine suministra agua dura o ninguna.</string>
+    <string name="appliance_write_accepted">%1$s enviado. El dispositivo lo aceptó, pero no puede informar del resultado.</string>
+    <string name="valve_close_title">¿Cerrar el suministro de agua?</string>
+    <string name="valve_close_text">La válvula de protección contra fugas corta el agua de la casa hasta que la vuelva a abrir.</string>
+    <string name="valve_open_title">¿Abrir el suministro de agua?</string>
+    <string name="valve_open_text">La válvula de protección contra fugas se abre y el agua vuelve a llegar a la casa.</string>
+    <string name="action_close_valve">Cerrar válvula</string>
+    <string name="action_open_valve">Abrir válvula</string>
+    <string name="dialog_range_text">Permitido: %1$s–%2$s %3$s</string>
+    <string name="unit_days">días</string>
+    <string name="error_login_rejected">El dispositivo rechazó el inicio de sesión. Compruebe el usuario, la contraseña o el código.</string>
+    <string name="status_regenerating">Regenerando</string>
+    <string name="status_holiday">Modo vacaciones</string>
+    <string name="status_out_of_service">Fuera de servicio</string>
+    <string name="status_not_reported">Estado no indicado</string>
+    <string name="step_salting">Salado</string>
+    <string name="step_slow_rinse">Enjuague lento</string>
+    <string name="step_wash_out">Lavado final</string>
+    <string name="reading_remaining_capacity_2">Capacidad restante (depósito 2)</string>
+    <string name="reading_salt_level">Nivel de sal</string>
+    <string name="reading_salt_stock">Reserva de sal</string>
+    <string name="reading_salt_range">La sal dura</string>
+    <string name="reading_water_month">Este mes</string>
+    <string name="reading_water_year">Este año</string>
+    <string name="reading_water_total">Agua total</string>
+    <string name="reading_soft_water_total">Agua descalcificada total</string>
+    <string name="reading_soft_hardness">Dureza del agua descalcificada</string>
+    <string name="reading_maintenance">Mantenimiento en</string>
+    <string name="reading_regenerations">Regeneraciones</string>
+    <string name="reading_operating_days">Días de funcionamiento</string>
+    <string name="setting_target_hardness">Dureza deseada</string>
+    <string name="setting_target_hardness_hint">Dureza del agua después del descalcificador.</string>
+    <string name="setting_salt_stock_hint">Tras rellenar, introduzca la sal total que hay ahora en el depósito.</string>
+    <string name="setting_salt_warning">Aviso de sal</string>
+    <string name="setting_salt_warning_hint">Avisar cuando la sal vaya a durar menos de estos días.</string>
+    <string name="setting_operating_mode">Modo de funcionamiento</string>
+    <string name="setting_regeneration_mode">Modo de regeneración</string>
+    <string name="setting_regeneration_interval">Intervalo de regeneración</string>
+    <string name="choice_eco">Eco</string>
+    <string name="choice_power">Power</string>
+    <string name="choice_comfort">Comfort</string>
+    <string name="choice_individual">Individual</string>
+    <string name="choice_standard">Estándar</string>
+    <string name="choice_automatic">Automático</string>
+    <string name="alert_with_code">%1$s (código %2$s)</string>
+    <string name="alert_kind_salt_low">Queda poca sal</string>
+    <string name="alert_kind_salt_empty">Sin sal</string>
+    <string name="alert_kind_maintenance">Mantenimiento pendiente</string>
+    <string name="alert_kind_power">Corte de corriente</string>
+    <string name="alert_kind_leak">Evento de protección contra fugas</string>
+    <string name="alert_kind_flow">Límite de caudal superado</string>
+    <string name="alert_kind_motor">Fallo de motor o válvula</string>
+    <string name="alert_kind_sensor">Fallo de sensor</string>
+    <string name="alert_kind_brine">Problema de salmuera</string>
+    <string name="alert_kind_meter">Fallo del contador de agua</string>
+    <string name="alert_kind_update">Actualización de software</string>
+    <string name="alert_kind_other">Mensaje del dispositivo</string>
+    <string name="catalogue_other_brands_title">Otras marcas</string>
+    <string name="catalogue_other_brands_hint">Descalcificadores populares en la comunidad de Home Assistant, revisados en octubre de 2026. WaterCare solo se comunica con dispositivos de su red local; los que solo funcionan en la nube se listan como referencia.</string>
+    <string name="brand_support_control">En WaterCare: control local (experimental)</string>
+    <string name="brand_support_monitor">En WaterCare: supervisión local (experimental)</string>
+    <string name="brand_support_cloud">Solo en la nube: no compatible, WaterCare se mantiene local</string>
+    <string name="brand_support_bluetooth">Bluetooth: aún no compatible</string>
+    <string name="brand_support_diy">Sin conectividad: solo proyectos caseros con sensores</string>
+    <plurals name="value_weeks">
+        <item quantity="one">%1$d semana</item>
+        <item quantity="many">%1$d semanas</item>
+        <item quantity="other">%1$d semanas</item>
+    </plurals>
+
+    <!-- Other brands: Wi-Fi setup -->
+    <string name="appliance_band_hint">Los módulos Wi-Fi de los descalcificadores suelen necesitar la red de 2,4 GHz del router; las redes solo de 5 GHz o solo WPA3 pueden no funcionar.</string>
+    <string name="appliance_wifi_setup">Configurar Wi-Fi</string>
+    <string name="appliance_wifi_setup_hint">Para un descalcificador nuevo que aún no está en su Wi-Fi.</string>
+    <string name="appliance_on_network_title">Ya en su Wi-Fi</string>
+    <string name="appliance_searching">Buscando… %1$d / %2$d</string>
+    <string name="appliance_search_none">Ningún dispositivo de esta marca respondió. Compruebe que está en esta red y que el inicio de sesión es correcto, o introduzca su dirección.</string>
+    <string name="appliance_or_address">O introduzca su dirección:</string>
+    <string name="appliance_on_device_wifi">Este teléfono está conectado a la Wi-Fi propia del descalcificador.</string>
+    <string name="appliance_open_setup_page">Abrir la página de configuración del dispositivo</string>
+    <string name="appliance_setup_page_hint">La página es del propio dispositivo. Su contraseña Wi-Fi va al dispositivo, no a WaterCare.</string>
+    <string name="appliance_wifi_after">Cuando el descalcificador se haya unido, vuelva a conectar este teléfono a su Wi-Fi y use «Buscar en esta red».</string>
+    <string name="judo_wifi_steps">1. Apague y encienda el descalcificador: el módulo Connectivity abre su propia Wi-Fi «Connectivity-…» durante unos 10 minutos.\n2. Abra las redes Wi-Fi y únase a ella.\n3. Vuelva, confirme abajo y abra la página de configuración del módulo.\n4. Active allí la WLAN, introduzca el nombre y la contraseña de su Wi-Fi y guarde.</string>
+    <string name="gruenbeck_wifi_steps">1. Abra las redes Wi-Fi y únase a la Wi-Fi propia del descalcificador «softliQ:SC_…» con su contraseña de 8 dígitos (vea el manual de softliQ).\n2. Vuelva, confirme abajo y abra la página de configuración del descalcificador.\n3. Elija la conexión a un router Wi-Fi, introduzca el nombre y la contraseña de su Wi-Fi y guarde.\n4. El router necesita una red de 2,4 GHz con WPA/WPA2, un canal fijo entre 1 y 10 y DHCP.</string>
+    <string name="bwt_wifi_steps">1. En el descalcificador, abra Ajustes → General → Conexión WLAN y actívela.\n2. Elija su red, introduzca su contraseña y pulse Conectar.\n3. Abra Ajustes → General → Conexión y active la Local API.\n4. La dirección aparece en Info → Estado de la conexión. Vuelva y busque en esta red, o introduzca esa dirección.</string>
+    <string name="syr_wifi_steps">1. Inicie el punto de acceso del descalcificador desde los ajustes Wi-Fi de la pantalla (vea el manual de NeoSoft).\n2. Abra las redes Wi-Fi y únase a la Wi-Fi del descalcificador.\n3. Vuelva, confirme abajo e introduzca su Wi-Fi de casa. WaterCare la envía directamente al descalcificador.</string>
+    <string name="judo_page_hint">Active la WLAN, introduzca el nombre y la contraseña de su Wi-Fi y guarde.</string>
+    <string name="gruenbeck_page_hint">Elija la conexión a un router Wi-Fi, introduzca el nombre y la contraseña de su Wi-Fi y guarde.</string>
+    <string name="syr_send">Enviar al descalcificador</string>
+    <string name="syr_sending">Esperando a que el descalcificador se conecte…</string>
+    <string name="syr_connected">El descalcificador se unió a su Wi-Fi en %1$s.</string>
+    <string name="syr_connected_no_address">El descalcificador indica que está conectado a su Wi-Fi.</string>
+    <string name="syr_link_lost">La Wi-Fi del descalcificador se cerró tras enviar los ajustes, como ocurre cuando cambia a su red.</string>
+    <string name="syr_not_connected">El descalcificador no indicó conexión en un minuto. Compruebe el nombre y la contraseña de la Wi-Fi (2,4 GHz) e inténtelo de nuevo.</string>
+    <string name="syr_encoding_warning">El nombre o la contraseña contiene espacios o / ? # %. Algunos firmware de SYR no lo aceptan por su API local; si falla, use la pantalla del descalcificador.</string>
+    <string name="action_use_address">Usar esta dirección</string>
+</resources>
