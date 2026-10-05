@@ -9,7 +9,7 @@ and scoped to `kriziw/Euroclear-broadlink`.
 An activity-scoped update view model checks once on launch when automatic checking
 is enabled (the default). No polling service, background notification or download
 starts just because a release is published. The next launch discovers the release.
-Manual checks are available from Home → App updates. The automatic-check preference
+Manual checks are available from Home → Settings → App updates. The automatic-check preference
 and dismissed version are saved in app-private preferences, excluded from backup.
 Disabling automatic checks avoids future launch requests; an already running request
 may finish, but cannot show a notice after automatic checks have been disabled.

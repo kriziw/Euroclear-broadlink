@@ -20,6 +20,7 @@ import io.github.kriziw.bl3372setup.ui.device.DeviceRoute
 import io.github.kriziw.bl3372setup.ui.home.HomeScreen
 import io.github.kriziw.bl3372setup.ui.common.CompatibilityGuide
 import io.github.kriziw.bl3372setup.ui.common.UpdateScreen
+import io.github.kriziw.bl3372setup.ui.settings.SettingsScreen
 import io.github.kriziw.bl3372setup.updates.UpdateViewModel
 import io.github.kriziw.bl3372setup.ui.setup.SetupRoute
 import io.github.kriziw.bl3372setup.ui.setup.SetupStep
@@ -28,12 +29,14 @@ private const val HOME = "home"
 private const val SETUP = "setup"
 private const val ADD_EXISTING = "add"
 private const val DEVICE = "device/"
+private const val SETTINGS = "settings"
 private const val COMPATIBILITY = "compatibility"
 private const val UPDATES = "updates"
 
 /**
- * Minimal navigation: home dashboard, setup wizard (from the start or straight to "find device"),
- * and one screen per saved device. With exactly one saved device the app opens on it directly.
+ * Minimal navigation over a small back stack: home, setup wizard (from the start or straight to
+ * "find device"), one screen per saved device, and settings with its two sub-screens. With exactly
+ * one saved device the app opens on it directly, with home underneath.
  */
 @Composable
 fun AppRoot() {
@@ -41,17 +44,19 @@ fun AppRoot() {
     val store = context.app.deviceStore
     val devices by store.devices.collectAsStateWithLifecycle()
     val defaultName = stringResource(R.string.device_default_name)
-    var route by rememberSaveable { mutableStateOf(devices.singleOrNull()?.let { DEVICE + it.mac } ?: HOME) }
+    var stack by rememberSaveable {
+        mutableStateOf(listOfNotNull(HOME, devices.singleOrNull()?.let { DEVICE + it.mac }))
+    }
+    val route = stack.last()
+    val open = { next: String -> stack = stack + next }
+    val back = { if (stack.size > 1) stack = stack.dropLast(1) }
+    BackHandler(enabled = stack.size > 1) { back() }
 
-    var guideReturn by rememberSaveable { mutableStateOf(HOME) }
-    val openCompatibility = { guideReturn = route; route = COMPATIBILITY }
     val updates: UpdateViewModel = viewModel()
     val updateState by updates.state.collectAsStateWithLifecycle()
-    var updateReturn by rememberSaveable { mutableStateOf(HOME) }
-    val openUpdates = { updates.hideAnnouncement(); updateReturn = route; route = UPDATES }
-    BackHandler(enabled = route != HOME) {
-        route = when (route) { COMPATIBILITY -> guideReturn; UPDATES -> updateReturn; else -> HOME }
-    }
+    val openUpdates = { updates.hideAnnouncement(); open(UPDATES) }
+    val openCompatibility = { open(COMPATIBILITY) }
+    val openSettings = { open(SETTINGS) }
 
     if (updateState.announce && updateState.update != null && route != UPDATES) {
         AlertDialog(
@@ -64,8 +69,14 @@ fun AppRoot() {
     }
 
     when {
-        route == UPDATES -> UpdateScreen(updates, onBack = { route = updateReturn })
-        route == COMPATIBILITY -> CompatibilityGuide(onBack = { route = guideReturn })
+        route == UPDATES -> UpdateScreen(updates, onBack = back)
+        route == COMPATIBILITY -> CompatibilityGuide(onBack = back)
+        route == SETTINGS -> SettingsScreen(
+            installedVersion = updateState.installedName,
+            onBack = back,
+            onUpdates = openUpdates,
+            onCompatibility = openCompatibility,
+        )
         route == SETUP || route == ADD_EXISTING -> SetupRoute(
             initialStep = if (route == SETUP) SetupStep.CONNECT else SetupStep.FIND,
             savedMacs = devices.mapTo(HashSet()) { it.mac },
@@ -80,19 +91,23 @@ fun AppRoot() {
                         deviceType = found.deviceType,
                     ),
                 )
-                route = DEVICE + found.mac
+                // The wizard is finished; going back from the device returns home.
+                stack = listOf(HOME, DEVICE + found.mac)
             },
-            onExit = { route = HOME },
+            onExit = back,
         )
-        route.startsWith(DEVICE) && store.get(route.removePrefix(DEVICE)) != null ->
-            DeviceRoute(mac = route.removePrefix(DEVICE), onBack = { route = HOME }, onCompatibility = openCompatibility)
+        route.startsWith(DEVICE) && store.get(route.removePrefix(DEVICE)) != null -> DeviceRoute(
+            mac = route.removePrefix(DEVICE),
+            onBack = back,
+            onCompatibility = openCompatibility,
+            onSettings = openSettings,
+        )
         else -> HomeScreen(
             devices = devices,
-            onOpen = { route = DEVICE + it.mac },
-            onSetUpNew = { route = SETUP },
-            onAddExisting = { route = ADD_EXISTING },
-            onCompatibility = openCompatibility,
-            onUpdates = openUpdates,
+            onOpen = { open(DEVICE + it.mac) },
+            onSetUpNew = { open(SETUP) },
+            onAddExisting = { open(ADD_EXISTING) },
+            onSettings = openSettings,
         )
     }
 }

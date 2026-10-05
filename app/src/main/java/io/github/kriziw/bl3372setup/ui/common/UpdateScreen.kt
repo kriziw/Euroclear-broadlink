@@ -6,13 +6,12 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -21,8 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.core.net.toUri
 import io.github.kriziw.bl3372setup.R
@@ -46,18 +45,16 @@ fun UpdateScreen(model: UpdateViewModel, onBack: () -> Unit) {
     val permission = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (context.packageManager.canRequestPackageInstalls()) install()
     }
-    AppBackground(topBar = {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(painterResource(R.drawable.ic_arrow_back), stringResource(R.string.cd_back)) }
-            Text(stringResource(R.string.updates_title), style = MaterialTheme.typography.titleLarge)
-        }
-    }) {
-        SectionCard(stringResource(R.string.updates_title)) {
+    AppScaffold(title = stringResource(R.string.updates_title), navigation = { BackButton(onBack) }) {
+        SectionCard {
             Text(stringResource(R.string.updates_installed, state.installedName))
             Hint(stringResource(R.string.updates_privacy))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = state.automatic, onCheckedChange = model::automatic)
-                Text(stringResource(R.string.updates_automatic))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth().toggleable(state.automatic, role = Role.Switch, onValueChange = model::automatic),
+            ) {
+                Text(stringResource(R.string.updates_automatic), modifier = Modifier.weight(1f))
+                Switch(checked = state.automatic, onCheckedChange = null)
             }
             OutlinedButton(onClick = { model.check() }, enabled = !state.checking && state.progress == null, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(if (state.checking) R.string.updates_checking else R.string.updates_check))
@@ -75,7 +72,7 @@ fun UpdateScreen(model: UpdateViewModel, onBack: () -> Unit) {
             }
         }
         state.update?.let { update ->
-            SectionCard(stringResource(R.string.updates_available, update.version.name)) {
+            SectionCard(title = stringResource(R.string.updates_available, update.version.name)) {
                 Text(stringResource(R.string.updates_download_size, update.apk.size / (1024f * 1024f)))
                 TextButton(onClick = { browser.openUri(update.releaseUrl) }) { Text(stringResource(R.string.updates_release_notes)) }
                 if (update.notes.isNotBlank()) Text(update.notes, style = MaterialTheme.typography.bodySmall)

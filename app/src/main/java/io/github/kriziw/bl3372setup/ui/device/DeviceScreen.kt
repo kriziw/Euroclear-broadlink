@@ -3,41 +3,43 @@ package io.github.kriziw.bl3372setup.ui.device
 import android.app.Application
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TimeInput
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -47,6 +49,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -61,17 +64,23 @@ import io.github.kriziw.bl3372setup.Permissions
 import io.github.kriziw.bl3372setup.R
 import io.github.kriziw.bl3372setup.SystemScreens
 import io.github.kriziw.bl3372setup.broadlink.Ipv4
-import io.github.kriziw.bl3372setup.runxin.F79d
 import io.github.kriziw.bl3372setup.runxin.ControllerProfiles
+import io.github.kriziw.bl3372setup.runxin.F79d
 import io.github.kriziw.bl3372setup.runxin.SoftenerSetting
 import io.github.kriziw.bl3372setup.runxin.SoftenerState
+import io.github.kriziw.bl3372setup.runxin.Station
 import io.github.kriziw.bl3372setup.runxin.VacationStatus
 import io.github.kriziw.bl3372setup.runxin.VolumeUnit
-import io.github.kriziw.bl3372setup.runxin.WriteResult
-import io.github.kriziw.bl3372setup.ui.common.AppBackground
+import io.github.kriziw.bl3372setup.ui.common.AppScaffold
+import io.github.kriziw.bl3372setup.ui.common.BackButton
+import io.github.kriziw.bl3372setup.ui.common.Banner
+import io.github.kriziw.bl3372setup.ui.common.BannerAction
+import io.github.kriziw.bl3372setup.ui.common.ExpandableCard
 import io.github.kriziw.bl3372setup.ui.common.Hint
-import io.github.kriziw.bl3372setup.ui.common.LanguageDialog
+import io.github.kriziw.bl3372setup.ui.common.ListCard
+import io.github.kriziw.bl3372setup.ui.common.ListSubheader
 import io.github.kriziw.bl3372setup.ui.common.SectionCard
+import io.github.kriziw.bl3372setup.ui.common.SettingRow
 import io.github.kriziw.bl3372setup.ui.common.StatusKind
 import io.github.kriziw.bl3372setup.ui.common.StatusLine
 import io.github.kriziw.bl3372setup.ui.common.ValueRow
@@ -87,13 +96,13 @@ import io.github.kriziw.bl3372setup.ui.common.uiLocale
 import io.github.kriziw.bl3372setup.ui.common.volumeText
 import io.github.kriziw.bl3372setup.ui.common.yesNo
 import io.github.kriziw.bl3372setup.ui.setup.LocalNetworkCard
+import io.github.kriziw.bl3372setup.ui.theme.LocalStatusColors
 import java.text.DateFormat
 import java.time.LocalTime
 import java.util.Date
-import java.util.Locale
 
 @Composable
-fun DeviceRoute(mac: String, onBack: () -> Unit, onCompatibility: () -> Unit) {
+fun DeviceRoute(mac: String, onBack: () -> Unit, onCompatibility: () -> Unit, onSettings: () -> Unit) {
     val context = LocalContext.current
     val application = context.applicationContext as Application
     val viewModel: DeviceViewModel = viewModel(key = mac) { DeviceViewModel(application, mac) }
@@ -119,6 +128,7 @@ fun DeviceRoute(mac: String, onBack: () -> Unit, onCompatibility: () -> Unit) {
         onUnlock = viewModel::unlockControls,
         onLock = viewModel::lockControls,
         onCompatibility = onCompatibility,
+        onSettings = onSettings,
         onRemove = {
             viewModel.remove()
             onBack()
@@ -130,9 +140,13 @@ fun DeviceRoute(mac: String, onBack: () -> Unit, onCompatibility: () -> Unit) {
     )
 }
 
-/** Which edit dialog is open. */
-private enum class Editor { HARDNESS, SALT, REGEN_TIME, CONTINUOUS_FLOW, FLOW_SHUTOFF, REGENERATE, RENAME, ADDRESS, REMOVE }
+/** Which dialog is open. */
+private enum class Editor { HARDNESS, SALT, REGEN_TIME, CONTINUOUS_FLOW, FLOW_SHUTOFF, REGENERATE, UNLOCK, RENAME, ADDRESS, REMOVE }
 
+/**
+ * The dashboard for one softener: status first, then usage, then the settings people change,
+ * with everything else folded away under Details.
+ */
 @Composable
 fun DeviceScreen(
     state: DeviceUiState,
@@ -144,6 +158,7 @@ fun DeviceScreen(
     onUnlock: () -> Unit,
     onLock: () -> Unit,
     onCompatibility: () -> Unit,
+    onSettings: () -> Unit,
     onRemove: () -> Unit,
     onOpenWifi: () -> Unit,
     onRequestLocalNetwork: () -> Unit,
@@ -160,30 +175,32 @@ fun DeviceScreen(
         }
     }
 
-    Box(Modifier.fillMaxSize()) {
-        AppBackground(topBar = {
-            DeviceTopBar(
-                title = state.device?.name ?: stringResource(R.string.device_default_name),
-                onBack = onBack,
+    AppScaffold(
+        title = state.device?.name ?: stringResource(R.string.device_default_name),
+        subtitle = { ConnectionSubtitle(state) },
+        navigation = { BackButton(onBack) },
+        actions = {
+            DeviceMenu(
                 onRename = { editor = Editor.RENAME },
                 onChangeAddress = { editor = Editor.ADDRESS },
+                onSettings = onSettings,
                 onRemove = { editor = Editor.REMOVE },
             )
-        }) {
-            ConnectionCard(state, onRetry, onOpenWifi, onRequestLocalNetwork, onOpenAppSettings, onChangeAddress = { editor = Editor.ADDRESS })
-            ControllerProfileCard(state, onCompatibility)
-            val s = state.state
-            if (s != null) {
-                if (!state.isVerifiedModel) UnverifiedModelCard(state, onUnlock, onLock)
-                StatusCard(s)
-                WaterCard(s)
-                SaltCard(s, state, onEdit = { editor = Editor.SALT })
-                SettingsCard(s, state, onEdit = { editor = it }, onSyncClock = { onApply(SoftenerSetting.ControllerClock(LocalTime.now())) })
-                ProgrammeCard(s)
-                RawFieldsCard(s)
-            }
+        },
+        snackbarHost = { SnackbarHost(snackbar) },
+    ) {
+        ConnectionProblem(state, onRetry, onOpenWifi, onRequestLocalNetwork, onOpenAppSettings, onChangeAddress = { editor = Editor.ADDRESS })
+        val s = state.state
+        if (s == null) {
+            if (state.connection.isWaiting) Loading(state.connection)
+        } else {
+            if (!state.isVerifiedModel) ExperimentalBanner(state, onUnlock = { editor = Editor.UNLOCK }, onLock = onLock)
+            StatusHero(s, state, onRegenerate = { editor = Editor.REGENERATE })
+            AlertsBanner(s)
+            UsageTiles(s, state, onEditSalt = { editor = Editor.SALT })
+            SettingsList(s, state, onEdit = { editor = it }, onSyncClock = { onApply(SoftenerSetting.ControllerClock(LocalTime.now())) })
+            Details(s, state, onCompatibility)
         }
-        SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).windowInsetsPadding(WindowInsets.safeDrawing))
     }
 
     val s = state.state
@@ -233,12 +250,23 @@ fun DeviceScreen(
         )
         Editor.REGENERATE -> AlertDialog(
             onDismissRequest = { editor = null },
+            icon = { Icon(painterResource(R.drawable.ic_autorenew), contentDescription = null) },
             title = { Text(stringResource(R.string.regenerate_confirm_title)) },
-            text = { Text(stringResource(R.string.regenerate_confirm_text)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(stringResource(R.string.regenerate_confirm_text))
+                    Hint(stringResource(R.string.regenerate_hint))
+                }
+            },
             confirmButton = {
                 Button(onClick = { editor = null; onApply(SoftenerSetting.Regenerate) }) { Text(stringResource(R.string.action_regenerate)) }
             },
             dismissButton = { TextButton(onClick = { editor = null }) { Text(stringResource(R.string.action_cancel)) } },
+        )
+        Editor.UNLOCK -> UnlockDialog(
+            state = state,
+            onDismiss = { editor = null },
+            onConfirm = { editor = null; onUnlock() },
         )
         Editor.RENAME -> TextDialog(
             title = stringResource(R.string.device_rename),
@@ -274,35 +302,49 @@ fun DeviceScreen(
     }
 }
 
+private val Connection.isWaiting: Boolean
+    get() = this == Connection.Starting || this == Connection.Connecting || this is Connection.Locating
+
 @Composable
-private fun DeviceTopBar(title: String, onBack: () -> Unit, onRename: () -> Unit, onChangeAddress: () -> Unit, onRemove: () -> Unit) {
+private fun DeviceMenu(onRename: () -> Unit, onChangeAddress: () -> Unit, onSettings: () -> Unit, onRemove: () -> Unit) {
     var menu by remember { mutableStateOf(false) }
-    var language by rememberSaveable { mutableStateOf(false) }
-    if (language) LanguageDialog(onDismiss = { language = false })
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)) {
-        IconButton(onClick = onBack) { Icon(painterResource(R.drawable.ic_arrow_back), stringResource(R.string.cd_back)) }
-        Text(
-            title,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-            maxLines = 1,
-            modifier = Modifier.weight(1f),
-        )
-        Box {
-            IconButton(onClick = { menu = true }) { Icon(painterResource(R.drawable.ic_more_vert), stringResource(R.string.cd_more)) }
-            DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
-                DropdownMenuItem(text = { Text(stringResource(R.string.device_rename)) }, onClick = { menu = false; onRename() })
-                DropdownMenuItem(text = { Text(stringResource(R.string.device_change_address)) }, onClick = { menu = false; onChangeAddress() })
-                DropdownMenuItem(text = { Text(stringResource(R.string.language_title)) }, onClick = { menu = false; language = true })
-                DropdownMenuItem(text = { Text(stringResource(R.string.device_remove_title)) }, onClick = { menu = false; onRemove() })
-            }
+    Box {
+        IconButton(onClick = { menu = true }) { Icon(painterResource(R.drawable.ic_more_vert), stringResource(R.string.cd_more)) }
+        DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
+            DropdownMenuItem(text = { Text(stringResource(R.string.device_rename)) }, onClick = { menu = false; onRename() })
+            DropdownMenuItem(text = { Text(stringResource(R.string.device_change_address)) }, onClick = { menu = false; onChangeAddress() })
+            DropdownMenuItem(text = { Text(stringResource(R.string.settings_title)) }, onClick = { menu = false; onSettings() })
+            DropdownMenuItem(text = { Text(stringResource(R.string.device_remove_title)) }, onClick = { menu = false; onRemove() })
         }
     }
 }
 
+/** One line under the device name: a coloured dot and what the connection is doing. */
 @Composable
-private fun ConnectionCard(
+private fun ConnectionSubtitle(state: DeviceUiState) {
+    val status = LocalStatusColors.current
+    val connection = state.connection
+    val (dot, text) = when {
+        state.pendingWrite != null -> MaterialTheme.colorScheme.primary to stringResource(R.string.device_writing)
+        connection == Connection.Live -> {
+            val time = state.updatedAt?.let { DateFormat.getTimeInstance(DateFormat.SHORT, uiLocale()).format(Date(it)) } ?: "–"
+            status.success to stringResource(R.string.device_live, time)
+        }
+        connection is Connection.Locating ->
+            MaterialTheme.colorScheme.primary to stringResource(if (connection.crossSubnet) R.string.device_locating_subnet else R.string.device_locating)
+        connection.isWaiting -> MaterialTheme.colorScheme.primary to stringResource(R.string.device_connecting)
+        else -> status.warning to stringResource(R.string.device_offline)
+    }
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(Modifier.size(8.dp).background(dot, CircleShape))
+        Spacer(Modifier.width(6.dp))
+        Text(text, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
+    }
+}
+
+/** Shown only when something is wrong with the connection. */
+@Composable
+private fun ConnectionProblem(
     state: DeviceUiState,
     onRetry: () -> Unit,
     onOpenWifi: () -> Unit,
@@ -310,114 +352,322 @@ private fun ConnectionCard(
     onOpenAppSettings: () -> Unit,
     onChangeAddress: () -> Unit,
 ) {
-    val connection = state.connection
-    if (connection == Connection.NeedsLocalNetworkPermission) {
-        LocalNetworkCard(denied = false, request = onRequestLocalNetwork, openAppSettings = onOpenAppSettings)
-        return
-    }
-    SectionCard(stringResource(R.string.device_connection_title)) {
-        val device = state.device
-        if (device != null) {
-            Hint("${device.lastIp}  ·  MAC ${device.mac}" + (state.link?.ssid?.let { "  ·  $it" } ?: ""))
+    when (val connection = state.connection) {
+        Connection.NeedsLocalNetworkPermission ->
+            LocalNetworkCard(denied = false, request = onRequestLocalNetwork, openAppSettings = onOpenAppSettings)
+        Connection.NoWifi -> Banner(StatusKind.WARNING, stringResource(R.string.device_no_wifi)) {
+            BannerAction(stringResource(R.string.action_open_wifi), onOpenWifi)
         }
-        when (connection) {
-            Connection.Starting, Connection.Connecting -> StatusLine(StatusKind.PROGRESS, stringResource(R.string.device_connecting))
-            is Connection.Locating -> StatusLine(
-                StatusKind.PROGRESS,
-                stringResource(if (connection.crossSubnet) R.string.device_locating_subnet else R.string.device_locating),
+        is Connection.NotFound -> Banner(
+            StatusKind.WARNING,
+            title = stringResource(R.string.device_not_found, connection.lastIp),
+            text = stringResource(R.string.device_not_found_hint),
+        ) {
+            BannerAction(stringResource(R.string.action_retry), onRetry)
+            BannerAction(stringResource(R.string.device_change_address), onChangeAddress)
+        }
+        is Connection.Failed -> Banner(StatusKind.ERROR, networkErrorText(connection.error)) {
+            BannerAction(stringResource(R.string.action_retry), onRetry)
+        }
+        is Connection.UnsupportedModule -> Banner(
+            StatusKind.WARNING,
+            stringResource(R.string.compatibility_unsupported_module, "0x%04X".format(connection.deviceType)),
+        )
+        else -> Unit
+    }
+}
+
+@Composable
+private fun Loading(connection: Connection) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 64.dp),
+    ) {
+        CircularProgressIndicator()
+        Hint(
+            stringResource(
+                when {
+                    connection is Connection.Locating && connection.crossSubnet -> R.string.device_locating_subnet
+                    connection is Connection.Locating -> R.string.device_locating
+                    else -> R.string.device_connecting
+                },
+            ),
+        )
+    }
+}
+
+@Composable
+private fun ExperimentalBanner(state: DeviceUiState, onUnlock: () -> Unit, onLock: () -> Unit) {
+    val s = state.state ?: return
+    if (state.experimentalUnlocked) {
+        Banner(
+            StatusKind.WARNING,
+            title = stringResource(R.string.device_unverified_title),
+            text = stringResource(R.string.compatibility_experimental_enabled),
+        ) {
+            BannerAction(stringResource(R.string.compatibility_lock_controls), onLock)
+        }
+    } else {
+        Banner(
+            StatusKind.WARNING,
+            title = stringResource(R.string.device_unverified_title),
+            text = stringResource(R.string.device_unverified_short, s.deviceModel?.toString() ?: "?"),
+        ) {
+            BannerAction(
+                stringResource(R.string.action_unlock_controls),
+                onUnlock,
+                enabled = state.connection == Connection.Live && s.deviceModel != null,
             )
-            Connection.Live -> {
-                val locale = uiLocale()
-                val time = state.updatedAt?.let { DateFormat.getTimeInstance(DateFormat.MEDIUM, locale).format(Date(it)) } ?: "–"
-                StatusLine(StatusKind.SUCCESS, stringResource(R.string.device_live, time))
-            }
-            Connection.NoWifi -> {
-                StatusLine(StatusKind.WARNING, stringResource(R.string.device_no_wifi))
-                OutlinedButton(onClick = onOpenWifi) { Text(stringResource(R.string.action_open_wifi)) }
-            }
-            is Connection.NotFound -> {
-                StatusLine(StatusKind.WARNING, stringResource(R.string.device_not_found, connection.lastIp))
-                Hint(stringResource(R.string.device_not_found_hint))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedButton(onClick = onRetry) { Text(stringResource(R.string.action_retry)) }
-                    OutlinedButton(onClick = onChangeAddress) { Text(stringResource(R.string.device_change_address)) }
+        }
+    }
+}
+
+/** The experimental opt-in: the full explanation, and the user's confirmation that readings match. */
+@Composable
+private fun UnlockDialog(state: DeviceUiState, onDismiss: () -> Unit, onConfirm: () -> Unit) {
+    val s = state.state
+    var confirmed by rememberSaveable(state.device?.mac, s?.deviceModel) { mutableStateOf(false) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(painterResource(R.drawable.ic_warning), contentDescription = null) },
+        title = { Text(stringResource(R.string.device_unverified_title)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(stringResource(R.string.device_unverified_text, s?.deviceModel?.toString() ?: "?", F79d.VERIFIED_MODEL))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth().toggleable(confirmed, role = Role.Checkbox, onValueChange = { confirmed = it }),
+                ) {
+                    Checkbox(checked = confirmed, onCheckedChange = null)
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.device_unverified_confirm), style = MaterialTheme.typography.bodyMedium)
                 }
             }
-            is Connection.Failed -> {
-                StatusLine(StatusKind.ERROR, networkErrorText(connection.error))
-                OutlinedButton(onClick = onRetry) { Text(stringResource(R.string.action_retry)) }
+        },
+        confirmButton = {
+            Button(onClick = onConfirm, enabled = confirmed && state.connection == Connection.Live && s?.deviceModel != null) {
+                Text(stringResource(R.string.action_unlock_controls))
             }
-            is Connection.UnsupportedModule -> StatusLine(
-                StatusKind.WARNING,
-                stringResource(R.string.compatibility_unsupported_module, "0x%04X".format(connection.deviceType)),
-            )
-            Connection.NeedsLocalNetworkPermission -> Unit
-        }
-        if (state.pendingWrite != null) StatusLine(StatusKind.PROGRESS, stringResource(R.string.device_writing))
-    }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
+    )
 }
 
+/** Phase, soft water left, flow, and the one action that acts on the valve. */
 @Composable
-private fun ControllerProfileCard(state: DeviceUiState, onCompatibility: () -> Unit) {
-    SectionCard(stringResource(R.string.compatibility_identity_title)) {
-        ValueRow(stringResource(R.string.compatibility_module_type), state.device?.deviceType?.let { "0x%04X".format(it) } ?: "–")
-        ValueRow(stringResource(R.string.compatibility_model_code), state.state?.deviceModel?.toString() ?: "–")
-        ValueRow(
-            stringResource(R.string.compatibility_profile),
-            state.profile?.name ?: stringResource(when {
-                state.device != null && !ControllerProfiles.supportsTransport(state.device.deviceType) -> R.string.compatibility_profile_unavailable
-                state.state == null -> R.string.compatibility_profile_pending
-                else -> R.string.compatibility_profile_unknown
-            }),
-        )
-        Hint(stringResource(if (state.isVerifiedModel) R.string.compatibility_profile_verified else R.string.compatibility_profile_hint))
-        TextButton(onClick = onCompatibility) { Text(stringResource(R.string.compatibility_title)) }
-    }
-}
-
-@Composable
-private fun UnverifiedModelCard(state: DeviceUiState, onUnlock: () -> Unit, onLock: () -> Unit) {
-    val s = state.state ?: return
-    var confirmed by rememberSaveable(state.device?.mac, s.deviceModel) { mutableStateOf(false) }
-    SectionCard(stringResource(R.string.device_unverified_title)) {
-        StatusLine(
-            StatusKind.WARNING,
-            stringResource(R.string.device_unverified_text, s.deviceModel?.toString() ?: "?", F79d.VERIFIED_MODEL),
-        )
-        if (state.experimentalUnlocked) {
-            StatusLine(StatusKind.WARNING, stringResource(R.string.compatibility_experimental_enabled))
-            OutlinedButton(onClick = onLock) { Text(stringResource(R.string.compatibility_lock_controls)) }
-            return@SectionCard
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().toggleable(confirmed, role = Role.Checkbox, onValueChange = { confirmed = it }),
-        ) {
-            Checkbox(checked = confirmed, onCheckedChange = null)
-            Spacer(Modifier.width(8.dp))
-            Text(stringResource(R.string.device_unverified_confirm), style = MaterialTheme.typography.bodyMedium)
-        }
-        OutlinedButton(onClick = onUnlock, enabled = confirmed && state.connection == Connection.Live && s.deviceModel != null) {
-            Text(stringResource(R.string.action_unlock_controls))
-        }
-    }
-}
-
-@Composable
-private fun StatusCard(s: SoftenerState) {
-    SectionCard(stringResource(R.string.device_status_title)) {
+private fun StatusHero(s: SoftenerState, state: DeviceUiState, onRegenerate: () -> Unit) {
+    val colors = MaterialTheme.colorScheme
+    SectionCard(containerColor = colors.primaryContainer) {
+        val muted = LocalContentColor.current.copy(alpha = 0.75f)
+        Text(stringResource(R.string.device_status_title), style = MaterialTheme.typography.labelLarge, color = muted)
         val phase = stationText(s.station, s.stationCode)
         val remaining = s.phaseRemainingSeconds
         Text(
             if (remaining != null) stringResource(R.string.device_phase_remaining, phase, durationText(remaining)) else phase,
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.headlineMedium,
         )
-        ValueRow(stringResource(R.string.device_flow_now), flowText(s.flowRateHundredths, s.volumeUnit))
-        if (s.station == io.github.kriziw.bl3372setup.runxin.Station.CLOSED) {
+        if (s.station == Station.CLOSED) {
             StatusLine(StatusKind.WARNING, stringResource(R.string.device_closed_reason, closeReasonText(s.closeReason, s.closeReasonCode)))
         }
+        if (s.vacationStatus == VacationStatus.PREPARING || s.vacationStatus == VacationStatus.ACTIVE) {
+            Text(
+                stringResource(R.string.device_vacation) + ": " +
+                    stringResource(if (s.vacationStatus == VacationStatus.ACTIVE) R.string.vacation_active else R.string.vacation_preparing),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+            )
+        }
+
+        Row(Modifier.fillMaxWidth().padding(top = 4.dp)) {
+            HeroStat(stringResource(R.string.device_remaining_capacity), volumeText(s.remainingCapacity, s.volumeUnit), Modifier.weight(1f))
+            HeroStat(stringResource(R.string.device_flow_now), flowText(s.flowRateHundredths, s.volumeUnit), Modifier.weight(1f))
+        }
+        val left = s.remainingCapacity
+        val perCycle = s.capacityPerCycle
+        if (left != null && perCycle != null && perCycle > 0) {
+            LinearProgressIndicator(
+                progress = { (left / perCycle).toFloat().coerceIn(0f, 1f) },
+                modifier = Modifier.fillMaxWidth().height(8.dp),
+                color = colors.primary,
+                trackColor = colors.onPrimaryContainer.copy(alpha = 0.12f),
+                strokeCap = StrokeCap.Round,
+                gapSize = 0.dp,
+                drawStopIndicator = {},
+            )
+            Text(
+                stringResource(R.string.device_capacity_per_cycle) + ": " + volumeText(perCycle, s.volumeUnit),
+                style = MaterialTheme.typography.bodySmall,
+                color = muted,
+            )
+        }
+        if (s.regenerationByTime == true) {
+            Text(
+                stringResource(R.string.device_days_remaining) + ": " + (s.remainingDays?.toString() ?: "–"),
+                style = MaterialTheme.typography.bodySmall,
+                color = muted,
+            )
+        }
+
+        OutlinedButton(
+            onClick = onRegenerate,
+            enabled = state.canRegenerate,
+            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = colors.onPrimaryContainer),
+        ) {
+            if (state.pendingWrite == SoftenerSetting.Regenerate) {
+                CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
+            } else {
+                Icon(painterResource(R.drawable.ic_autorenew), contentDescription = null, modifier = Modifier.size(18.dp))
+            }
+            Spacer(Modifier.width(8.dp))
+            Text(stringResource(R.string.action_regenerate_now))
+        }
+    }
+}
+
+@Composable
+private fun HeroStat(label: String, value: String, modifier: Modifier = Modifier) {
+    Column(modifier) {
+        Text(label, style = MaterialTheme.typography.bodySmall, color = LocalContentColor.current.copy(alpha = 0.75f))
+        Text(value, style = MaterialTheme.typography.titleLarge)
+    }
+}
+
+/** Alarms and reminders, only when there are any. */
+@Composable
+private fun AlertsBanner(s: SoftenerState) {
+    val alerts = buildList {
+        if (s.lowBrineAlarm == true) add(stringResource(R.string.alert_low_brine))
+        if (s.saltReminder == true) add(stringResource(R.string.alert_salt_reminder))
+        if (s.resinReplacementReminder == true) add(stringResource(R.string.alert_resin))
+        if (s.filterReminder == true) add(stringResource(R.string.alert_filter))
+        if (s.clockChipFault == true) add(stringResource(R.string.fault_clock))
+        if (s.multiplePositionSignalFault == true) add(stringResource(R.string.fault_multiple_position))
+        if (s.noPositionSignalFault == true) add(stringResource(R.string.fault_no_position))
+        if (s.memoryFault == true) add(stringResource(R.string.fault_memory))
+    }
+    if (alerts.isNotEmpty()) {
+        Banner(StatusKind.WARNING, title = stringResource(R.string.device_alerts_title), text = alerts.joinToString("\n"))
+    }
+}
+
+@Composable
+private fun UsageTiles(s: SoftenerState, state: DeviceUiState, onEditSalt: () -> Unit) {
+    Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Tile(stringResource(R.string.device_today), volumeText(s.todayConsumption, s.volumeUnit), Modifier.weight(1f))
+        Tile(stringResource(R.string.device_weekly_average), volumeText(s.weeklyAverageConsumption, s.volumeUnit), Modifier.weight(1f))
+    }
+    Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Tile(
+            stringResource(R.string.setting_salt_added),
+            s.saltAddedKg?.let { "$it kg" } ?: "–",
+            Modifier.weight(1f),
+            onEdit = onEditSalt.takeIf { state.controlsEnabled },
+        )
+        val mode = when (s.regenerationByTime) {
+            true -> stringResource(R.string.device_regeneration_by_days, s.serviceDays?.toString() ?: "–")
+            false -> stringResource(R.string.device_regeneration_by_volume)
+            null -> "–"
+        }
+        Tile(stringResource(R.string.device_regeneration_mode), mode, Modifier.weight(1f))
+    }
+}
+
+@Composable
+private fun Tile(label: String, value: String, modifier: Modifier = Modifier, onEdit: (() -> Unit)? = null) {
+    Card(
+        modifier = modifier.fillMaxHeight(),
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+    ) {
+        val clickable = if (onEdit != null) {
+            Modifier.clickable(onClickLabel = stringResource(R.string.cd_edit, label), role = Role.Button, onClick = onEdit)
+        } else {
+            Modifier
+        }
+        Row(clickable.fillMaxSize().padding(16.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(value, style = MaterialTheme.typography.titleMedium)
+            }
+            if (onEdit != null) {
+                Icon(
+                    painterResource(R.drawable.ic_edit),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(18.dp),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SettingsList(s: SoftenerState, state: DeviceUiState, onEdit: (Editor) -> Unit, onSyncClock: () -> Unit) {
+    val enabled = state.controlsEnabled
+    ListCard(title = stringResource(R.string.device_settings_title)) {
+        if (!enabled && state.connection == Connection.Live && state.pendingWrite == null) {
+            Row(Modifier.padding(horizontal = 20.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                Icon(painterResource(R.drawable.ic_lock), null, Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                Spacer(Modifier.width(8.dp))
+                Hint(stringResource(R.string.device_controls_locked))
+            }
+        }
+        val locale = uiLocale()
+        val hardness = s.hardnessMgPerLitre?.let {
+            stringResource(R.string.value_hardness, it, String.format(locale, "%.1f", it / 10.0))
+        } ?: "–"
+        SettingRow(stringResource(R.string.setting_hardness), hardness, { onEdit(Editor.HARDNESS) }, enabled = enabled, trailingIcon = R.drawable.ic_edit)
+        SettingRow(
+            stringResource(R.string.setting_regeneration_time),
+            timeText(s.regenerationTime),
+            { onEdit(Editor.REGEN_TIME) },
+            enabled = enabled,
+            trailingIcon = R.drawable.ic_edit,
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(start = 20.dp, end = 12.dp, top = 6.dp, bottom = 6.dp),
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text(stringResource(R.string.device_controller_clock), style = MaterialTheme.typography.bodyLarge)
+                Text(timeText(s.controllerTime), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            TextButton(onClick = onSyncClock, enabled = enabled) { Text(stringResource(R.string.action_sync_clock)) }
+        }
+
+        ListSubheader(stringResource(R.string.device_safehome_title))
+        val continuous = s.continuousFlowLimitMinutes?.let { if (it == 0) stringResource(R.string.value_off) else stringResource(R.string.value_minutes, it) } ?: "–"
+        SettingRow(
+            stringResource(R.string.setting_continuous_flow),
+            continuous,
+            { onEdit(Editor.CONTINUOUS_FLOW) },
+            enabled = enabled,
+            trailingIcon = R.drawable.ic_edit,
+        )
+        val shutoff = s.flowShutoffHundredths?.let { if (it == 0) stringResource(R.string.value_off) else flowText(it, s.volumeUnit) } ?: "–"
+        // Only the cubic-metre unit family has been verified for field 7 writes.
+        SettingRow(
+            stringResource(R.string.setting_flow_shutoff),
+            shutoff,
+            { onEdit(Editor.FLOW_SHUTOFF) },
+            enabled = enabled && s.volumeUnit == VolumeUnit.CUBIC_METRES,
+            trailingIcon = R.drawable.ic_edit,
+        )
+    }
+}
+
+/** Everything that is useful only occasionally, folded by default. */
+@Composable
+private fun Details(s: SoftenerState, state: DeviceUiState, onCompatibility: () -> Unit) {
+    Text(
+        stringResource(R.string.device_details_title),
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.padding(start = 4.dp, top = 8.dp),
+    )
+    ExpandableCard(stringResource(R.string.device_salt_title)) {
         val vacation = when (s.vacationStatus) {
             VacationStatus.OFF -> stringResource(R.string.vacation_off)
             VacationStatus.PREPARING -> stringResource(R.string.vacation_preparing)
@@ -426,109 +676,12 @@ private fun StatusCard(s: SoftenerState) {
         }
         ValueRow(stringResource(R.string.device_vacation), vacation)
         Hint(stringResource(R.string.device_vacation_hint))
-        ValueRow(stringResource(R.string.device_controller_clock), timeText(s.controllerTime))
-
-        val alerts = buildList {
-            if (s.lowBrineAlarm == true) add(stringResource(R.string.alert_low_brine))
-            if (s.saltReminder == true) add(stringResource(R.string.alert_salt_reminder))
-            if (s.resinReplacementReminder == true) add(stringResource(R.string.alert_resin))
-            if (s.filterReminder == true) add(stringResource(R.string.alert_filter))
-            if (s.clockChipFault == true) add(stringResource(R.string.fault_clock))
-            if (s.multiplePositionSignalFault == true) add(stringResource(R.string.fault_multiple_position))
-            if (s.noPositionSignalFault == true) add(stringResource(R.string.fault_no_position))
-            if (s.memoryFault == true) add(stringResource(R.string.fault_memory))
-        }
-        if (alerts.isEmpty()) {
-            StatusLine(StatusKind.SUCCESS, stringResource(R.string.device_no_alerts))
-        } else {
-            alerts.forEach { StatusLine(StatusKind.WARNING, it) }
-        }
-    }
-}
-
-@Composable
-private fun WaterCard(s: SoftenerState) {
-    SectionCard(stringResource(R.string.device_water_title)) {
-        ValueRow(stringResource(R.string.device_remaining_capacity), volumeText(s.remainingCapacity, s.volumeUnit))
-        ValueRow(stringResource(R.string.device_today), volumeText(s.todayConsumption, s.volumeUnit))
-        ValueRow(stringResource(R.string.device_weekly_average), volumeText(s.weeklyAverageConsumption, s.volumeUnit))
-        ValueRow(stringResource(R.string.device_capacity_per_cycle), volumeText(s.capacityPerCycle, s.volumeUnit))
-        val mode = when (s.regenerationByTime) {
-            true -> stringResource(R.string.device_regeneration_by_days, s.serviceDays?.toString() ?: "–")
-            false -> stringResource(R.string.device_regeneration_by_volume)
-            null -> "–"
-        }
-        ValueRow(stringResource(R.string.device_regeneration_mode), mode)
-        if (s.regenerationByTime == true) {
-            ValueRow(stringResource(R.string.device_days_remaining), s.remainingDays?.toString() ?: "–")
-        }
-    }
-}
-
-@Composable
-private fun SaltCard(s: SoftenerState, state: DeviceUiState, onEdit: () -> Unit) {
-    SectionCard(stringResource(R.string.device_salt_title)) {
-        EditableRow(stringResource(R.string.setting_salt_added), s.saltAddedKg?.let { "$it kg" } ?: "–", state.controlsEnabled, onEdit)
-        Hint(stringResource(R.string.setting_salt_added_hint))
         ValueRow(stringResource(R.string.alert_low_brine), yesNo(s.lowBrineAlarm))
         ValueRow(stringResource(R.string.alert_salt_reminder), yesNo(s.saltReminder))
         ValueRow(stringResource(R.string.device_regeneration_reminder), s.regenerationReminderCount?.toString() ?: "–")
         ValueRow(stringResource(R.string.device_filter_days), s.filterMaterialDays?.let { daysText(it) } ?: "–")
     }
-}
-
-@Composable
-private fun SettingsCard(s: SoftenerState, state: DeviceUiState, onEdit: (Editor) -> Unit, onSyncClock: () -> Unit) {
-    val enabled = state.controlsEnabled
-    SectionCard(stringResource(R.string.device_settings_title)) {
-        if (!enabled && state.connection == Connection.Live && state.pendingWrite == null) {
-            Hint(stringResource(R.string.device_controls_locked))
-        }
-        val locale = uiLocale()
-        val hardness = s.hardnessMgPerLitre?.let {
-            stringResource(R.string.value_hardness, it, String.format(locale, "%.1f", it / 10.0))
-        } ?: "–"
-        EditableRow(stringResource(R.string.setting_hardness), hardness, enabled) { onEdit(Editor.HARDNESS) }
-        EditableRow(stringResource(R.string.setting_regeneration_time), timeText(s.regenerationTime), enabled) { onEdit(Editor.REGEN_TIME) }
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-            Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.device_controller_clock), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text(timeText(s.controllerTime), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-            }
-            OutlinedButton(onClick = onSyncClock, enabled = enabled) { Text(stringResource(R.string.action_sync_clock)) }
-        }
-        HorizontalDivider()
-        Text(stringResource(R.string.device_safehome_title), style = MaterialTheme.typography.labelLarge)
-        val continuous = s.continuousFlowLimitMinutes?.let { if (it == 0) stringResource(R.string.value_off) else stringResource(R.string.value_minutes, it) } ?: "–"
-        EditableRow(stringResource(R.string.setting_continuous_flow), continuous, enabled) { onEdit(Editor.CONTINUOUS_FLOW) }
-        val shutoff = s.flowShutoffHundredths?.let { if (it == 0) stringResource(R.string.value_off) else flowText(it, s.volumeUnit) } ?: "–"
-        // Only the cubic-metre unit family has been verified for field 7 writes.
-        EditableRow(stringResource(R.string.setting_flow_shutoff), shutoff, enabled && s.volumeUnit == VolumeUnit.CUBIC_METRES) { onEdit(Editor.FLOW_SHUTOFF) }
-        Hint(stringResource(R.string.setting_safehome_hint))
-        HorizontalDivider()
-        Button(
-            onClick = { onEdit(Editor.REGENERATE) },
-            enabled = state.canRegenerate,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            if (state.pendingWrite == SoftenerSetting.Regenerate) {
-                CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.onPrimary)
-                Spacer(Modifier.width(10.dp))
-            }
-            Text(stringResource(R.string.action_regenerate_now))
-        }
-        Hint(stringResource(R.string.regenerate_hint))
-    }
-}
-
-@Composable
-private fun ProgrammeCard(s: SoftenerState) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
-    SectionCard(stringResource(R.string.device_programme_title)) {
-        TextButton(onClick = { expanded = !expanded }) {
-            Text(stringResource(if (expanded) R.string.action_hide else R.string.action_show))
-        }
-        if (!expanded) return@SectionCard
+    ExpandableCard(stringResource(R.string.device_programme_title)) {
         ValueRow(stringResource(R.string.programme_backwash), durationText(s.backwashSeconds))
         ValueRow(stringResource(R.string.programme_brine_slow_rinse), durationText(s.brineSlowRinseSeconds))
         ValueRow(stringResource(R.string.programme_brine_refill), durationText(s.brineRefillSeconds))
@@ -550,186 +703,31 @@ private fun ProgrammeCard(s: SoftenerState) {
         ValueRow(stringResource(R.string.programme_units), flowUnitText(s.volumeUnit))
         ValueRow(stringResource(R.string.programme_time_format), s.timeScheme24h?.let { if (it) "24 h" else "12 h" } ?: "–")
     }
-}
-
-@Composable
-private fun RawFieldsCard(s: SoftenerState) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
-    SectionCard(stringResource(R.string.device_raw_title)) {
-        Hint(stringResource(R.string.device_raw_hint))
-        TextButton(onClick = { expanded = !expanded }) {
-            Text(stringResource(if (expanded) R.string.action_hide else R.string.action_show))
+    ExpandableCard(stringResource(R.string.compatibility_identity_title)) {
+        state.device?.let { device ->
+            ValueRow(stringResource(R.string.device_address_label), device.lastIp)
+            ValueRow("MAC", device.mac)
         }
-        if (!expanded) return@SectionCard
+        state.link?.ssid?.let { ValueRow(stringResource(R.string.setup_ssid_label), it) }
+        ValueRow(stringResource(R.string.compatibility_module_type), state.device?.deviceType?.let { "0x%04X".format(it) } ?: "–")
+        ValueRow(stringResource(R.string.compatibility_model_code), s.deviceModel?.toString() ?: "–")
+        ValueRow(
+            stringResource(R.string.compatibility_profile),
+            state.profile?.name ?: stringResource(
+                if (state.device != null && !ControllerProfiles.supportsTransport(state.device.deviceType)) {
+                    R.string.compatibility_profile_unavailable
+                } else {
+                    R.string.compatibility_profile_unknown
+                },
+            ),
+        )
+        Hint(stringResource(if (state.isVerifiedModel) R.string.compatibility_profile_verified else R.string.compatibility_profile_hint))
+        TextButton(onClick = onCompatibility) { Text(stringResource(R.string.compatibility_title)) }
+    }
+    ExpandableCard(stringResource(R.string.device_raw_title)) {
+        Hint(stringResource(R.string.device_raw_hint))
         s.fields.toSortedMap().forEach { (id, bytes) ->
             ValueRow("$id  ${F79d.FIELD_NAMES[id].orEmpty()}", "%02X %02X".format(bytes.first, bytes.second))
         }
     }
-}
-
-@Composable
-private fun EditableRow(label: String, value: String, enabled: Boolean, onEdit: () -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-        Column(Modifier.weight(1f)) {
-            Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Text(value, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
-        }
-        IconButton(onClick = onEdit, enabled = enabled) {
-            Icon(painterResource(R.drawable.ic_edit), contentDescription = stringResource(R.string.cd_edit, label))
-        }
-    }
-}
-
-@Composable
-private fun writeOutcomeText(outcome: WriteOutcome): String {
-    val name = settingName(outcome.setting)
-    val error = outcome.error
-    return when (val result = outcome.result) {
-        is WriteResult.Confirmed ->
-            if (outcome.setting == SoftenerSetting.Regenerate) stringResource(R.string.write_regeneration_started)
-            else stringResource(R.string.write_confirmed, name)
-        is WriteResult.NotConfirmed ->
-            if (result.ambiguousDelivery) stringResource(R.string.write_ambiguous, name)
-            else stringResource(R.string.write_not_confirmed, name)
-        null -> stringResource(R.string.write_failed, name, error?.let { networkErrorText(it) }.orEmpty())
-    }
-}
-
-@Composable
-private fun settingName(setting: SoftenerSetting): String = stringResource(
-    when (setting) {
-        is SoftenerSetting.Hardness -> R.string.setting_hardness
-        is SoftenerSetting.SaltAdded -> R.string.setting_salt_added
-        is SoftenerSetting.RegenerationTime -> R.string.setting_regeneration_time
-        is SoftenerSetting.ControllerClock -> R.string.device_controller_clock
-        is SoftenerSetting.ContinuousFlowLimit -> R.string.setting_continuous_flow
-        is SoftenerSetting.FlowShutoff -> R.string.setting_flow_shutoff
-        SoftenerSetting.Regenerate -> R.string.action_regenerate
-    },
-)
-
-@Composable
-private fun NumberDialog(
-    title: String,
-    unit: String,
-    initial: Int,
-    range: IntRange,
-    hint: String,
-    onDismiss: () -> Unit,
-    onConfirm: (Int) -> Unit,
-) {
-    var text by rememberSaveable { mutableStateOf(initial.toString()) }
-    val value = text.trim().toIntOrNull()?.takeIf { it in range }
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(title) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    singleLine = true,
-                    suffix = { Text(unit) },
-                    isError = value == null,
-                    supportingText = { Text(stringResource(R.string.dialog_range, range.first, range.last, unit)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                )
-                Hint(hint)
-            }
-        },
-        confirmButton = { Button(onClick = { value?.let(onConfirm) }, enabled = value != null) { Text(stringResource(R.string.action_save)) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
-    )
-}
-
-@Composable
-private fun DecimalDialog(
-    title: String,
-    unit: String,
-    initialHundredths: Int,
-    rangeHundredths: IntRange,
-    hint: String,
-    onDismiss: () -> Unit,
-    onConfirm: (Int) -> Unit,
-) {
-    var text by rememberSaveable { mutableStateOf("%.2f".format(Locale.ROOT, initialHundredths / 100.0)) }
-    val hundredths = text.trim().replace(',', '.').toBigDecimalOrNull()
-        ?.movePointRight(2)?.let { if (it.stripTrailingZeros().scale() <= 0) it.toInt() else null }
-        ?.takeIf { it in rangeHundredths }
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(title) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    singleLine = true,
-                    suffix = { Text(unit) },
-                    isError = hundredths == null,
-                    supportingText = {
-                        Text(stringResource(R.string.dialog_range_decimal, rangeHundredths.first / 100.0, rangeHundredths.last / 100.0, unit))
-                    },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                )
-                Hint(hint)
-            }
-        },
-        confirmButton = { Button(onClick = { hundredths?.let(onConfirm) }, enabled = hundredths != null) { Text(stringResource(R.string.action_save)) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TimeDialog(title: String, initial: LocalTime, hint: String, onDismiss: () -> Unit, onConfirm: (LocalTime) -> Unit) {
-    val picker = rememberTimePickerState(initialHour = initial.hour, initialMinute = initial.minute, is24Hour = true)
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(title) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                TimeInput(state = picker)
-                Hint(hint)
-            }
-        },
-        confirmButton = {
-            Button(onClick = { onConfirm(LocalTime.of(picker.hour, picker.minute)) }) { Text(stringResource(R.string.action_save)) }
-        },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
-    )
-}
-
-@Composable
-private fun TextDialog(
-    title: String,
-    initial: String,
-    label: String,
-    validate: (String) -> Boolean,
-    onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit,
-    hint: String? = null,
-    keyboardType: KeyboardType = KeyboardType.Text,
-) {
-    var text by rememberSaveable { mutableStateOf(initial) }
-    val valid = validate(text)
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(title) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    label = { Text(label) },
-                    singleLine = true,
-                    isError = !valid,
-                    keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-                )
-                hint?.let { Hint(it) }
-            }
-        },
-        confirmButton = { Button(onClick = { onConfirm(text) }, enabled = valid) { Text(stringResource(R.string.action_save)) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
-    )
 }

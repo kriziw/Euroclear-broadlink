@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Launch screen behind the logo when the phone uses the dark theme. -->
+    <color name="splash_background">#FF0E1316</color>
+</resources>

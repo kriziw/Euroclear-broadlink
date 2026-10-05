@@ -15,7 +15,8 @@ choose to update. Automatic checks can be disabled. No controller information or
 credentials are sent to GitHub. There are no analytics, telemetry, ads or vendor SDKs.
 
 The app is in **Hungarian** by default and in **English** when the phone is set to English.
-On Android 13+ you can pick either under *Settings → Apps → BL3372 → Language*.
+You can pick either in the app under *Settings → Language* (the gear on the home screen).
+It follows the phone's light or dark theme.
 
 > Not affiliated with Runxin, Euro-Clear or BroadLink. Protocol details and sources:
 > [docs/PROTOCOL.md](docs/PROTOCOL.md) (Wi-Fi setup) and
@@ -66,23 +67,26 @@ all local-network traffic without it.
 
 ## Adding a softener that is already on your network
 
-On the home screen, tap **Add a device already on my network**, then search the current
-network. If the softener is on another VLAN or subnet, use *Device on another VLAN or
+On the home screen, tap **Add a device** → **Add a device already on my network**, then
+search the current network. If the softener is on another VLAN or subnet, use *Device on another VLAN or
 subnet?* (see below).
 
 ## The dashboard
 
 With one saved softener the app opens straight on it. With several it shows a list, and
-*Add a device* is always there.
+*Add a device* is always there. The connection state sits under the device name; a card
+only appears when something needs attention (no Wi-Fi, device not found, permission).
 
 | Section | Contents |
 |---|---|
-| Status | valve phase with time left (in service, backwash, brine and slow rinse, …), current flow, vacation state, controller clock, alarms and reminders |
-| Water | remaining capacity, used today, controller weekly average, capacity per cycle, regeneration mode |
-| Salt and maintenance | salt added ✎, low brine, add-salt reminder, resin reminder threshold, filter media interval |
-| Settings | raw water hardness ✎, regeneration time ✎, clock *sync with phone*, SafeHOME continuous-flow limit ✎ and maximum flow ✎, **Regenerate now** |
-| Regeneration programme | backwash, brine, refill and rinse times and other programme values (read-only) |
-| Diagnostics | raw controller fields |
+| Status | valve phase with time left (in service, backwash, brine and slow rinse, …), remaining capacity against capacity per cycle, current flow, vacation state when active, **Regenerate now** |
+| Needs attention | alarms and reminders, shown only when there are any |
+| Tiles | used today, controller weekly average, salt added ✎, regeneration mode |
+| Settings | raw water hardness ✎, regeneration time ✎, controller clock *sync with phone*, SafeHOME continuous-flow limit ✎ and maximum flow ✎ |
+| Details (folded) | salt and maintenance, regeneration programme, detected controller (address, module type, controller code, profile), diagnostics (raw fields) |
+
+Tapping a setting opens an editor with the current value selected, so you can type the new
+one straight away.
 
 **How changes are made safely**
 * Every change is sent **once**, then the controller is **read back**. You only see "saved"
@@ -96,7 +100,7 @@ With one saved softener the app opens straight on it. With several it shows a li
 **Controller models.** After connection the app reads the controller identity and loads a
 matching bundled profile. Controls unlock automatically only for the combination verified
 on hardware: Runxin F79D (model 9) behind a BL3372 (type `0x520F`). The detected module type,
-controller code and loaded profile are shown on the dashboard.
+controller code and loaded profile are shown under *Details → Detected controller*.
 * For any other model the dashboard shows the values with a warning, and the controls stay
   locked.
 * You can unlock experimental controls after confirming that the values match the controller's
@@ -107,7 +111,7 @@ controller code and loaded profile are shown on the dashboard.
   values (hardness, regeneration time) with the controller before unlocking.
 * Other BroadLink module types remain unsupported and receive no Runxin commands.
 
-Open **Controller compatibility** from the home screen or device dashboard for the official
+Open **Controller compatibility** from *Settings* or *Details → Detected controller* for the official
 Runxin/BroadLink portfolio guide. Wi-Fi product names are not automatically treated as local
 protocol IDs. Source links open your browser and need Internet access; profile selection
 itself works locally. Evidence and limits: [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
@@ -121,8 +125,8 @@ and manufacturer listings alone cannot enable controls.
 
 On launch the app checks this repository's public releases and shows a dismissible
 notice for a newer stable version with an uploaded, verifiable APK. Dismissing a
-version suppresses that version's automatic notice; **App updates** on the home
-screen still lets you check and download manually. Turn off **Check for updates
+version suppresses that version's automatic notice; *Settings → App updates* still
+lets you check and download manually. Turn off **Check for updates
 on launch** there to prevent automatic GitHub requests. Checks fail quietly at launch
 when offline and do not stop local controller operation. Manual failures are shown
 on the update screen.
