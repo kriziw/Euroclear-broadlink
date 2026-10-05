@@ -35,6 +35,7 @@
     <string name="cd_edit">Edit %1$s</string>
     <string name="cd_hide_password">Hide password</string>
     <string name="cd_more">More options</string>
+    <string name="cd_close">Close</string>
     <string name="cd_show_password">Show password</string>
 
     <string name="footer_privacy">Controller data stays on this phone. No account or Wi-Fi password storage. Update checks contact GitHub; you can turn automatic checks off.</string>
@@ -56,10 +57,9 @@
     <string name="home_set_up_new_hint">Gives the controller your Wi-Fi name and password, step by step.</string>
     <string name="home_add_existing">Add a device already on my network</string>
     <string name="home_add_existing_hint">Finds it by search, by IP address, or by scanning another subnet/VLAN.</string>
+    <string name="settings_title">Settings</string>
 
     <!-- Setup wizard -->
-    <string name="setup_title">BL3372 Wi-Fi Setup</string>
-    <string name="setup_subtitle">Local Wi-Fi setup for BroadLink BL3372 modules</string>
     <string name="setup_step_of">Step %1$d of %2$d</string>
     <string name="setup_skip_to_find">Already on Wi-Fi?</string>
     <string name="setup_step1_title">Connect to the device</string>
@@ -133,11 +133,11 @@
     <string name="device_default_name">Water softener</string>
     <string name="device_type_runxin">Runxin controller with BroadLink BL3372 (type %1$s)</string>
     <string name="device_type_other">BroadLink device (type %1$s)</string>
-    <string name="device_connection_title">Connection</string>
     <string name="device_connecting">Connecting…</string>
     <string name="device_locating">Looking for the device…</string>
     <string name="device_locating_subnet">Looking for the device on its subnet…</string>
     <string name="device_live">Live · updated %1$s</string>
+    <string name="device_offline">Not connected</string>
     <string name="device_no_wifi">This phone is not on Wi-Fi.</string>
     <string name="device_not_found">No answer from the device (last address %1$s).</string>
     <string name="device_not_found_hint">Check that the softener is powered and on Wi-Fi. If it is on another VLAN, make sure UDP port 80 is allowed, or enter its new address.</string>
@@ -152,13 +152,13 @@
 
     <string name="device_unverified_title">Experimental controller profile</string>
     <string name="device_unverified_text">No registered profile matches controller code %1$s. Readings use the F79D fallback, verified only for code %2$d, and may be wrong. Comparing readings does not verify every command. Controls require your experimental opt-in.</string>
-    <string name="device_unverified_confirm">The values below (for example hardness and regeneration time) match my controller’s display.</string>
+    <string name="device_unverified_short">Controller code %1$s has no verified profile, so readings may be inaccurate. Controls stay locked until you opt in.</string>
+    <string name="device_unverified_confirm">The values shown in the app (for example hardness and regeneration time) match my controller’s display.</string>
     <string name="compatibility_title">Controller compatibility</string>
     <string name="compatibility_identity_title">Detected controller</string>
     <string name="compatibility_module_type">Module type</string>
     <string name="compatibility_model_code">Reported controller code</string>
     <string name="compatibility_profile">Loaded profile</string>
-    <string name="compatibility_profile_pending">Waiting for controller identification</string>
     <string name="compatibility_profile_unavailable">No supported transport</string>
     <string name="compatibility_profile_unknown">Experimental F79D fallback</string>
     <string name="compatibility_profile_verified">A supported local control profile is loaded for this controller identity.</string>
@@ -185,12 +185,11 @@
     <string name="device_phase_remaining">%1$s · %2$s left</string>
     <string name="device_flow_now">Current flow</string>
     <string name="device_closed_reason">Valve closed: %1$s</string>
+    <string name="device_alerts_title">Needs attention</string>
     <string name="device_vacation">Vacation mode</string>
     <string name="device_vacation_hint">Vacation mode is switched on the controller: while in service, hold ▼ (Down) for 6 seconds; do the same to end it.</string>
     <string name="device_controller_clock">Controller clock</string>
-    <string name="device_no_alerts">No alarms or reminders.</string>
 
-    <string name="device_water_title">Water</string>
     <string name="device_remaining_capacity">Remaining capacity</string>
     <string name="device_today">Used today</string>
     <string name="device_weekly_average">Controller weekly average</string>
@@ -210,6 +209,7 @@
     <string name="device_programme_title">Regeneration programme</string>
     <string name="device_raw_title">Diagnostics</string>
     <string name="device_raw_hint">Raw controller fields, for troubleshooting.</string>
+    <string name="device_details_title">Details</string>
 
     <string name="setting_hardness">Raw water hardness</string>
     <string name="setting_hardness_hint">Per the Midnight manual, enter the measured German hardness (°dH / nk°) × 10, e.g. 15 nk° → 150 mg/l.</string>
@@ -294,7 +294,6 @@
     <string name="language_title">Language</string>
     <string name="language_system">Phone language</string>
     <string name="language_system_hint">Hungarian, unless the phone is set to English</string>
-    <string name="cd_language">Change language</string>
     <string name="catalogue_title">Controller compatibility by family</string>
     <string name="catalogue_summary">Browse Supported and Unverified controller models. Support is based on documented local commands implemented in WaterCare. The connected controller identity determines compatibility; the softener brand alone does not.</string>
     <string name="catalogue_search">Search model or product alias</string>

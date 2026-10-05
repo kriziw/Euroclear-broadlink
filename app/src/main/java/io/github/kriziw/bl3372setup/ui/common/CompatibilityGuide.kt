@@ -1,9 +1,6 @@
 package io.github.kriziw.bl3372setup.ui.common
 
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -16,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import io.github.kriziw.bl3372setup.R
 import io.github.kriziw.bl3372setup.runxin.CatalogueEvidence
@@ -28,34 +24,27 @@ import io.github.kriziw.bl3372setup.runxin.DocumentedController
 @Composable
 fun CompatibilityGuide(onBack: () -> Unit) {
     val uriHandler = LocalUriHandler.current
-    AppBackground(topBar = {
-        Row(Modifier.fillMaxWidth()) {
-            IconButton(onClick = onBack) {
-                Icon(painterResource(R.drawable.ic_arrow_back), stringResource(R.string.cd_back))
-            }
-            Text(stringResource(R.string.compatibility_title), style = MaterialTheme.typography.titleLarge)
-        }
-    }) {
-        SectionCard(stringResource(R.string.compatibility_detection_title)) {
+    AppScaffold(title = stringResource(R.string.compatibility_title), navigation = { BackButton(onBack) }) {
+        SectionCard(title = stringResource(R.string.compatibility_detection_title)) {
             Text(stringResource(R.string.compatibility_detection_text))
         }
         ControllerLibrary()
-        SectionCard(stringResource(R.string.compatibility_wifi_title)) {
+        SectionCard(title = stringResource(R.string.compatibility_wifi_title)) {
             Text(stringResource(R.string.compatibility_wifi_text))
             TextButton(onClick = { uriHandler.openUri("https://run-xin.com/en/category126.htm") }) {
                 Text(stringResource(R.string.compatibility_runxin_manuals))
             }
         }
-        SectionCard(stringResource(R.string.compatibility_f105_title)) {
+        SectionCard(title = stringResource(R.string.compatibility_f105_title)) {
             Text(stringResource(R.string.compatibility_f105_text))
             TextButton(onClick = { uriHandler.openUri("https://manufacturervalve.com/pdf/download-center_22.pdf") }) {
                 Text(stringResource(R.string.compatibility_f105_manual))
             }
         }
-        SectionCard(stringResource(R.string.compatibility_other_title)) {
+        SectionCard(title = stringResource(R.string.compatibility_other_title)) {
             Text(stringResource(R.string.compatibility_other_text))
         }
-        SectionCard(stringResource(R.string.compatibility_broadlink_title)) {
+        SectionCard(title = stringResource(R.string.compatibility_broadlink_title)) {
             Text(stringResource(R.string.compatibility_broadlink_text))
             TextButton(onClick = { uriHandler.openUri("https://docs.ibroadlink.com/public/appsdk_en/appsdk_05/") }) {
                 Text(stringResource(R.string.compatibility_broadlink_docs))
@@ -71,7 +60,7 @@ private fun ControllerLibrary() {
     var expandedFamily by rememberSaveable { mutableStateOf<String?>(null) }
     var expandedModel by rememberSaveable { mutableStateOf<String?>(null) }
     val families = ControllerCatalogue.families(query)
-    SectionCard(stringResource(R.string.catalogue_title)) {
+    SectionCard(title = stringResource(R.string.catalogue_title)) {
         Text(stringResource(R.string.catalogue_summary))
         OutlinedTextField(
             value = query,
@@ -88,7 +77,7 @@ private fun ControllerLibrary() {
         }
         if (matchingFamilies.isNotEmpty()) {
             val supported = status == CompatibilityStatus.SUPPORTED
-            SectionCard(stringResource(if (supported) R.string.catalogue_supported else R.string.catalogue_unverified)) {
+            SectionCard(title = stringResource(if (supported) R.string.catalogue_supported else R.string.catalogue_unverified)) {
                 Text(stringResource(if (supported) R.string.catalogue_supported_hint else R.string.catalogue_unverified_hint))
                 matchingFamilies.forEach { family ->
                     if (!supported) {

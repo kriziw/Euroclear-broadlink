@@ -36,6 +36,7 @@
     <string name="cd_edit">%1$s szerkesztése</string>
     <string name="cd_hide_password">Jelszó elrejtése</string>
     <string name="cd_more">További lehetőségek</string>
+    <string name="cd_close">Bezárás</string>
     <string name="cd_show_password">Jelszó megjelenítése</string>
 
     <string name="footer_privacy">A vezérlő adatai ezen a telefonon maradnak. Nincs fiók, a Wi-Fi-jelszót nem tároljuk. A frissítéskeresés a GitHubhoz kapcsolódik; az automatikus keresés kikapcsolható.</string>
@@ -57,10 +58,9 @@
     <string name="home_set_up_new_hint">Lépésről lépésre átadja a vezérlőfejnek a Wi-Fi hálózat nevét és jelszavát.</string>
     <string name="home_add_existing">Már a hálózaton lévő eszköz hozzáadása</string>
     <string name="home_add_existing_hint">Megkeresi kereséssel, IP-cím alapján, vagy egy másik alhálózat/VLAN átfésülésével.</string>
+    <string name="settings_title">Beállítások</string>
 
     <!-- Setup wizard -->
-    <string name="setup_title">BL3372 Wi-Fi beállító</string>
-    <string name="setup_subtitle">Helyi Wi-Fi beállítás BroadLink BL3372 modulokhoz</string>
     <string name="setup_step_of">%1$d. lépés / %2$d</string>
     <string name="setup_skip_to_find">Már a Wi-Fi hálózaton van?</string>
     <string name="setup_step1_title">Csatlakozás az eszközhöz</string>
@@ -134,11 +134,11 @@
     <string name="device_default_name">Vízlágyító</string>
     <string name="device_type_runxin">Runxin vezérlőfej BroadLink BL3372 modullal (típus: %1$s)</string>
     <string name="device_type_other">BroadLink eszköz (típus: %1$s)</string>
-    <string name="device_connection_title">Kapcsolat</string>
     <string name="device_connecting">Csatlakozás…</string>
     <string name="device_locating">Az eszköz keresése…</string>
     <string name="device_locating_subnet">Az eszköz keresése az alhálózatán…</string>
     <string name="device_live">Élő · frissítve: %1$s</string>
+    <string name="device_offline">Nincs kapcsolat</string>
     <string name="device_no_wifi">A telefon nem csatlakozik Wi-Fi hálózathoz.</string>
     <string name="device_not_found">Az eszköz nem válaszol (utolsó cím: %1$s).</string>
     <string name="device_not_found_hint">Ellenőrizze, hogy a vízlágyító áram alatt van és csatlakozik a Wi-Fi hálózathoz. Ha másik VLAN-on van, ellenőrizze, hogy az UDP 80-as port engedélyezett-e, vagy adja meg az új címét.</string>
@@ -153,13 +153,13 @@
 
     <string name="device_unverified_title">Kísérleti vezérlőprofil</string>
     <string name="device_unverified_text">A(z) %1$s vezérlőkódhoz nincs regisztrált profil. Az értékek az F79D tartalék mezőtérképét használják, amelyet csak a(z) %2$d kódra ellenőriztek, így hibásak lehetnek. Az értékek egyezése nem igazol minden parancsot. A kísérleti vezérlést külön engedélyezni kell.</string>
-    <string name="device_unverified_confirm">Az alábbi értékek (például a keménység és a regenerálás ideje) megegyeznek a vezérlőfej kijelzőjén látottakkal.</string>
+    <string name="device_unverified_short">A(z) %1$s vezérlőkódhoz nincs ellenőrzött profil, ezért az értékek pontatlanok lehetnek. A vezérlés zárolva marad, amíg külön nem engedélyezi.</string>
+    <string name="device_unverified_confirm">Az alkalmazásban látható értékek (például a keménység és a regenerálás ideje) megegyeznek a vezérlőfej kijelzőjén látottakkal.</string>
     <string name="compatibility_title">Vezérlőkompatibilitás</string>
     <string name="compatibility_identity_title">Felismert vezérlő</string>
     <string name="compatibility_module_type">Modultípus</string>
     <string name="compatibility_model_code">Jelentett vezérlőkód</string>
     <string name="compatibility_profile">Betöltött profil</string>
-    <string name="compatibility_profile_pending">Várakozás a vezérlő azonosítására</string>
     <string name="compatibility_profile_unavailable">Nincs támogatott kapcsolat</string>
     <string name="compatibility_profile_unknown">Kísérleti F79D tartalékprofil</string>
     <string name="compatibility_profile_verified">Támogatott helyi vezérlőprofil betöltve ehhez a vezérlőazonosítóhoz.</string>
@@ -186,12 +186,11 @@
     <string name="device_phase_remaining">%1$s · még %2$s</string>
     <string name="device_flow_now">Pillanatnyi átfolyás</string>
     <string name="device_closed_reason">Szelep elzárva: %1$s</string>
+    <string name="device_alerts_title">Figyelmet igényel</string>
     <string name="device_vacation">Vakáció üzemmód</string>
     <string name="device_vacation_hint">A vakáció üzemmódot a vezérlőfejen lehet kapcsolni: vízszolgáltatás állapotban tartsa lenyomva a „Le” (▼) gombot 6 másodpercig; a kikapcsolás ugyanígy történik.</string>
     <string name="device_controller_clock">A vezérlőfej órája</string>
-    <string name="device_no_alerts">Nincs riasztás vagy emlékeztető.</string>
 
-    <string name="device_water_title">Víz</string>
     <string name="device_remaining_capacity">Hátralévő kapacitás</string>
     <string name="device_today">Mai fogyasztás</string>
     <string name="device_weekly_average">Heti átlag (vezérlőfej)</string>
@@ -211,6 +210,7 @@
     <string name="device_programme_title">Regenerálási program</string>
     <string name="device_raw_title">Diagnosztika</string>
     <string name="device_raw_hint">A vezérlőfej nyers mezői, hibakereséshez.</string>
+    <string name="device_details_title">Részletek</string>
 
     <string name="setting_hardness">Nyersvíz keménység</string>
     <string name="setting_hardness_hint">A Midnight gépkönyv szerint a mért német keménységi fok (nk°) tízszeresét kell megadni, pl. 15 nk° → 150 mg/l.</string>
@@ -297,7 +297,6 @@
     <string name="language_system_hint">Magyar, kivéve ha a telefon angolra van állítva</string>
     <string name="language_hungarian" translatable="false">Magyar</string>
     <string name="language_english" translatable="false">English</string>
-    <string name="cd_language">Nyelv módosítása</string>
     <string name="catalogue_title">Vezérlőkompatibilitás családonként</string>
     <string name="catalogue_summary">Támogatott és nem igazolt vezérlőmodellek. A támogatás a WaterCare-ben megvalósított, dokumentált helyi parancsokon alapul. A kompatibilitást a csatlakoztatott vezérlő azonosítója határozza meg; a vízlágyító márkája önmagában nem.</string>
     <string name="catalogue_search">Modell vagy termékazonosító keresése</string>
