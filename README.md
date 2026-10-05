@@ -8,15 +8,17 @@ module, such as the Euro-Clear Midnight series. Its controller functions work lo
 1. **Wi-Fi setup**: gives the module your home Wi-Fi name and password, step by step.
 2. **Device dashboard**: shows status, water use, salt, alarms and settings, and lets you
    change the safe settings or start a regeneration.
+3. **Other brands** (experimental): JUDO, BWT Perla, Grünbeck softliQ and SYR NeoSoft softeners
+   over their own local APIs, including their Wi-Fi setup where the device allows it.
 
 Controller setup and operation need no Runxin or BroadLink cloud, account or Internet.
 App update checks contact GitHub for public releases; APKs are downloaded only when you
 choose to update. Automatic checks can be disabled. No controller information or Wi-Fi
 credentials are sent to GitHub. There are no analytics, telemetry, ads or vendor SDKs.
 
-The app is in **Hungarian** by default and in **English** when the phone is set to English.
-You can pick either in the app under *Settings → Language* (the gear on the home screen).
-It follows the phone's light or dark theme.
+The app follows the phone's language: **English**, **Hungarian**, **Spanish** or **German**,
+and English when the phone uses any other language. You can pick one in the app under
+*Settings → Language* (the gear on the home screen). It follows the phone's light or dark theme.
 
 > Not affiliated with Runxin, Euro-Clear or BroadLink. Protocol details and sources:
 > [docs/PROTOCOL.md](docs/PROTOCOL.md) (Wi-Fi setup) and
@@ -107,10 +109,9 @@ on hardware: Runxin F79D (model 9) behind a BL3372 (type `0x520F`). The detected
 controller code and loaded profile are shown under *Details → Detected controller*.
 * For any other model the dashboard shows the values with a warning, and the controls stay
   locked.
-* You can unlock experimental controls after confirming that the values match the controller's
-  display. The experimental warning remains visible, and you can lock them again. The opt-in
-  belongs to that exact controller code; a changed or missing code cannot reuse it. Existing
-  unlocks from earlier versions require confirmation again.
+* A one-line note with a switch turns experimental controls on. Only turn it on if the values
+  match the controller's display; turning it off locks them again. The opt-in belongs to that
+  exact controller code; a changed or missing code cannot reuse it.
 * The Midnight's ECOPRO+ head has not been confirmed yet. If yours is locked, compare a few
   values (hardness, regeneration time) with the controller before unlocking.
 * Other BroadLink module types remain unsupported and receive no Runxin commands.
@@ -124,6 +125,38 @@ with separate Supported and Unverified lists. Unverified models are grouped by f
 each entry shows its documentation when expanded. Supported profiles apply across
 compatible softener products reporting the same controller identity. Family membership
 and manufacturer listings alone cannot enable controls.
+
+## Other brands (experimental)
+
+*Add a device → Add another brand* connects to softeners that offer a local API of their own.
+These were picked from what the Home Assistant community uses; none has been tested on real
+hardware by WaterCare yet, so every brand starts with its controls switched off.
+
+| Brand | Models | What works | Source of the protocol |
+|---|---|---|---|
+| JUDO | i-soft, i-soft K, i-soft SAFE+, i-soft K SAFE+, i-soft PRO, SOFTwell (Connectivity Module) | salt, hardness, water totals; target hardness, salt stock and salt warning (read back); regeneration; leak-protection valve on SAFE+/PRO | JUDO's published command table |
+| BWT | Perla One, Perla Duplex, PerlaMAXX (firmware 2.02+, Local API on) | capacity, salt, flow, volumes, hardness, errors. Read-only: the API has no commands | community library dkarv/bwt_api |
+| Grünbeck | softliQ SC18, SC23, MC16, MC32 | flow, salt range, hardness, regeneration step, errors; operating mode; manual regeneration | community integrations for the SC and MC |
+| SYR | NeoSoft 2500 / 5000 Connect | capacity, salt, flow, hardness, alarms; regeneration mode, interval and time | SYR's published local API |
+
+**Wi-Fi setup** for a new device (*Set up Wi-Fi* on the add screen):
+* **SYR NeoSoft**: WaterCare sends your Wi-Fi to the softener itself while the phone is on the
+  softener's access point (key first, then SSID, as SYR documents), waits until it reports a
+  connection and offers its new address.
+* **JUDO** and **Grünbeck**: the app guides you onto the device's own Wi-Fi and opens its setup
+  page inside the app, bound to that Wi-Fi. You type your Wi-Fi password into the device's page,
+  not into WaterCare.
+* **BWT Perla**: Wi-Fi is set on the softener's touchscreen; the app lists the steps.
+
+Afterwards, **Search this network** probes the brand's port across the phone's /24 and lists the
+devices that identify themselves, or you enter the address. JUDO and BWT need their local login
+(JUDO's module defaults to admin / Connectivity; BWT uses the login code from its registration
+email). Logins are encrypted with an Android Keystore key and never logged. These devices only
+speak plain HTTP, so the login crosses your local network unencrypted.
+
+The compatibility guide also lists the reviewed brands WaterCare does not support: cloud-only
+ones (EcoWater/iQua, Culligan, Pentair/Erie, RainSoft, SYR LEX Plus, Grünbeck softliQ:SD),
+Bluetooth ones (Chandler/Culligan CS Meter Soft, BWT AQA Perla) and valves without connectivity.
 
 ## App updates
 
@@ -263,8 +296,8 @@ app/src/main/java/io/github/kriziw/bl3372setup/
 ├── network/                        Wi-Fi tracking, Network.bindSocket(), error mapping
 ├── devices/DeviceStore.kt          saved devices (MAC, name, address; no credentials)
 └── ui/                             AppRoot (navigation), home/, setup/ (wizard), device/, common/
-app/src/main/res/values/            Hungarian strings (default)
-app/src/main/res/values-en/         English strings
+app/src/main/res/values/            English strings (default and fallback)
+app/src/main/res/values-hu|es|de/   Hungarian, Spanish and German strings
 docs/                               protocol notes and sources
 tools/                              golden-vector generators that run the reference implementations
 ```
@@ -289,10 +322,14 @@ tools/                              golden-vector generators that run the refere
 * Wi-Fi credentials stay in memory only. They are never stored, never put in saved state,
   and redacted from `toString()`. The packet buffer is zeroed after sending.
 * Saved devices hold identity/addressing information and any experimental-control opt-in,
-  including the controller code it applies to. They never hold credentials or session keys.
+  including the controller code it applies to. They never hold Wi-Fi credentials or session
+  keys. For other brands they also hold the device's local login (JUDO password, BWT code),
+  encrypted with an Android Keystore key.
+* The only cleartext the app allows in its network security config is the two device setup
+  pages on their own access points (JUDO 192.168.4.1, Grünbeck 192.168.0.1).
 * Autofill is excluded, and so is the recent-apps thumbnail (Android 13+). Backups are
   disabled.
-* Controller commands use local UDP. Update checks use HTTPS to GitHub, and
+* Controller commands use local UDP (BroadLink) or local HTTP (other brands). Update checks use HTTPS to GitHub, and
   user-initiated downloads use GitHub release storage. Update preferences and verified
   APKs stay in app-private preferences/cache. There is no telemetry or credential logging.
 

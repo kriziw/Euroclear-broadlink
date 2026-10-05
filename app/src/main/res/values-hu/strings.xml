@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian. Terms follow the Euro-Clear Midnight manual. -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="hu">
+    <string name="app_name">WaterCare</string>
+
+    <!-- Common actions -->
+    <string name="action_allow_local_network">Helyi hálózat engedélyezése</string>
+    <string name="action_back">Vissza</string>
+    <string name="action_cancel">Mégse</string>
+    <string name="action_check_wifi_name">Wi-Fi név ellenőrzése</string>
+    <string name="action_configure">Eszköz beállítása</string>
+    <string name="action_connect">Csatlakozás</string>
+    <string name="action_done">Kész</string>
+    <string name="action_hide">Elrejtés</string>
+    <string name="action_location_settings">Helymeghatározás beállításai</string>
+    <string name="action_next">Tovább</string>
+    <string name="action_open">Megnyitás</string>
+    <string name="action_open_app_settings">Alkalmazásbeállítások</string>
+    <string name="action_open_wifi">Wi-Fi hálózatok megnyitása</string>
+    <string name="action_regenerate">Regenerálás</string>
+    <string name="action_regenerate_now">Regenerálás indítása most</string>
+    <string name="action_vacation">Vakáció</string>
+    <string name="action_vacation_start">Vakáció üzemmód indítása</string>
+    <string name="action_vacation_end">Vakáció üzemmód befejezése</string>
+    <string name="action_remove">Eltávolítás</string>
+    <string name="action_retry">Újra</string>
+    <string name="action_save">Mentés</string>
+    <string name="action_save_and_open">Mentés és megnyitás</string>
+    <string name="action_scan">Keresés</string>
+    <string name="action_search_network">Keresés ezen a hálózaton</string>
+    <string name="action_send_again">Küldés újra</string>
+    <string name="action_show">Megjelenítés</string>
+    <string name="action_sync_clock">Szinkronizálás a telefonnal</string>
+
+    <string name="cd_back">Vissza</string>
+    <string name="cd_edit">%1$s szerkesztése</string>
+    <string name="cd_hide_password">Jelszó elrejtése</string>
+    <string name="cd_more">További lehetőségek</string>
+    <string name="cd_close">Bezárás</string>
+    <string name="cd_show_password">Jelszó megjelenítése</string>
+
+    <string name="footer_privacy">A vezérlő adatai ezen a telefonon maradnak. Nincs fiók, a Wi-Fi-jelszót nem tároljuk. A frissítéskeresés a GitHubhoz kapcsolódik; az automatikus keresés kikapcsolható.</string>
+    <string name="local_network_explanation">Az Android 17 a „Közeli eszközök” engedélyt kéri, mielőtt egy alkalmazás a helyi hálózaton lévő eszközökkel – így a vízlágyítóval és a beállító hálózatával – kommunikálhat.</string>
+    <string name="local_network_declined">Az engedélyt elutasította. Az Alkalmazásinfó → Engedélyek → Közeli eszközök menüben engedélyezheti.</string>
+
+    <!-- Errors -->
+    <string name="error_auth_rejected">A modul elutasította a helyi bejelentkezést. Ez akkor fordulhat elő, ha korábban a gyártói felhős alkalmazással párosították; a Wi-Fi újbóli beállítása ezzel az alkalmazással általában visszaállítja.</string>
+    <string name="error_local_network_blocked">Az Android letiltotta a helyi hálózati hozzáférést. Engedélyezze a „Közeli eszközök” jogosultságot, és kapcsolja ki az esetleges VPN-t.</string>
+    <string name="error_not_connected">A Wi-Fi kapcsolat nem érhető el.</string>
+    <string name="error_timeout">Az eszköz nem válaszolt.</string>
+
+    <!-- Home -->
+    <string name="home_subtitle">Vízlágyítók helyi vezérlése</string>
+    <string name="home_empty_title">Még nincs eszköz</string>
+    <string name="home_empty_text">Állítsa be egy új vízlágyító Wi-Fi kapcsolatát, vagy adjon hozzá egy olyat, amely már a hálózatán van.</string>
+    <string name="home_add_title">Eszköz hozzáadása</string>
+    <string name="home_set_up_new">Új eszköz beállítása</string>
+    <string name="home_set_up_new_hint">Lépésről lépésre átadja a vezérlőfejnek a Wi-Fi hálózat nevét és jelszavát.</string>
+    <string name="home_add_existing">Már a hálózaton lévő eszköz hozzáadása</string>
+    <string name="home_add_existing_hint">Megkeresi kereséssel, IP-cím alapján, vagy egy másik alhálózat/VLAN átfésülésével.</string>
+    <string name="settings_title">Beállítások</string>
+
+    <!-- Setup wizard -->
+    <string name="setup_step_of">%1$d. lépés / %2$d</string>
+    <string name="setup_skip_to_find">Már a Wi-Fi hálózaton van?</string>
+    <string name="setup_step1_title">Csatlakozás az eszközhöz</string>
+    <string name="setup_step2_title">Az otthoni Wi-Fi hálózat</string>
+    <string name="setup_step3_title">Az eszköz beállítása</string>
+    <string name="setup_step4_title">Az eszköz megkeresése a hálózaton</string>
+
+    <string name="setup_no_wifi">A telefon nem csatlakozik Wi-Fi hálózathoz.</string>
+    <string name="setup_wrong_network">Csatlakozva ehhez: „%1$s”. A név eltér a gyakori eszköz-Wi-Fi-nevektől. Ha ez az eszköz hálózata, az alábbi megerősítéssel továbbléphet.</string>
+    <string name="setup_network_has_internet">Az Android internetelérést jelez ezen a Wi-Fi-n. Ellenőrizze, hogy az eszköz hálózatához csatlakozott, majd ha megfelelő, erősítse meg alább.</string>
+    <string name="setup_network_without_internet">Internet nélküli Wi-Fi hálózathoz csatlakozva.</string>
+    <string name="setup_manual_confirmation">Az Android Wi-Fi-beállításaiban ellenőriztem, és megerősítem, hogy a telefon az eszköz beállító Wi-Fi-jéhez csatlakozik.</string>
+    <string name="setup_location_explanation">Az Android csak pontos helymeghatározási engedéllyel árulja el az alkalmazásoknak a Wi-Fi hálózat nevét. Az alkalmazás másra nem használja, és sosem olvassa ki a tartózkodási helyét. Ezt ki is hagyhatja, és alább kézzel is megerősítheti.</string>
+    <string name="setup_location_off">Kapcsolja be a helymeghatározást, hogy az Android megmutathassa a Wi-Fi nevét, vagy erősítse meg alább.</string>
+    <string name="setup_ssid_hidden">Az Android nem árulta el a hálózat nevét. Erősítse meg alább, ha ez a(z) %1$s.</string>
+    <string name="setup_join_instructions">1. A kézikönyv alapján kapcsolja az eszközt Wi-Fi-beállító módba. Egyes Runxin-fejeknél kapcsolja vissza az áramot, és tartsa lenyomva a Menü/Jóváhagy gombot a sípolásig.\n2. Az Android Wi-Fi-beállításaiban csatlakozzon az eszköz által létrehozott hálózathoz. Példák: WiFi-BL3372, WiFi-BL…, BroadlinkProv és BroadLink_…; az eszköz más nevet is használhat.\n3. Ha az Android internetelérés hiányát jelzi, tartsa meg a kapcsolatot.\n4. Térjen vissza, és erősítse meg az eszköz hálózatához való csatlakozást. A Wi-Fi-név támpont, nem követelmény.</string>
+    <string name="setup_detail_phone">Telefon: %1$s</string>
+    <string name="setup_detail_gateway">Átjáró: %1$s</string>
+    <string name="setup_detail_internet">Van internet</string>
+    <string name="setup_detail_no_internet">Nincs internet</string>
+
+    <string name="setup_ssid_label">Wi-Fi név (SSID)</string>
+    <string name="setup_password_label">Jelszó</string>
+    <string name="setup_password_unused">Jelszó (nyílt hálózatnál nem kell)</string>
+    <string name="setup_bytes_counter" tools:ignore="PluralsCandidate">%1$d / %2$d bájt · kis- és nagybetű számít</string>
+    <string name="setup_too_long" tools:ignore="PluralsCandidate">Túl hosszú: %1$d bájt (legfeljebb %2$d).</string>
+    <string name="setup_ssid_is_device_ap">Ez a modul saját beállító hálózata. Az otthoni Wi-Fi nevét adja meg.</string>
+    <string name="setup_password_too_long" tools:ignore="PluralsCandidate">Túl hosszú: %1$d bájt. A BroadLink beállító csomag legfeljebb %2$d bájtot visz át (a hivatalos alkalmazásnak is ez a korlátja).</string>
+    <string name="setup_password_too_short" tools:ignore="PluralsCandidate">A WPA jelszó legalább %1$d karakter.</string>
+    <string name="setup_security_label">Titkosítás</string>
+    <string name="setup_security_open">Nyílt</string>
+    <string name="setup_security_hint">A WPA2 szinte minden routerhez megfelel. Ha a modul nem csatlakozik, próbálja a WPA/WPA2 beállítást.</string>
+    <string name="setup_band_hint">A BL3372 csak 2,4 GHz-es Wi-Fi-t támogat. A router 2,4 GHz-es hálózatának nevét adja meg; a csak 5 GHz-es és a csak WPA3-as hálózatok nem működnek.</string>
+    <string name="setup_ssid_spaces">A név szóközzel kezdődik vagy végződik. Ellenőrizze, hogy ez szándékos-e.</string>
+    <string name="setup_ssid_non_ascii">A név ékezetes vagy egyéb nem ASCII karaktert tartalmaz; UTF-8 kódolással kerül elküldésre.</string>
+    <string name="setup_password_non_ascii">A jelszó ékezetes vagy egyéb nem ASCII karaktert tartalmaz. A WPA jelszavak általában csak ASCII karakterekből állnak; előfordulhat, hogy a modul nem fogadja el.</string>
+
+    <string name="setup_configure_explanation">A Wi-Fi nevét és jelszavát közvetlenül a modulnak küldi a(z) %1$s kapcsolaton keresztül. A BroadLink beállító protokoll nem titkosított, ezért az eszköz közelében, gyorsan végezze el.</string>
+    <string name="setup_reason_connect_first">Erősítse meg fent, hogy a telefon az eszköz beállító Wi-Fi-jéhez csatlakozik.</string>
+    <string name="setup_reason_fill_details">Adja meg az otthoni Wi-Fi adatait (2. lépés).</string>
+    <string name="setup_sending">Beállítás küldése…</string>
+    <string name="setup_sending_round">Beállítás küldése… (%1$d. kör / %2$d)</string>
+    <string name="setup_sending_failed">A küldés nem sikerült.</string>
+    <string name="setup_acknowledged">A modul nyugtázta a beállításokat (válasz innen: %1$s).</string>
+    <string name="setup_not_acknowledged">Beállítások elküldve (%1$d×). Nyugtázás nem érkezett, de sok modul nem is küld ilyet, így ez önmagában nem jelent hibát.</string>
+    <string name="setup_link_lost_after_send">Beállítások elküldve, és közvetlenül utána megszakadt a(z) %1$s kapcsolat.</string>
+    <string name="setup_watching_ap">A(z) %1$s figyelése… Ha a modul elfogadja a beállításokat, újraindul, a beállító hálózata eltűnik, és csatlakozik ide: „%2$s”.</string>
+    <string name="setup_ap_gone">A(z) %1$s %2$d másodperccel a küldés után eltűnt. A modul valószínűleg újraindult, és most csatlakozik ide: „%3$s”. Csatlakoztassa a telefont is erre a hálózatra a megkereséséhez.</string>
+    <string name="setup_ap_still_up">A telefon 90 másodperc után is a(z) %1$s hálózathoz csatlakozik. Lehet, hogy a modul nem fogadta el a beállításokat.</string>
+    <string name="setup_troubleshooting">• Ellenőrizze a Wi-Fi nevét és jelszavát (a kis- és nagybetű számít).\n• Győződjön meg róla, hogy a router 2,4 GHz-en is sugároz, és nem csak WPA3-at használ.\n• Próbálja a WPA/WPA2 titkosítási beállítást.\n• Egyes BroadLink firmware-ek nem kezelik a jelszóban lévő speciális karaktereket; egy csak betűket és számokat tartalmazó jelszavú vendéghálózat segíthet.\n• Tegye vissza a vezérlőfejet Wi-Fi beállító módba, csatlakozzon újra, és küldje el ismét.</string>
+
+    <string name="setup_discovery_explanation">Miután a modul csatlakozott a Wi-Fi hálózathoz, csatlakoztassa a telefont is a hálózatára. Az alkalmazás a BroadLink helyi keresésével találja meg a modult.</string>
+    <string name="setup_connect_home_wifi">Csatlakoztassa a telefont az otthoni Wi-Fi hálózathoz.</string>
+    <string name="setup_still_on_ap">A telefon még a beállító hálózaton van. Előbb váltson az otthoni Wi-Fi hálózatra.</string>
+    <string name="setup_searching_on">Keresés itt: „%1$s”</string>
+    <string name="setup_current_network">a jelenlegi Wi-Fi hálózat</string>
+    <string name="setup_other_vlan_toggle">Az eszköz másik VLAN-on vagy alhálózaton van?</string>
+    <string name="setup_vlan_explanation">A keresés nem jut át VLAN-ok vagy routerek között. Ha a vízlágyító másik hálózaton van (például egy IoT VLAN-on), adja meg az IP-címét, vagy fésülje át az alhálózatát. A tűzfalnak engedélyeznie kell az UDP 80-as portot a telefontól az eszköz felé.</string>
+    <string name="setup_address_label">IP-cím vagy hosztnév</string>
+    <string name="setup_subnet_label">Alhálózat (pl. 192.168.20.0/24)</string>
+    <string name="setup_searching_seconds">Keresés… (legfeljebb %1$d mp)</string>
+    <string name="setup_nothing_found_broadcast">Egyetlen BroadLink eszköz sem válaszolt. A modulnak egy-két percbe is telhet a csatlakozás; keressen újra. Ha másik VLAN-on van, használja a fenti lehetőséget.</string>
+    <string name="setup_nothing_found_unicast">Ezen a címen nem válaszolt BroadLink eszköz. Ellenőrizze a címet, és hogy a tűzfal engedélyezi-e felé az UDP 80-as portot.</string>
+    <string name="setup_search_failed">A keresés nem sikerült.</string>
+    <string name="setup_invalid_address">Adjon meg egy IPv4-címet (pl. 192.168.20.15) vagy egy ezen a hálózaton feloldható hosztnevet.</string>
+    <string name="setup_invalid_subnet">Adjon meg egy alhálózatot, például 192.168.20.0/24 (legfeljebb /%1$d).</string>
+    <string name="setup_device_found_at">Eszköz található itt: %1$s</string>
+    <string name="setup_device_locked">Zároltnak jelzi magát (a gyártói alkalmazás letiltotta a helyi vezérlést).</string>
+
+    <!-- Device -->
+    <string name="device_default_name">Vízlágyító</string>
+    <string name="device_type_runxin">Runxin vezérlőfej BroadLink BL3372 modullal (típus: %1$s)</string>
+    <string name="device_type_other">BroadLink eszköz (típus: %1$s)</string>
+    <string name="device_connecting">Csatlakozás…</string>
+    <string name="device_locating">Az eszköz keresése…</string>
+    <string name="device_locating_subnet">Az eszköz keresése az alhálózatán…</string>
+    <string name="device_live">Élő · frissítve: %1$s</string>
+    <string name="device_offline">Nincs kapcsolat</string>
+    <string name="device_no_wifi">A telefon nem csatlakozik Wi-Fi hálózathoz.</string>
+    <string name="device_not_found">Az eszköz nem válaszol (utolsó cím: %1$s).</string>
+    <string name="device_not_found_hint">Ellenőrizze, hogy a vízlágyító áram alatt van és csatlakozik a Wi-Fi hálózathoz. Ha másik VLAN-on van, ellenőrizze, hogy az UDP 80-as port engedélyezett-e, vagy adja meg az új címét.</string>
+    <string name="device_writing">Küldés a vezérlőfejnek…</string>
+    <string name="device_rename">Átnevezés</string>
+    <string name="device_name_label">Név</string>
+    <string name="device_change_address">Cím módosítása</string>
+    <string name="device_address_label">IPv4-cím</string>
+    <string name="device_address_hint">Akkor hasznos, ha a vízlágyító másik VLAN-on van, és megváltozott a címe. Ha a routerben fix címet foglal neki, ez elkerülhető.</string>
+    <string name="device_remove_title">Eszköz eltávolítása</string>
+    <string name="device_remove_text">Elfelejti ezt az eszközt ezen a telefonon? Magán a vízlágyítón semmi sem változik.</string>
+
+    <string name="compatibility_title">Vezérlőkompatibilitás</string>
+    <string name="compatibility_identity_title">Felismert vezérlő</string>
+    <string name="compatibility_module_type">Modultípus</string>
+    <string name="compatibility_model_code">Jelentett vezérlőkód</string>
+    <string name="compatibility_profile">Betöltött profil</string>
+    <string name="compatibility_profile_unavailable">Nincs támogatott kapcsolat</string>
+    <string name="compatibility_profile_unknown">Kísérleti F79D tartalékprofil</string>
+    <string name="compatibility_profile_verified">Támogatott helyi vezérlőprofil betöltve ehhez a vezérlőazonosítóhoz.</string>
+    <string name="compatibility_profile_hint">A jelentett kód protokollazonosító; nem feltétlenül a szelepre nyomtatott terméknév.</string>
+    <string name="compatibility_unsupported_module">A(z) %1$s modultípushoz nincs támogatott Runxin-kapcsolat. A vezérlőparancsok le vannak tiltva.</string>
+    <string name="compatibility_detection_title">Automatikus profilválasztás</string>
+    <string name="compatibility_detection_text">A WaterCare ellenőrzi a csatlakoztatott modul és vezérlő azonosítóját, majd betölti a támogatott helyi vezérlőprofilt. Ugyanaz a profil több, azonos vezérlőazonosítót használó vízlágyítóhoz is alkalmazható. A nem igazolt azonosítók kísérleti módot használnak, külön engedélyezésig zárolt vezérléssel. Más BroadLink-modultípusok nem támogatottak.</string>
+    <string name="compatibility_wifi_title">F79 / F82 Wi-Fi-változatok</string>
+    <string name="compatibility_wifi_text">A Runxin külön Wi-Fi-kézikönyvet ad ki az F79A, F79B, F82A és F82B LCD-változatokhoz. A Wi-Fi-funkció önmagában nem igazolja az alkalmazás helyi parancsaival való kompatibilitást. Ezekhez a terméknevekhez nem rendelünk automatikusan protokollkódot.</string>
+    <string name="compatibility_runxin_manuals">Hivatalos Runxin-kézikönyvtár</string>
+    <string name="compatibility_f105_title">F105 / F136 család</string>
+    <string name="compatibility_f105_text">A hivatalos kézikönyv F105- és F136-változatokat sorol fel, köztük az F105AHW, F105BHW és F136BHW modelleket. Egyes funkciókhoz Wi-Fi-vezérlőpanel kell. Dokumentálja a keménységet, regenerálási időt, szivárgási határértékeket, sónyilvántartást és vakáció módot, de nem igazolja az alkalmazás helyi mezőkiosztását.</string>
+    <string name="compatibility_f105_manual">Hivatalos F105 / F136 kézikönyv</string>
+    <string name="compatibility_other_title">Más Runxin-szelepek</string>
+    <string name="compatibility_other_text">A Runxin kézi szelepeket, szűrőszelepeket, ikertartályos rendszereket és RS-485-ös vezérlőket is kínál. Az RS-485-támogatás nem jelent BL3372 Wi-Fi-támogatást. Az alkalmazás jelenleg nem rendelkezik RS-485-kapcsolattal vagy ezekhez a termékcsaládokhoz helyi profillal.</string>
+    <string name="compatibility_broadlink_title">BroadLink-modulok és termékek</string>
+    <string name="compatibility_broadlink_text">A BroadLink hivatalos SDK-ja termékspecifikus profilokat és vezérlőszkripteket ír le. A közös márka vagy Wi-Fi-chip nem teszi felcserélhetővé a parancsokat. Az alkalmazás a meglévő Runxin BL3372-kapcsolatot használja; BroadLink-távirányítókat, konnektorokat, lámpákat és átjárókat nem vezérel.</string>
+    <string name="compatibility_broadlink_docs">Hivatalos BroadLink-vezérlési dokumentáció</string>
+    <string name="compatibility_browser_hint">Az útmutató ellenőrzésének dátuma: 2026. október 4. A forráshivatkozások böngészőben nyílnak meg, és internetet igényelnek. Az automatikus profilválasztás az alkalmazásba csomagolt profilokat használja.</string>
+
+    <string name="device_status_title">Állapot</string>
+    <string name="device_phase_remaining">%1$s · még %2$s</string>
+    <string name="device_flow_now">Pillanatnyi átfolyás</string>
+    <string name="device_closed_reason">Szelep elzárva: %1$s</string>
+    <string name="device_alerts_title">Figyelmet igényel</string>
+    <string name="device_vacation">Vakáció üzemmód</string>
+    <string name="device_vacation_hint">A vakáció üzemmódot a vezérlőfejen lehet kapcsolni: vízszolgáltatás állapotban tartsa lenyomva a „Le” (▼) gombot 6 másodpercig; a kikapcsolás ugyanígy történik.</string>
+    <string name="device_controller_clock">A vezérlőfej órája</string>
+
+    <string name="device_remaining_capacity">Hátralévő kapacitás</string>
+    <string name="device_today">Mai fogyasztás</string>
+    <string name="device_weekly_average">Heti átlag (vezérlőfej)</string>
+    <string name="device_capacity_per_cycle">Kapacitás ciklusonként</string>
+    <string name="device_regeneration_mode">Regenerálás</string>
+    <string name="device_regeneration_by_volume">Mennyiség alapján (vízóra)</string>
+    <string name="device_regeneration_by_days">%1$s naponta</string>
+    <string name="device_days_remaining">Napok a regenerálásig</string>
+
+    <string name="device_salt_title">Só és karbantartás</string>
+    <string name="device_regeneration_reminder">Gyanta emlékeztető (regenerálás után)</string>
+    <string name="device_filter_days">Szűrőanyag csereidő</string>
+
+    <string name="device_settings_title">Beállítások</string>
+    <string name="device_controls_locked">Ennél a vezérlőfejnél a vezérlés zárolva van.</string>
+    <string name="device_safehome_title">SafeHOME szivárgásvédelem</string>
+    <string name="device_programme_title">Regenerálási program</string>
+    <string name="device_raw_title">Diagnosztika</string>
+    <string name="device_raw_hint">A vezérlőfej nyers mezői, hibakereséshez.</string>
+    <string name="device_details_title">Részletek</string>
+
+    <string name="setting_hardness">Nyersvíz keménység</string>
+    <string name="setting_hardness_hint">A Midnight gépkönyv szerint a mért német keménységi fok (nk°) tízszeresét kell megadni, pl. 15 nk° → 150 mg/l.</string>
+    <string name="setting_salt_added">Hozzáadott só</string>
+    <string name="setting_salt_added_hint">A vezérlőfej só-nyilvántartása, nem mért sószint. Adja meg, mennyi sót töltött be.</string>
+    <string name="setting_regeneration_time">Regenerálás ideje</string>
+    <string name="setting_regeneration_time_hint">Olyan időpontot válasszon, amikor senki sem használ vizet; a gépkönyv 22:00–0:00 közötti időt javasol.</string>
+    <string name="setting_continuous_flow">Folyamatos vízszolgáltatási idő</string>
+    <string name="setting_flow_shutoff">Maximális vízátfolyás</string>
+    <string name="setting_safehome_hint">A SafeHOME elzárja a víz útját, ha a víz ezeknél a határoknál tovább vagy gyorsabban folyik (csőtörés gyanúja). 0 = kikapcsolva.</string>
+
+    <string name="regenerate_confirm_title">Elindítja most a regenerálást?</string>
+    <string name="regenerate_confirm_text">A vízlágyító azonnal regenerálni kezd. Az első fázisban nem szolgáltat vizet, utána csak kemény vizet ad, és sót, valamint vizet fogyaszt. Egy teljes ciklus néhány órát vesz igénybe.</string>
+    <string name="regenerate_hint">Csak vízszolgáltatás állapotban indítható. Az alkalmazás ellenőrzi, hogy a szelep valóban elindult-e.</string>
+    <string name="vacation_start_title">Elindítja a vakáció üzemmódot?</string>
+    <string name="vacation_start_text" formatted="false">A vezérlőfej feltölti a sóoldó tartályt, 4 órán át hagyja beoldódni a sót, rövidített sólé- és lassú mosatást végez (a beállított idő 25%-a), majd szünetel, amíg be nem fejezi a vakáció üzemmódot. Ez ugyanaz, mint a „Le” (▼) gomb 6 másodperces nyomva tartása a vezérlőfejen.</string>
+    <string name="vacation_end_title">Befejezi a vakáció üzemmódot?</string>
+    <string name="vacation_end_text">A vezérlőfej kilép a vakáció üzemmódból, ugyanúgy, mint a „Le” (▼) gomb 6 másodperces nyomva tartásakor.</string>
+    <string name="vacation_untested">Ezen a vezérlőtípuson még nincs megerősítve. Az alkalmazás ellenőrzi a vezérlőfej válaszát; ha nem vált át, használja a vezérlőfej „Le” (▼) gombját.</string>
+    <string name="vacation_end_wait">A vakáció üzemmód akkor fejezhető be, amikor a vezérlőfej elérte a vakációs szünetet.</string>
+
+    <string name="station_in_service">Vízszolgáltatás</string>
+    <string name="station_backwash">Visszamosatás</string>
+    <string name="station_brine_draw">Sólé és lassú mosatás</string>
+    <string name="station_brine_refill">Sólé újratöltés</string>
+    <string name="station_fast_rinse">Gyors mosatás</string>
+    <string name="station_closed">Szelep elzárva</string>
+    <string name="station_salt_dissolving">Só beoldódása</string>
+    <string name="station_pause_1">Első szünet</string>
+    <string name="station_pause_2">Második szünet</string>
+
+    <string name="close_reason_manual">kézi elzárás</string>
+    <string name="close_reason_leak">szivárgás észlelve</string>
+    <string name="close_reason_continuous_flow">túl hosszú folyamatos vízvétel</string>
+    <string name="close_reason_flow_exceeded">a maximális átfolyás túllépve</string>
+
+    <string name="vacation_off">Kikapcsolva</string>
+    <string name="vacation_preparing">Előkészítés</string>
+    <string name="vacation_active">Aktív</string>
+
+    <string name="alert_low_brine">Alacsony sólé-koncentráció</string>
+    <string name="alert_salt_reminder">Sót kell utántölteni</string>
+    <string name="alert_resin">Gyantacsere esedékes</string>
+    <string name="alert_filter">Szűrőanyag-csere esedékes</string>
+    <string name="fault_clock">Óra chip hiba</string>
+    <string name="fault_multiple_position">Szelephelyzet hiba (több jel)</string>
+    <string name="fault_no_position">Szelephelyzet hiba (nincs jel)</string>
+    <string name="fault_memory">Memóriahiba</string>
+
+    <string name="programme_backwash">Visszamosatás</string>
+    <string name="programme_brine_slow_rinse">Sólé és lassú mosatás</string>
+    <string name="programme_brine_refill">Sólé újratöltés</string>
+    <string name="programme_fast_rinse">Gyors mosatás</string>
+    <string name="programme_rinsing_frequency">Mosatási gyakoriság</string>
+    <string name="programme_backwash_interval">Visszamosatási intervallum</string>
+    <string name="programme_max_interval">Leghosszabb regenerálási intervallum</string>
+    <string name="programme_resin_volume">Gyanta térfogata</string>
+    <string name="programme_output_mode">Kimeneti relé mód</string>
+    <string name="programme_brine_draw">Sólé felszívás</string>
+    <string name="programme_brine_draw_forward">Egyenáramú</string>
+    <string name="programme_brine_draw_reverse">Ellenáramú</string>
+    <string name="programme_work_pattern">Üzemmód (kód)</string>
+    <string name="programme_units">Mértékegység</string>
+    <string name="programme_time_format">Időformátum</string>
+
+    <string name="unit_minutes">perc</string>
+    <plurals name="value_days">
+        <item quantity="one">%1$d nap</item>
+        <item quantity="other">%1$d nap</item>
+    </plurals>
+    <string name="value_minutes">%1$d perc</string>
+    <string name="value_hardness">%1$d mg/l (≈ %2$s nk°)</string>
+    <string name="value_off">Kikapcsolva</string>
+    <string name="value_yes">Igen</string>
+    <string name="value_no">Nem</string>
+    <string name="value_unknown_code">Ismeretlen (%1$s)</string>
+
+    <string name="dialog_range">Megengedett: %1$d–%2$d %3$s</string>
+    <string name="dialog_range_decimal">Megengedett: %1$.2f–%2$.2f %3$s</string>
+
+    <string name="write_confirmed">%1$s elmentve, a vezérlőfej megerősítette.</string>
+    <string name="write_regeneration_started">A regenerálás elindult, a vezérlőfej jelzi, hogy a szelep mozog.</string>
+    <string name="write_vacation_on">A vakáció üzemmód elindult, a vezérlőfej megerősítette.</string>
+    <string name="write_vacation_off">A vakáció üzemmód befejeződött, a vezérlőfej megerősítette.</string>
+    <string name="write_vacation_not_confirmed">A vezérlőfej nem váltotta át a vakáció üzemmódot. Használja helyette a vezérlőfejet: vízszolgáltatás állapotban tartsa lenyomva a „Le” (▼) gombot 6 másodpercig.</string>
+    <string name="write_not_confirmed">%1$s elküldve, de a vezérlőfej nem erősítette meg a változást. Lehet, hogy nem fogadja el ezt a beállítást.</string>
+    <string name="write_ambiguous">%1$s küldésekor nem érkezett válasz, és a változás nem erősödött meg. Ellenőrizze az értéket, mielőtt újra próbálja.</string>
+    <string name="write_failed">%1$s küldése nem sikerült. %2$s</string>
+
+    <!-- Language -->
+    <string name="language_title">Nyelv</string>
+    <string name="language_system">A telefon nyelve</string>
+    <string name="language_system_hint">Angol, ha a telefon más nyelvet használ</string>
+    <string name="catalogue_title">Vezérlőkompatibilitás családonként</string>
+    <string name="catalogue_summary">Támogatott és nem igazolt vezérlőmodellek. A támogatás a WaterCare-ben megvalósított, dokumentált helyi parancsokon alapul. A kompatibilitást a csatlakoztatott vezérlő azonosítója határozza meg; a vízlágyító márkája önmagában nem.</string>
+    <string name="catalogue_search">Modell vagy termékazonosító keresése</string>
+    <string name="catalogue_empty">Nincs ilyen dokumentált modell. A csatlakoztatott vezérlő támogatott modul esetén továbbra is használhat kísérleti módot.</string>
+    <string name="catalogue_supported">Támogatott</string>
+    <string name="catalogue_unverified">Nem igazolt</string>
+    <string name="catalogue_variants">Modellek megtekintése</string>
+    <string name="catalogue_supported_hint">E vezérlők dokumentált helyi parancskiosztását a WaterCare megvalósítja. Az F79D profil a 0x520F típusú BL3372-modult és 9-es vezérlőkódot jelentő, kompatibilis vízlágyítókra alkalmazható.</string>
+    <string name="catalogue_unverified_hint">E modelleket gyártói dokumentáció azonosítja, de helyi parancskiosztásuk nincs igazolva a WaterCare-ben. Családonként böngészhetők. Támogatott modul esetén kísérleti vezérlés használható; az azonos családnév önmagában nem engedélyezi azt.</string>
+    <string name="catalogue_local_detail">A WaterCare megvalósítja a ypsilon-local által dokumentált F79D helyi állapotlekérdezést és vezérlést. A 0x520F modultípus és a 9-es vezérlőkód automatikusan betölti. A kiosztás a vezérlőazonosító alapján több kompatibilis vízlágyítóhoz is alkalmazható.</string>
+    <string name="catalogue_wifi_detail">A hivatalos könyvtár LCD Wi-Fi-kézikönyvet sorol fel ehhez a modellhez. A WaterCare-ben nincs dokumentált helyi parancskiosztás e változathoz. A Wi-Fi önmagában nem igazolja a helyi vezérlés kompatibilitását.</string>
+    <string name="catalogue_manual_detail">A gyártói F105/F136 kézikönyv összerendeli e modell nevét a feltüntetett termékazonosítóval, és regenerálást, keménységet, szivárgási határértékeket, sónyilvántartást és vakáció módot ír le. Egyes funkciókhoz Wi-Fi-panel kell. A helyi parancskiosztás nem igazolt a WaterCare-ben.</string>
+    <string name="catalogue_directory_detail">E modell szerepel a hivatalos Runxin-kézikönyvtárban. A helyi kapcsolat és a parancskiosztás nem igazolt a WaterCare-ben.</string>
+    <string name="catalogue_source">Profil forrásának megnyitása</string>
+    <string name="updates_title">Alkalmazásfrissítések</string>
+    <string name="updates_installed">Telepített verzió: %1$s</string>
+    <string name="updates_privacy">A keresés nyilvános kiadási adatokat kér a GitHubtól. A letöltés a GitHubhoz és annak fájlszervereihez kapcsolódik. Nem küldünk vezérlőadatokat vagy Wi-Fi-jelszót. A vezérlő beállítása és működtetése internet nélkül is használható.</string>
+    <string name="updates_automatic">Frissítéskeresés indításkor</string>
+    <string name="updates_check">Frissítések keresése</string>
+    <string name="updates_checking">Keresés…</string>
+    <string name="updates_current">Nincs újabb stabil kiadás ellenőrizhető APK-val.</string>
+    <string name="updates_check_failed">Nem sikerült elérni a GitHubot. Ellenőrizd az internetkapcsolatot, és próbáld újra később.</string>
+    <string name="updates_download_failed">A letöltés vagy az APK ellenőrzése sikertelen. Próbáld újra a letöltést.</string>
+    <string name="updates_incompatible">Ez a telepítés más aláírókulcsot használ, például Android Studio hibakeresési verzió. A kiadási APK nem frissítheti. A hivatalos aláírt kiadást külön telepítsd; e verzió eltávolítása törli a mentett eszközöket.</string>
+    <string name="updates_install_failed">Nem sikerült átadni az APK-t az Android telepítőjének. Az ellenőrzött letöltés továbbra is elérhető; próbáld újra a frissítés telepítését.</string>
+    <string name="updates_available">Elérhető frissítés: %1$s</string>
+    <string name="updates_download_size">Letöltési méret: %1$.1f MB</string>
+    <string name="updates_release_notes">Kiadás megtekintése a GitHubon</string>
+    <string name="updates_progress">Letöltés: %1$d%%</string>
+    <string name="updates_cancel">Letöltés megszakítása</string>
+    <string name="updates_install_hint">Az APK ellenőrzése sikeres. Az Android kérheti az ebből az alkalmazásból történő telepítés engedélyezését. A frissítést az Android telepítőjében erősíted meg.</string>
+    <string name="updates_install">Frissítés telepítése</string>
+    <string name="updates_download">Frissítés letöltése</string>
+    <string name="updates_notice">Újabb stabil kiadás érhető el APK-val. Tekintsd meg a kiadás részleteit, és döntsd el, hogy letöltöd-e.</string>
+    <string name="updates_view">Frissítés megtekintése</string>
+    <string name="updates_later">E verzió értesítésének elvetése</string>
+    <string name="setup_recognised_network">A(z) „%1$s” eszközbeállító hálózatnak tűnik. Erősítse meg alább, hogy az eszközhöz tartozik.</string>
+    <string name="setup_connection_confirmed">Az eszköz Wi-Fi-kapcsolata megerősítve. Továbbléphet.</string>
+    <string name="setup_device_wifi">az eszköz beállító Wi-Fi-je</string>
+    <string name="setup_show_other_devices">Más Broadlink-eszközök megjelenítése (%1$d)</string>
+    <string name="setup_other_devices_hint">A termosztátok és a vízkezelő modulként nem felismert eszközök alapértelmezés szerint rejtve maradnak. A kapcsoló új keresés nélkül megjeleníti őket.</string>
+    <string name="setup_no_water_devices">Nem válaszolt felismert vízkezelő eszköz. A többi Broadlink-eszköz az alábbi kapcsolóval megjeleníthető.</string>
+
+    <!-- Other brands -->
+    <string name="experimental_note_off">Kísérleti támogatás. Csak akkor kapcsolja be a vezérlést, ha az értékek egyeznek a készülék kijelzőjével.</string>
+    <string name="experimental_note_on">Kísérleti vezérlés bekapcsolva. A módosítás csak akkor számít sikeresnek, ha a készülék visszajelzi.</string>
+    <string name="home_add_other">Más gyártó készülékének hozzáadása</string>
+    <string name="home_add_other_hint">JUDO, BWT Perla, Grünbeck softliQ vagy SYR NeoSoft a hálózatán (kísérleti).</string>
+    <string name="appliance_choose_brand">Gyártó</string>
+    <string name="appliance_brand_judo_hint">i-soft, i-soft SAFE+, i-soft PRO és SOFTwell JUDO Connectivity modullal. Állapot, só, keménység, regenerálás és a szivárgásvédelmi szelep.</string>
+    <string name="appliance_brand_bwt_hint">Perla One, Duplex és PerlaMAXX, 2.02-es vagy újabb firmware-rel. Csak állapot: a BWT helyi felülete nem tud beállítást módosítani.</string>
+    <string name="appliance_brand_gruenbeck_hint">softliQ SC18, SC23, MC16 és MC32 a beépített webszerverrel. Állapot, üzemmód és regenerálás.</string>
+    <string name="appliance_brand_syr_hint">NeoSoft 2500 és 5000 Connect. Állapot, regenerálási mód, időköz és időpont. A LEX Plus típusok csak felhőn keresztül érhetők el.</string>
+    <string name="appliance_judo_setup">A Connectivity modul webes belépését használja (alapértelmezés: admin / Connectivity). A modul kb. 10 másodpercenként válaszol, így egy teljes lekérdezés kb. egy percig tart.</string>
+    <string name="appliance_bwt_setup">A készüléken kapcsolja be: Beállítások → Általános → Kapcsolat → Local API. A belépési kódot a készülék regisztrációjakor e-mailben kapta; ez nem a BWT-alkalmazás jelszava.</string>
+    <string name="appliance_gruenbeck_setup">Nem kell belépés. A vízlágyítónak a Wi-Fi-hálózatán kell lennie.</string>
+    <string name="appliance_syr_setup">Nem kell belépés. A készülék helyi felületét használja az 5333-as porton.</string>
+    <string name="appliance_plain_http">Ezek a készülékek csak titkosítatlan HTTP-t ismernek: a belépési adat titkosítás nélkül, de csak a helyi hálózaton halad.</string>
+    <string name="appliance_port">Port</string>
+    <string name="appliance_user">Felhasználónév</string>
+    <string name="appliance_code">Belépési kód</string>
+    <string name="appliance_found">Megtalálva: %1$s.</string>
+    <string name="appliance_change_login">Belépés módosítása</string>
+    <string name="appliance_reading_slow">A készülék olvasása… A JUDO modulok lassan válaszolnak.</string>
+    <string name="appliance_readings_title">Mért értékek</string>
+    <string name="appliance_read_only">A BWT helyi felülete csak olvasható. A beállításokat a vízlágyítón módosítsa.</string>
+    <string name="appliance_device_title">Készülék</string>
+    <string name="appliance_model">Típus</string>
+    <string name="appliance_firmware">Firmware</string>
+    <string name="appliance_last_regeneration">Utolsó regenerálás</string>
+    <string name="appliance_next_maintenance">Következő karbantartás</string>
+    <string name="appliance_protocol_source">Protokoll-dokumentáció</string>
+    <string name="appliance_regenerate_text">A vízlágyító most regenerálást indít. Sót és vizet használ, és a befejezésig kemény vizet vagy semmilyen vizet nem szolgáltat.</string>
+    <string name="appliance_write_accepted">%1$s elküldve. A készülék fogadta, de az eredményt nem tudja visszajelezni.</string>
+    <string name="valve_close_title">Elzárja a vízellátást?</string>
+    <string name="valve_close_text">A szivárgásvédelmi szelep elzárja a ház vízellátását, amíg újra ki nem nyitja.</string>
+    <string name="valve_open_title">Megnyitja a vízellátást?</string>
+    <string name="valve_open_text">A szivárgásvédelmi szelep kinyit, és a víz újra a házba áramlik.</string>
+    <string name="action_close_valve">Szelep elzárása</string>
+    <string name="action_open_valve">Szelep nyitása</string>
+    <string name="dialog_range_text">Megengedett: %1$s–%2$s %3$s</string>
+    <string name="unit_days">nap</string>
+    <string name="error_login_rejected">A készülék elutasította a belépést. Ellenőrizze a felhasználónevet, a jelszót vagy a kódot.</string>
+    <string name="status_regenerating">Regenerál</string>
+    <string name="status_holiday">Szabadság üzemmód</string>
+    <string name="status_out_of_service">Üzemen kívül</string>
+    <string name="status_not_reported">Az állapotot nem jelzi</string>
+    <string name="step_salting">Sózás</string>
+    <string name="step_slow_rinse">Lassú öblítés</string>
+    <string name="step_wash_out">Kimosás</string>
+    <string name="reading_remaining_capacity_2">Hátralévő kapacitás (2. tartály)</string>
+    <string name="reading_salt_level">Sószint</string>
+    <string name="reading_salt_stock">Sókészlet</string>
+    <string name="reading_salt_range">A só kitart</string>
+    <string name="reading_water_month">Ebben a hónapban</string>
+    <string name="reading_water_year">Ebben az évben</string>
+    <string name="reading_water_total">Összes víz</string>
+    <string name="reading_soft_water_total">Összes lágy víz</string>
+    <string name="reading_soft_hardness">Lágy víz keménysége</string>
+    <string name="reading_maintenance">Karbantartásig hátra</string>
+    <string name="reading_regenerations">Regenerálások</string>
+    <string name="reading_operating_days">Üzemnapok</string>
+    <string name="setting_target_hardness">Kívánt keménység</string>
+    <string name="setting_target_hardness_hint">A vízlágyító után kapott víz keménysége.</string>
+    <string name="setting_salt_stock_hint">Utántöltés után adja meg a tartályban lévő teljes sómennyiséget.</string>
+    <string name="setting_salt_warning">Sófigyelmeztetés</string>
+    <string name="setting_salt_warning_hint">Figyelmeztet, ha a só ennyi napnál rövidebb ideig tart ki.</string>
+    <string name="setting_operating_mode">Üzemmód</string>
+    <string name="setting_regeneration_mode">Regenerálási mód</string>
+    <string name="setting_regeneration_interval">Regenerálási időköz</string>
+    <string name="choice_eco">Eco</string>
+    <string name="choice_power">Power</string>
+    <string name="choice_comfort">Comfort</string>
+    <string name="choice_individual">Egyéni</string>
+    <string name="choice_standard">Normál</string>
+    <string name="choice_automatic">Automatikus</string>
+    <string name="alert_with_code">%1$s (kód: %2$s)</string>
+    <string name="alert_kind_salt_low">Fogyóban a só</string>
+    <string name="alert_kind_salt_empty">Elfogyott a só</string>
+    <string name="alert_kind_maintenance">Karbantartás esedékes</string>
+    <string name="alert_kind_power">Áramkimaradás</string>
+    <string name="alert_kind_leak">Szivárgásvédelmi esemény</string>
+    <string name="alert_kind_flow">Átfolyási határ túllépve</string>
+    <string name="alert_kind_motor">Motor- vagy szelephiba</string>
+    <string name="alert_kind_sensor">Érzékelőhiba</string>
+    <string name="alert_kind_brine">Sóoldat-probléma</string>
+    <string name="alert_kind_meter">Vízmérő-hiba</string>
+    <string name="alert_kind_update">Szoftverfrissítés</string>
+    <string name="alert_kind_other">Készülék-üzenet</string>
+    <string name="catalogue_other_brands_title">Más gyártók</string>
+    <string name="catalogue_other_brands_hint">A Home Assistant közösség népszerű vízlágyítói, 2026 októberi áttekintés alapján. A WaterCare csak a helyi hálózaton lévő készülékekkel kommunikál; a csak felhős készülékek tájékoztatásként szerepelnek.</string>
+    <string name="brand_support_control">WaterCare-ben: helyi vezérlés (kísérleti)</string>
+    <string name="brand_support_monitor">WaterCare-ben: helyi megfigyelés (kísérleti)</string>
+    <string name="brand_support_cloud">Csak felhő: nem támogatott, a WaterCare helyi marad</string>
+    <string name="brand_support_bluetooth">Bluetooth: még nem támogatott</string>
+    <string name="brand_support_diy">Nincs kapcsolódás: csak házi érzékelős megoldások</string>
+    <plurals name="value_weeks">
+        <item quantity="one">%1$d hét</item>
+        <item quantity="other">%1$d hét</item>
+    </plurals>
+
+    <!-- Other brands: Wi-Fi setup -->
+    <string name="appliance_band_hint">A vízlágyítók Wi-Fi-moduljai általában a router 2,4 GHz-es hálózatát igénylik; csak 5 GHz-es vagy csak WPA3-as hálózattal nem biztos, hogy működnek.</string>
+    <string name="appliance_wifi_setup">Wi-Fi beállítása</string>
+    <string name="appliance_wifi_setup_hint">Új vízlágyítóhoz, amely még nincs a Wi-Fi-hálózatán.</string>
+    <string name="appliance_on_network_title">Már a Wi-Fi-hálózatán van</string>
+    <string name="appliance_searching">Keresés… %1$d / %2$d</string>
+    <string name="appliance_search_none">Ilyen gyártmányú készülék nem válaszolt. Ellenőrizze, hogy ezen a hálózaton van-e és helyes-e a belépés, vagy adja meg a címét.</string>
+    <string name="appliance_or_address">Vagy adja meg a címét:</string>
+    <string name="appliance_on_device_wifi">Ez a telefon a vízlágyító saját Wi-Fi-hálózatához csatlakozik.</string>
+    <string name="appliance_open_setup_page">A készülék beállítóoldalának megnyitása</string>
+    <string name="appliance_setup_page_hint">Ez a készülék saját oldala. A Wi-Fi-jelszó a készülékhez kerül, nem a WaterCare-hez.</string>
+    <string name="appliance_wifi_after">Ha a vízlágyító csatlakozott, kapcsolja vissza a telefont a saját Wi-Fi-hálózatára, és használja a „Hálózat keresése” gombot.</string>
+    <string name="judo_wifi_steps">1. Kapcsolja ki, majd be a vízlágyítót: a Connectivity modul kb. 10 percre saját Wi-Fi-hálózatot nyit („Connectivity-…”).\n2. Nyissa meg a Wi-Fi-hálózatokat, és csatlakozzon hozzá.\n3. Térjen vissza, erősítse meg lent, és nyissa meg a modul beállítóoldalát.\n4. Jelölje be a „WLAN on/off” lehetőséget, adja meg a Wi-Fi nevét és jelszavát, majd mentse.</string>
+    <string name="gruenbeck_wifi_steps">1. Nyissa meg a Wi-Fi-hálózatokat, és csatlakozzon a vízlágyító saját hálózatához („softliQ:SC_…”) a 8 jegyű jelszóval (lásd a softliQ kézikönyvét).\n2. Térjen vissza, erősítse meg lent, és nyissa meg a vízlágyító beállítóoldalát.\n3. Válassza a Wi-Fi-routerhez kapcsolódást, adja meg a Wi-Fi nevét és jelszavát, majd mentse.\n4. A routeren 2,4 GHz-es, WPA/WPA2 titkosítású hálózat, 1 és 10 közötti fix csatorna és DHCP szükséges.</string>
+    <string name="bwt_wifi_steps">1. A vízlágyítón nyissa meg: Beállítások → Általános → WLAN-kapcsolat, és kapcsolja be.\n2. Válassza ki a hálózatát, adja meg a jelszavát, és koppintson a Csatlakozás gombra.\n3. Nyissa meg: Beállítások → Általános → Kapcsolat, és kapcsolja be a Local API-t.\n4. A címet az Info → Kapcsolat állapota alatt látja. Térjen vissza, és keressen a hálózaton, vagy adja meg ezt a címet.</string>
+    <string name="syr_wifi_steps">1. Indítsa el a vízlágyító hozzáférési pontját a kijelző Wi-Fi-beállításaiból (lásd a NeoSoft kézikönyvét).\n2. Nyissa meg a Wi-Fi-hálózatokat, és csatlakozzon a vízlágyító hálózatához.\n3. Térjen vissza, erősítse meg lent, és adja meg az otthoni Wi-Fi adatait. A WaterCare közvetlenül a vízlágyítónak küldi el.</string>
+    <string name="judo_page_hint">Jelölje be a „WLAN on/off” lehetőséget, adja meg a Wi-Fi nevét és jelszavát, majd mentse.</string>
+    <string name="gruenbeck_page_hint">Válassza a Wi-Fi-routerhez kapcsolódást, adja meg a Wi-Fi nevét és jelszavát, majd mentse.</string>
+    <string name="syr_send">Küldés a vízlágyítónak</string>
+    <string name="syr_sending">Várakozás a vízlágyító csatlakozására…</string>
+    <string name="syr_connected">A vízlágyító csatlakozott a Wi-Fi-hálózathoz, címe: %1$s.</string>
+    <string name="syr_connected_no_address">A vízlágyító jelzi, hogy csatlakozott a Wi-Fi-hálózathoz.</string>
+    <string name="syr_link_lost">A beállítások elküldése után a vízlágyító Wi-Fi-je megszűnt, ahogy a hálózatváltáskor szokott.</string>
+    <string name="syr_not_connected">A vízlágyító egy percen belül nem jelzett kapcsolatot. Ellenőrizze a Wi-Fi nevét és jelszavát (2,4 GHz), majd próbálja újra.</string>
+    <string name="syr_encoding_warning">A név vagy a jelszó szóközt vagy / ? # % jelet tartalmaz. Egyes SYR firmware-ek ezt nem fogadják el a helyi felületen; ha nem sikerül, használja a vízlágyító kijelzőjét.</string>
+    <string name="action_use_address">Ennek a címnek a használata</string>
+</resources>
