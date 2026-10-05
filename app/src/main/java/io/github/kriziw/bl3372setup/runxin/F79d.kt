@@ -87,7 +87,12 @@ class SoftenerState(val fields: Map<Int, Pair<Int, Int>>) {
     val maxRegenerationIntervalDays get() = u8(23)
     val outputRelayMode get() = u8(24)
     val regenerationReminderCount get() = u16le(25)
-    val resinVolumeLitres get() = u8(26)
+    /**
+     * Resin volume in litres. Model 12 (Euro-Clear Midnight) reports tenths: a 25 L unit reads
+     * `FA 00` (250). The reference F79D (model 9) reports whole litres.
+     */
+    val resinVolumeLitres: Double?
+        get() = u8(26)?.let { if (deviceModel == F79d.MIDNIGHT_MODEL) it / 10.0 else it.toDouble() }
     val clockChipFault get() = bool(27)
     val multiplePositionSignalFault get() = bool(28)
     val noPositionSignalFault get() = bool(29)
@@ -209,11 +214,29 @@ sealed class SoftenerSetting(val fieldId: Int) {
         override fun isConfirmedBy(state: SoftenerState) =
             state.station.let { it != null && it != Station.IN_SERVICE && it != Station.CLOSED }
     }
+
+    /**
+     * Vacation mode: field 49 = 1 to start, 0 to end, as in the legacy WaterDevice UI. Starting runs
+     * brine refill, a 240 min salt-dissolving pause, a shortened brine draw, then pause 2 until
+     * ended (the controller's own "hold ▼ for 6 s"). ypsilon-local found that the Ypsilon G6
+     * (model 9) acknowledges this write without applying it, so it is only offered as an
+     * experimental control, and confirmed solely by the controller's own flag on read-back.
+     */
+    data class Vacation(val on: Boolean) : SoftenerSetting(49) {
+        override fun encode() = listOf(fieldId, if (on) 1 else 0, 0)
+        override fun isConfirmedBy(state: SoftenerState) = state.vacationFlag == on
+    }
+
+    /** Settings that move the valve; read back more patiently because the motor is running. */
+    val isMechanical: Boolean get() = this is Regenerate || this is Vacation
 }
 
 object F79d {
     /** deviceModel reported by the F79D profile that ypsilon-local verified (Ypsilon G6). */
     const val VERIFIED_MODEL = 9
+
+    /** deviceModel reported by the Euro-Clear Midnight (ECOPRO+ head), read on real hardware. */
+    const val MIDNIGHT_MODEL = 12
 
     /** The normal state block. Field 52 is slow-changing and read separately. */
     val STATE_FIELDS = (1..51).toList()

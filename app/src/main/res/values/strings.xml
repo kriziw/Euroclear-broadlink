@@ -21,6 +21,9 @@
     <string name="action_open_wifi">Wi-Fi hálózatok megnyitása</string>
     <string name="action_regenerate">Regenerálás</string>
     <string name="action_regenerate_now">Regenerálás indítása most</string>
+    <string name="action_vacation">Vakáció</string>
+    <string name="action_vacation_start">Vakáció üzemmód indítása</string>
+    <string name="action_vacation_end">Vakáció üzemmód befejezése</string>
     <string name="action_remove">Eltávolítás</string>
     <string name="action_retry">Újra</string>
     <string name="action_save">Mentés</string>
@@ -225,6 +228,12 @@
     <string name="regenerate_confirm_title">Elindítja most a regenerálást?</string>
     <string name="regenerate_confirm_text">A vízlágyító azonnal regenerálni kezd. Az első fázisban nem szolgáltat vizet, utána csak kemény vizet ad, és sót, valamint vizet fogyaszt. Egy teljes ciklus néhány órát vesz igénybe.</string>
     <string name="regenerate_hint">Csak vízszolgáltatás állapotban indítható. Az alkalmazás ellenőrzi, hogy a szelep valóban elindult-e.</string>
+    <string name="vacation_start_title">Elindítja a vakáció üzemmódot?</string>
+    <string name="vacation_start_text" formatted="false">A vezérlőfej feltölti a sóoldó tartályt, 4 órán át hagyja beoldódni a sót, rövidített sólé- és lassú mosatást végez (a beállított idő 25%-a), majd szünetel, amíg be nem fejezi a vakáció üzemmódot. Ez ugyanaz, mint a „Le” (▼) gomb 6 másodperces nyomva tartása a vezérlőfejen.</string>
+    <string name="vacation_end_title">Befejezi a vakáció üzemmódot?</string>
+    <string name="vacation_end_text">A vezérlőfej kilép a vakáció üzemmódból, ugyanúgy, mint a „Le” (▼) gomb 6 másodperces nyomva tartásakor.</string>
+    <string name="vacation_untested">Ezen a vezérlőtípuson még nincs megerősítve. Az alkalmazás ellenőrzi a vezérlőfej válaszát; ha nem vált át, használja a vezérlőfej „Le” (▼) gombját.</string>
+    <string name="vacation_end_wait">A vakáció üzemmód akkor fejezhető be, amikor a vezérlőfej elérte a vakációs szünetet.</string>
 
     <string name="station_in_service">Vízszolgáltatás</string>
     <string name="station_backwash">Visszamosatás</string>
@@ -287,6 +296,9 @@
 
     <string name="write_confirmed">%1$s elmentve, a vezérlőfej megerősítette.</string>
     <string name="write_regeneration_started">A regenerálás elindult, a vezérlőfej jelzi, hogy a szelep mozog.</string>
+    <string name="write_vacation_on">A vakáció üzemmód elindult, a vezérlőfej megerősítette.</string>
+    <string name="write_vacation_off">A vakáció üzemmód befejeződött, a vezérlőfej megerősítette.</string>
+    <string name="write_vacation_not_confirmed">A vezérlőfej nem váltotta át a vakáció üzemmódot. Használja helyette a vezérlőfejet: vízszolgáltatás állapotban tartsa lenyomva a „Le” (▼) gombot 6 másodpercig.</string>
     <string name="write_not_confirmed">%1$s elküldve, de a vezérlőfej nem erősítette meg a változást. Lehet, hogy nem fogadja el ezt a beállítást.</string>
     <string name="write_ambiguous">%1$s küldésekor nem érkezett válasz, és a változás nem erősödött meg. Ellenőrizze az értéket, mielőtt újra próbálja.</string>
     <string name="write_failed">%1$s küldése nem sikerült. %2$s</string>

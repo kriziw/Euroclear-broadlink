@@ -39,13 +39,18 @@ import java.util.Locale
 internal fun writeOutcomeText(outcome: WriteOutcome): String {
     val name = settingName(outcome.setting)
     val error = outcome.error
+    val setting = outcome.setting
     return when (val result = outcome.result) {
-        is WriteResult.Confirmed ->
-            if (outcome.setting == SoftenerSetting.Regenerate) stringResource(R.string.write_regeneration_started)
-            else stringResource(R.string.write_confirmed, name)
-        is WriteResult.NotConfirmed ->
-            if (result.ambiguousDelivery) stringResource(R.string.write_ambiguous, name)
-            else stringResource(R.string.write_not_confirmed, name)
+        is WriteResult.Confirmed -> when (setting) {
+            SoftenerSetting.Regenerate -> stringResource(R.string.write_regeneration_started)
+            is SoftenerSetting.Vacation -> stringResource(if (setting.on) R.string.write_vacation_on else R.string.write_vacation_off)
+            else -> stringResource(R.string.write_confirmed, name)
+        }
+        is WriteResult.NotConfirmed -> when {
+            result.ambiguousDelivery -> stringResource(R.string.write_ambiguous, name)
+            setting is SoftenerSetting.Vacation -> stringResource(R.string.write_vacation_not_confirmed)
+            else -> stringResource(R.string.write_not_confirmed, name)
+        }
         null -> stringResource(R.string.write_failed, name, error?.let { networkErrorText(it) }.orEmpty())
     }
 }
@@ -60,6 +65,7 @@ private fun settingName(setting: SoftenerSetting): String = stringResource(
         is SoftenerSetting.ContinuousFlowLimit -> R.string.setting_continuous_flow
         is SoftenerSetting.FlowShutoff -> R.string.setting_flow_shutoff
         SoftenerSetting.Regenerate -> R.string.action_regenerate
+        is SoftenerSetting.Vacation -> R.string.device_vacation
     },
 )
 

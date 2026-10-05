@@ -79,7 +79,7 @@ only appears when something needs attention (no Wi-Fi, device not found, permiss
 
 | Section | Contents |
 |---|---|
-| Status | valve phase with time left (in service, backwash, brine and slow rinse, …), remaining capacity against capacity per cycle, current flow, vacation state when active, **Regenerate now** |
+| Status | valve phase with time left (in service, backwash, brine and slow rinse, …), remaining capacity against capacity per cycle, current flow, vacation state when active, **Regenerate now**, **Vacation** (experimental controllers only, see below) |
 | Needs attention | alarms and reminders, shown only when there are any |
 | Tiles | used today, controller weekly average, salt added ✎, regeneration mode |
 | Settings | raw water hardness ✎, regeneration time ✎, controller clock *sync with phone*, SafeHOME continuous-flow limit ✎ and maximum flow ✎ |
@@ -93,9 +93,13 @@ one straight away.
   when the controller itself reports the new value.
 * *Regenerate now* asks for confirmation first, is only offered while the softener is in
   service, and is confirmed once the valve actually starts moving.
-* Only settings that were verified on real hardware can be changed. Vacation mode is shown
-  but not switchable from the app, because the controller ignores that command. Switch it on
-  the controller instead: hold ▼ for 6 s while in service.
+* Only settings that were verified on real hardware can be changed.
+* **Vacation mode** can be started from service and ended from the vacation pause, matching the
+  controller's own ▼ button. The controller then refills the brine tank, dissolves salt for 4 h,
+  runs a shortened brine draw and pauses until you end it. It is offered only on experimental
+  controllers (for example the Midnight, model 12). On the verified F79D (model 9) the command is
+  acknowledged but ignored, so it is not shown there. The app reports success only when the
+  controller's own vacation flag changes; otherwise hold ▼ for 6 s on the controller.
 
 **Controller models.** After connection the app reads the controller identity and loads a
 matching bundled profile. Controls unlock automatically only for the combination verified

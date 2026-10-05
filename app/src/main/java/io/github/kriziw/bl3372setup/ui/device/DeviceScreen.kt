@@ -1,6 +1,8 @@
 package io.github.kriziw.bl3372setup.ui.device
 
 import android.app.Application
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -141,7 +143,7 @@ fun DeviceRoute(mac: String, onBack: () -> Unit, onCompatibility: () -> Unit, on
 }
 
 /** Which dialog is open. */
-private enum class Editor { HARDNESS, SALT, REGEN_TIME, CONTINUOUS_FLOW, FLOW_SHUTOFF, REGENERATE, UNLOCK, RENAME, ADDRESS, REMOVE }
+private enum class Editor { HARDNESS, SALT, REGEN_TIME, CONTINUOUS_FLOW, FLOW_SHUTOFF, REGENERATE, VACATION_START, VACATION_END, UNLOCK, RENAME, ADDRESS, REMOVE }
 
 /**
  * The dashboard for one softener: status first, then usage, then the settings people change,
@@ -195,7 +197,12 @@ fun DeviceScreen(
             if (state.connection.isWaiting) Loading(state.connection)
         } else {
             if (!state.isVerifiedModel) ExperimentalBanner(state, onUnlock = { editor = Editor.UNLOCK }, onLock = onLock)
-            StatusHero(s, state, onRegenerate = { editor = Editor.REGENERATE })
+            StatusHero(
+                s,
+                state,
+                onRegenerate = { editor = Editor.REGENERATE },
+                onVacation = { start -> editor = if (start) Editor.VACATION_START else Editor.VACATION_END },
+            )
             AlertsBanner(s)
             UsageTiles(s, state, onEditSalt = { editor = Editor.SALT })
             SettingsList(s, state, onEdit = { editor = it }, onSyncClock = { onApply(SoftenerSetting.ControllerClock(LocalTime.now())) })
@@ -263,6 +270,26 @@ fun DeviceScreen(
             },
             dismissButton = { TextButton(onClick = { editor = null }) { Text(stringResource(R.string.action_cancel)) } },
         )
+        Editor.VACATION_START, Editor.VACATION_END -> {
+            val start = editor == Editor.VACATION_START
+            AlertDialog(
+                onDismissRequest = { editor = null },
+                icon = { Icon(painterResource(R.drawable.ic_beach), contentDescription = null) },
+                title = { Text(stringResource(if (start) R.string.vacation_start_title else R.string.vacation_end_title)) },
+                text = {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(stringResource(if (start) R.string.vacation_start_text else R.string.vacation_end_text))
+                        Hint(stringResource(R.string.vacation_untested))
+                    }
+                },
+                confirmButton = {
+                    Button(onClick = { editor = null; onApply(SoftenerSetting.Vacation(start)) }) {
+                        Text(stringResource(if (start) R.string.action_vacation_start else R.string.action_vacation_end))
+                    }
+                },
+                dismissButton = { TextButton(onClick = { editor = null }) { Text(stringResource(R.string.action_cancel)) } },
+            )
+        }
         Editor.UNLOCK -> UnlockDialog(
             state = state,
             onDismiss = { editor = null },
@@ -454,9 +481,9 @@ private fun UnlockDialog(state: DeviceUiState, onDismiss: () -> Unit, onConfirm:
     )
 }
 
-/** Phase, soft water left, flow, and the one action that acts on the valve. */
+/** Phase, soft water left, flow, and the actions that move the valve. */
 @Composable
-private fun StatusHero(s: SoftenerState, state: DeviceUiState, onRegenerate: () -> Unit) {
+private fun StatusHero(s: SoftenerState, state: DeviceUiState, onRegenerate: () -> Unit, onVacation: (start: Boolean) -> Unit) {
     val colors = MaterialTheme.colorScheme
     SectionCard(containerColor = colors.primaryContainer) {
         val muted = LocalContentColor.current.copy(alpha = 0.75f)
@@ -509,20 +536,68 @@ private fun StatusHero(s: SoftenerState, state: DeviceUiState, onRegenerate: () 
             )
         }
 
-        OutlinedButton(
-            onClick = onRegenerate,
-            enabled = state.canRegenerate,
-            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = colors.onPrimaryContainer),
-        ) {
-            if (state.pendingWrite == SoftenerSetting.Regenerate) {
-                CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
-            } else {
-                Icon(painterResource(R.drawable.ic_autorenew), contentDescription = null, modifier = Modifier.size(18.dp))
+        HeroActions(s, state, onRegenerate, onVacation)
+    }
+}
+
+/** Regenerate and, where offered, vacation mode. While on vacation only "End vacation mode" remains. */
+@Composable
+private fun HeroActions(s: SoftenerState, state: DeviceUiState, onRegenerate: () -> Unit, onVacation: (start: Boolean) -> Unit) {
+    val pending = state.pendingWrite
+    val regenerating = pending == SoftenerSetting.Regenerate
+    val vacationPending = pending is SoftenerSetting.Vacation
+    when {
+        state.offersVacation && s.vacationFlag == true -> {
+            HeroButton(R.string.action_vacation_end, R.drawable.ic_beach, state.canEndVacation, vacationPending, Modifier.fillMaxWidth()) {
+                onVacation(false)
             }
-            Spacer(Modifier.width(8.dp))
-            Text(stringResource(R.string.action_regenerate_now))
+            if (s.station != Station.PAUSE_2) {
+                Text(
+                    stringResource(R.string.vacation_end_wait),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = LocalContentColor.current.copy(alpha = 0.75f),
+                )
+            }
         }
+        state.offersVacation -> Row(Modifier.fillMaxWidth().padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            HeroButton(R.string.action_regenerate, R.drawable.ic_autorenew, state.canRegenerate, regenerating, Modifier.weight(1f), onRegenerate)
+            HeroButton(R.string.action_vacation, R.drawable.ic_beach, state.canStartVacation, vacationPending, Modifier.weight(1f)) {
+                onVacation(true)
+            }
+        }
+        else -> HeroButton(
+            R.string.action_regenerate_now,
+            R.drawable.ic_autorenew,
+            state.canRegenerate,
+            regenerating,
+            Modifier.fillMaxWidth().padding(top = 4.dp),
+            onRegenerate,
+        )
+    }
+}
+
+@Composable
+private fun HeroButton(
+    @StringRes label: Int,
+    @DrawableRes icon: Int,
+    enabled: Boolean,
+    pending: Boolean,
+    modifier: Modifier,
+    onClick: () -> Unit,
+) {
+    OutlinedButton(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = modifier,
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onPrimaryContainer),
+    ) {
+        if (pending) {
+            CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
+        } else {
+            Icon(painterResource(icon), contentDescription = null, modifier = Modifier.size(18.dp))
+        }
+        Spacer(Modifier.width(8.dp))
+        Text(stringResource(label), maxLines = 1)
     }
 }
 
@@ -689,8 +764,20 @@ private fun Details(s: SoftenerState, state: DeviceUiState, onCompatibility: () 
         ValueRow(stringResource(R.string.programme_rinsing_frequency), s.rinsingFrequency?.toString() ?: "–")
         ValueRow(stringResource(R.string.programme_backwash_interval), s.backwashIntervalCount?.toString() ?: "–")
         ValueRow(stringResource(R.string.programme_max_interval), s.maxRegenerationIntervalDays?.let { daysText(it) } ?: "–")
-        ValueRow(stringResource(R.string.programme_resin_volume), s.resinVolumeLitres?.let { "$it L" } ?: "–")
-        ValueRow(stringResource(R.string.programme_output_mode), s.outputRelayMode?.let { "b-0${it + 1}" } ?: "–")
+        val locale = uiLocale()
+        ValueRow(
+            stringResource(R.string.programme_resin_volume),
+            s.resinVolumeLitres?.let { String.format(locale, if (it % 1.0 == 0.0) "%.0f L" else "%.1f L", it) } ?: "–",
+        )
+        // WaterDevice knows only 0 = b-01 and 1 = b-02; the Midnight reports 2, so show other codes raw.
+        ValueRow(
+            stringResource(R.string.programme_output_mode),
+            when (val mode = s.outputRelayMode) {
+                null -> "–"
+                0, 1 -> "b-0${mode + 1}"
+                else -> stringResource(R.string.value_unknown_code, mode.toString())
+            },
+        )
         ValueRow(
             stringResource(R.string.programme_brine_draw),
             when (s.brineDrawForward) {
