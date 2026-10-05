@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/kriziw/Euroclear-broadlink/compare/v0.4.3...v0.5.0) (2026-10-05)
+
+
+### Features
+
+* modern, simplified UI with dark theme ([#17](https://github.com/kriziw/Euroclear-broadlink/issues/17)) ([43feed4](https://github.com/kriziw/Euroclear-broadlink/commit/43feed45ab37d3f20ece41b51c022c697893b338))
+
 ## [0.4.3](https://github.com/kriziw/Euroclear-broadlink/compare/v0.4.2...v0.4.3) (2026-10-04)
 
 
