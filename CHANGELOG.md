@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/kriziw/Euroclear-broadlink/compare/v0.5.0...v0.6.0) (2026-10-05)
+
+
+### Features
+
+* start and end vacation mode from the app ([b8697fa](https://github.com/kriziw/Euroclear-broadlink/commit/b8697faae282851dd885726977ef02a0497bf94c))
+
+
+### Bug Fixes
+
+* show model-12 resin volume in litres and unknown output relay codes as unknown ([b8697fa](https://github.com/kriziw/Euroclear-broadlink/commit/b8697faae282851dd885726977ef02a0497bf94c))
+
 ## [0.5.0](https://github.com/kriziw/Euroclear-broadlink/compare/v0.4.3...v0.5.0) (2026-10-05)
 
 
